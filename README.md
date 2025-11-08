@@ -1,2 +1,1 @@
-# Resturant-Management-System-University-Project
-Group Project done by Clement Raka De Costa, Debottom Chakma, Afroza Shorno, Fariha, Tahasin, Mustafizur Polash. Project given in the undergrad Course, Web Programming, in Uttara University.
+For now, just make a sub-branch of this Repo, and add whatever you want in that branch. Only at the very end, or when we are sure we're complete with this, we'll commit to the main branch. 
