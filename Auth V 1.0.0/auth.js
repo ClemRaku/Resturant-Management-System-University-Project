@@ -43,3 +43,14 @@ function showToast(message, type = "success"){
     }, 3000);
 }
 
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const navbarLinks = document.getElementById('navbar-links');
+
+if (mobileMenuBtn && navbarLinks) {
+  mobileMenuBtn.addEventListener('click', () => {
+    navbarLinks.classList.toggle('active');
+    const icon = mobileMenuBtn.querySelector('i');
+    icon.setAttribute('data-lucide', navbarLinks.classList.contains('active') ? 'x' : 'menu');
+    lucide.createIcons();
+  });
+}
