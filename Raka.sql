@@ -51,7 +51,6 @@ CREATE TABLE `inventory` (
   `inventory_id` int NOT NULL,
   `ingredient_name` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
   `quantity` decimal(10,2) NOT NULL,
-  `unit` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `minimum_stock_level` decimal(10,2) DEFAULT '0.00',
   `last_restocked` date DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -68,13 +67,13 @@ LOCK TABLES `inventory` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `menu_items`
+-- Table structure for table `menu`
 --
 
-DROP TABLE IF EXISTS `menu_items`;
+DROP TABLE IF EXISTS `menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `menu_items` (
+CREATE TABLE `menu` (
   `menu_id` int NOT NULL,
   `name` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
   `description` text COLLATE utf8mb4_general_ci,
@@ -90,13 +89,13 @@ CREATE TABLE `menu_items` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `menu_items`
+-- Dumping data for table `menu`
 --
 
-LOCK TABLES `menu_items` WRITE;
-/*!40000 ALTER TABLE `menu_items` DISABLE KEYS */;
-INSERT INTO `menu_items` VALUES (1,'Margherita Pizza','Classic tomato, mozzarella, and fresh basil',12.99,1,'./imageM/margherita-pizza.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(2,'Pepperoni Pizza','Loaded with pepperoni and mozzarella',14.99,1,'./imageM/pizza2.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(3,'Grilled Salmon','Fresh Atlantic salmon with herbs',19.99,2,'./imageM/grilled-salmon.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(4,'Caesar Salad','Crisp romaine, croutons, and parmesan',9.99,3,'./imageM/caesar-salad.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(5,'Beef Burger','Juicy beef patty with cheese and lettuce',11.99,4,'./imageM/beef-burger.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(6,'Shrimp Pasta','Creamy garlic sauce with shrimp',16.99,5,'./imageM/pasta.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51');
-/*!40000 ALTER TABLE `menu_items` ENABLE KEYS */;
+LOCK TABLES `menu` WRITE;
+/*!40000 ALTER TABLE `menu` DISABLE KEYS */;
+INSERT INTO `menu` VALUES (1,'Margherita Pizza','Classic tomato, mozzarella, and fresh basil',12.99,1,'./imageM/margherita-pizza.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(2,'Pepperoni Pizza','Loaded with pepperoni and mozzarella',14.99,1,'./imageM/pizza2.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(3,'Grilled Salmon','Fresh Atlantic salmon with herbs',19.99,2,'./imageM/grilled-salmon.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(4,'Caesar Salad','Crisp romaine, croutons, and parmesan',9.99,3,'./imageM/caesar-salad.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(5,'Beef Burger','Juicy beef patty with cheese and lettuce',11.99,4,'./imageM/beef-burger.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(6,'Shrimp Pasta','Creamy garlic sauce with shrimp',16.99,5,'./imageM/pasta.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51');
+/*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -132,4 +131,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-16 22:46:49
+-- Dump completed on 2025-11-16 23:28:31
