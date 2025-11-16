@@ -60,7 +60,7 @@ CREATE TABLE `employees` (
   `job_position` varchar(55) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `employement_date` date DEFAULT NULL,
   `email` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `availability` int DEFAULT NULL,
+  `availability` tinyint DEFAULT NULL,
   PRIMARY KEY (`employee_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -113,6 +113,7 @@ CREATE TABLE `food_order` (
   `menu_id` int DEFAULT NULL,
   `sale_id` int DEFAULT NULL,
   `status` int DEFAULT NULL,
+  `order_time` datetime DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   KEY `customer_id` (`customer_id`),
   KEY `menu_id` (`menu_id`),
@@ -142,12 +143,12 @@ DROP TABLE IF EXISTS `inventory`;
 CREATE TABLE `inventory` (
   `inventory_id` int NOT NULL,
   `ingredient_name` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
-  `quantity` decimal(10,2) NOT NULL,
+  `quantity` int NOT NULL,
   `minimum_stock_level` decimal(10,2) DEFAULT '0.00',
   `last_restocked` date DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `supplier` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `availability` int DEFAULT NULL,
+  `availability` tinyint DEFAULT NULL,
   `supplier_id` int DEFAULT NULL,
   PRIMARY KEY (`inventory_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -271,7 +272,7 @@ CREATE TABLE `sale_transaction` (
   `employee_id` int DEFAULT NULL,
   `table_no` int DEFAULT NULL,
   `customer_id` int DEFAULT NULL,
-  `sale_time` date DEFAULT NULL,
+  `sale_time` datetime DEFAULT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `employee_id` (`employee_id`),
   KEY `fk_customer_sale` (`customer_id`),
@@ -298,4 +299,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-17  2:56:47
+-- Dump completed on 2025-11-17  3:22:01
