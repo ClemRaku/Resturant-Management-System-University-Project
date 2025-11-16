@@ -30,6 +30,7 @@ CREATE TABLE `customer` (
   `loyalty_points` int DEFAULT NULL,
   `preferred_dish_id` int DEFAULT NULL,
   `address` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -58,6 +59,8 @@ CREATE TABLE `employees` (
   `address` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `job_position` varchar(55) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `employement_date` date DEFAULT NULL,
+  `email` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `availability` int DEFAULT NULL,
   PRIMARY KEY (`employee_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -109,6 +112,7 @@ CREATE TABLE `food_order` (
   `customer_id` int DEFAULT NULL,
   `menu_id` int DEFAULT NULL,
   `sale_id` int DEFAULT NULL,
+  `status` int DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   KEY `customer_id` (`customer_id`),
   KEY `menu_id` (`menu_id`),
@@ -142,6 +146,9 @@ CREATE TABLE `inventory` (
   `minimum_stock_level` decimal(10,2) DEFAULT '0.00',
   `last_restocked` date DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `supplier` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `availability` int DEFAULT NULL,
+  `supplier_id` int DEFAULT NULL,
   PRIMARY KEY (`inventory_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -233,6 +240,8 @@ CREATE TABLE `reservation` (
   `phone_no` int DEFAULT NULL,
   `no_of_customer` int DEFAULT NULL,
   `special_resquests` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reserve_date` datetime DEFAULT NULL,
+  `status` int DEFAULT NULL,
   PRIMARY KEY (`reservation_id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `fk_customer_reserve` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`)
@@ -289,4 +298,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-17  2:24:28
+-- Dump completed on 2025-11-17  2:56:47
