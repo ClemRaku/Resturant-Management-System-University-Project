@@ -1,0 +1,317 @@
+:root {
+  --primary: #e64f4f;
+  --accent: #ffb730;
+  --card: #f8f9fa;
+  --border: #ddd;
+  --muted-foreground: #555;
+
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  color: #222;
+  line-height: 1.6;
+}
+
+.navbar {
+  background-color: white;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.navbar-brand {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--accent);
+  flex: 1;
+
+}
+
+.navbar-links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+.navbar-links a {
+  color: #222;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  gap: 5px;
+  justify-content: space-between;
+}
+
+.navbar-links a:hover {
+  color: var(--primary);
+}
+
+.logo {
+  width: 160px;
+  height: auto;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn {
+  display: inline-flex;
+  min-width: 140px;
+  height: auto;
+  border: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  margin: 1rem;
+}
+
+.btn-primary:hover {
+
+  opacity: 0.9;
+}
+
+.btn-light {
+  background: white;
+  color: var(--primary);
+}
+
+.btn-light:hover {
+  background: #f1f1f1;
+}
+
+
+/*main content*/
+
+
+.service-head {
+  text-align: center;
+  max-width: 700px;
+  margin: 50px auto 40px;
+}
+
+.service-head h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.service-head p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+
+.service-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  padding: 0 40px 60px;
+}
+
+
+.card {
+  background: #fff;
+  padding: 32px;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+  transition: 0.3s ease;
+}
+
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+
+.icon-cover {
+  width: 70px;
+  height: 70px;
+  background: #ffe5d2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.icon-cover i {
+  width: 32px;
+  height: 32px;
+  color: #ff8c42;
+}
+
+
+.card h4 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+
+.card p {
+  color: #555;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+
+.operating-hours {
+  background: #f9fef9;
+  border: 1px solid #e0e6df;
+  border-radius: 12px;
+  padding: 40px;
+  margin: 40px 20px 80px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.operating-hours h2 {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 25px;
+  font-weight: 700;
+}
+
+.hours-grid {
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.hours-col h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.hours-col p {
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.hours-note {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 15px;
+}
+
+.hours-note span {
+  font-weight: 700;
+  color: #222;
+}
+
+
+/* mobile adjust ar jonno*/
+@media (max-width: 1024px) {
+ .navbar-links {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    background: white;
+    padding: 20px 0;
+    gap: 15px;
+    border-bottom: 1px solid #ddd;
+    z-index: 1000;
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  
+
+  .service-card,
+  .service-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hours-grid {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .navbar-links {
+    top: 60px;
+    padding: 15px 0;
+    gap: 12px;
+    font-size: 14px; 
+  }
+
+  .navbar-links.active {
+    display: flex;
+    flex-direction: column;
+  }
+
+ 
+  .btn {
+    display: none;
+  }
+
+ 
+  .mobile-menu-btn {
+    display: block;
+  }
+
+
+  .service-card,
+  .service-cards {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .service-head h1 {
+    font-size: 34px;
+  }
+
+}
