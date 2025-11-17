@@ -32,32 +32,172 @@
 
         <h1>Menu Management</h1>
         <p class="sub-title">Manage your restaurant menu items</p>
-        <a href="#" class="btn menu-btn"><i data-lucide="plus"></i> Add Menu Items</a>
+        <a href="#" class="btn menu-btn" id="openModal"> <i data-lucide="plus"></i> Add Menu Items</a>
 
 
-        <div class="dashboard-card">
-            <div class="card">
-                <h2>Menu Items</h2>
-                <form action="adminmenu.html" method="GET" class="menu-items">
-                    <input type="text" name="admin_item" value="">
-                    <input type="text" name="admin_catagory" value=""> <!--ar akhne value add hbe-->
-                    <input type="number" name="item_price" value="">.Tk
-                    <button class="btn">
-                        <select name="availability" required>
-                            <option value="available">Available</option> <!--Akane if else ar kaj add hbe-->
-                            <option value="unavaiable">Unavaiable</option>
-                        </select>
-                    </button>
-                </form>
+        <div class="card">
+            <h2>Menu Items</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Catagory</th>
+                        <th>Description</th>
+                    </tr>
+
+                </thead>
+                <!--ar akhne value add hbe-->
+
+                <tbody>
+                    <form action="adminmenu.html" method="GET" class="menu-items">
+
+                        <tr>
+                            <td>
+                                <input type="number" name="admin_item_id" value="">
+                            </td>
+                            <td>
+                                <input type="text" name="admin_menu_item" value="">
+                            </td>
+                            <td>
+                                <input type="text" name="admin_catagory" value="">
+                            </td>
+                            <td>
+                                <input type="text" name="food_description" value="">
+                            </td>
+                        </tr>
+
+                    </form>
+                </tbody>
 
 
-            </div>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ingridients</th>
+                        <th>Preparation Time</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <form action="adminmenu.html" method="GET" class="menu-items">
+
+
+                        <tr>
+                            <td>
+                                <input type="text" name="ingridients" value="">
+                            </td>
+                            <td>
+                                <input type="text" name="Preparation_time" value="">
+                            </td>
+                            <td style="width:60px;">
+                                <input type="number" name="item_price" value="">
+                            </td>
+                            <td>
+
+                                <select name="availability" class="item_status" required>
+                                    <option value="available">Available</option> <!--Akane if else ar kaj add hbe-->
+                                    <option value="unavaiable">Unavaiable</option>
+                                </select>
+
+                            </td>
+                            <td>
+                                <button class="btn">
+                                    <i data-lucide="pencil" class="edit-btn" data-id="12" data-name="Margherita Pizza"
+                                        data-category="Pizza" data-description="Classic cheese pizza"
+                                        data-ingredients="Cheese, Tomato Sauce, Dough" data-price="12"
+                                        data-time="20 min"></i>
+                                </button>
+                                <button class="red-btn">
+                                    <i data-lucide="trash-2" class="delete"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </form>
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+        <!--new item add ar jonno-->
+
+    </div>
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <h2>Add New Menu Item</h2>
+
+            <label>Menu ID</label>
+            <input type="number" name="add_id" id="new_menu_id">
+
+
+            <label>Item Name</label>
+            <input type="text" name="new_menu_name">
+
+            <label>Category</label>
+            <input type="text" name="new_catagory">
+
+            <label>Ingredients</label>
+            <input type="text" name="new_ingredients">
+
+            <label>Preparation Time</label>
+            <input type="text" id="new_preparation_time">
+
+            <label>Price ($)</label>
+            <input type="number" name="new_price">
+
+            <label>Description</label>
+            <input type="text" name="new_description">
+
+            <button class="btn menu-btn">Add Item</button>
+        </div>
+    </div>
+
+
+    <!--exiting item edit ar jonno-->
+
+    <div id="editMenuModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditModal" class="close">&times;</span>
+            <h2>Edit Menu Item</h2>
+
+            <label>Menu ID</label>
+            <input type="text" name="edit_menu_id"  id="edit_id" readonly>
+
+            <label>Menu Name</label>
+            <input type="text" name="eidit_menu_name" id="edit_name">
+
+            <label>Category</label>
+            <input type="text" name="edit_catagory" id="edit_category">
+
+            <label>Description</label>
+            <input type="text" name="edit_decription" id="edit_description">
+
+            <label>Ingredients</label>
+            <input type="text" name="edit_ingredients" id="edit_ingredients">
+
+            <label>Price ($)</label>
+            <input type="number" name="eidit_price" id="edit_price">
+
+            <label>Preparation Time</label>
+            <input type="text" name="edit_preparation_time" id="edit_time">
+
+            <button id="saveEdit" class="btn menu-btn">Save Changes</button>
         </div>
     </div>
 
 
 
-    <script src="adminmenu.js"></script>
+
+
+    <script src="admin.js"></script>
     <script>lucide.createIcons();</script>
 </body>
 
