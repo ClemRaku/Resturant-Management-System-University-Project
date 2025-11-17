@@ -182,6 +182,7 @@ CREATE TABLE `inventory` (
   `supplier` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `availability` tinyint DEFAULT NULL,
   `supplier_id` int DEFAULT NULL,
+  `price` double(8,2) DEFAULT NULL,
   PRIMARY KEY (`inventory_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -275,6 +276,7 @@ CREATE TABLE `reservation` (
   `special_resquests` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `reserve_date` datetime DEFAULT NULL,
   `status` int DEFAULT NULL,
+  `email` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`reservation_id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `fk_customer_reserve` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`)
@@ -331,4 +333,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-17 17:16:30
+-- Dump completed on 2025-11-17 17:23:27
