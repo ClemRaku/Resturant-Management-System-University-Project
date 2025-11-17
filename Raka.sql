@@ -61,7 +61,9 @@ CREATE TABLE `customer` (
   `has_account` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`customer_id`),
   KEY `fk_email_customer` (`email`),
-  CONSTRAINT `fk_email_customer` FOREIGN KEY (`email`) REFERENCES `accounts` (`email`)
+  KEY `fk_phone_account_customer` (`phone_no`),
+  CONSTRAINT `fk_email_customer` FOREIGN KEY (`email`) REFERENCES `accounts` (`email`),
+  CONSTRAINT `fk_phone_account_customer` FOREIGN KEY (`phone_no`) REFERENCES `accounts` (`phone_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -336,4 +338,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-18  1:36:47
+-- Dump completed on 2025-11-18  1:44:06
