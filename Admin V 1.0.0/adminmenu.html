@@ -49,25 +49,8 @@
                 </thead>
                 <!--ar akhne value add hbe-->
 
-                <tbody>
-                    <form action="adminmenu.html" method="GET" class="menu-items">
-
-                        <tr>
-                            <td>
-                                <input type="number" name="admin_item_id" value="">
-                            </td>
-                            <td>
-                                <input type="text" name="admin_menu_item" value="">
-                            </td>
-                            <td>
-                                <input type="text" name="admin_catagory" value="">
-                            </td>
-                            <td>
-                                <input type="text" name="food_description" value="">
-                            </td>
-                        </tr>
-
-                    </form>
+                <tbody id="menuTable1">
+                   
                 </tbody>
 
 
@@ -83,41 +66,8 @@
                     </tr>
 
                 </thead>
-                <tbody>
-                    <form action="adminmenu.html" method="GET" class="menu-items">
-
-
-                        <tr>
-                            <td>
-                                <input type="text" name="ingridients" value="">
-                            </td>
-                            <td>
-                                <input type="text" name="Preparation_time" value="">
-                            </td>
-                            <td style="width:60px;">
-                                <input type="number" name="item_price" value="">
-                            </td>
-                            <td>
-
-                                <select name="availability" class="item_status" required>
-                                    <option value="available">Available</option> <!--Akane if else ar kaj add hbe-->
-                                    <option value="unavaiable">Unavaiable</option>
-                                </select>
-
-                            </td>
-                            <td>
-                                <button class="btn">
-                                    <i data-lucide="pencil" class="edit-btn" data-id="12" data-name="Margherita Pizza"
-                                        data-category="Pizza" data-description="Classic cheese pizza"
-                                        data-ingredients="Cheese, Tomato Sauce, Dough" data-price="12"
-                                        data-time="20 min"></i>
-                                </button>
-                                <button class="red-btn">
-                                    <i data-lucide="trash-2" class="delete"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </form>
+                <tbody id="menuTable2">
+                    
                 </tbody>
 
 
@@ -139,24 +89,24 @@
 
 
             <label>Item Name</label>
-            <input type="text" name="new_menu_name">
+            <input type="text" name="new_menu_name" id="new_menu_name">
 
             <label>Category</label>
-            <input type="text" name="new_catagory">
+            <input type="text" name="new_catagory" id="new_catagory">
 
             <label>Ingredients</label>
-            <input type="text" name="new_ingredients">
+            <input type="text" name="new_ingredients" id="new_ingredients">
 
             <label>Preparation Time</label>
-            <input type="text" id="new_preparation_time">
+            <input type="text" name="new_preparation_time" id="new_preparation_time">
 
             <label>Price ($)</label>
-            <input type="number" name="new_price">
+            <input type="number" name="new_price" id="new_price">
 
             <label>Description</label>
-            <input type="text" name="new_description">
+            <input type="text" name="new_description" id="new_description">
 
-            <button class="btn menu-btn">Add Item</button>
+            <button class="btn menu-btn" id="addItemBtn">Add Item</button>
         </div>
     </div>
 
