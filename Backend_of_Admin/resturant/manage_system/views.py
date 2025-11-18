@@ -31,6 +31,30 @@ def admin_menu(request):
         mydb.commit()
         
         
+        
+        #doing the editing bit now
+        if request.GET.get("edit_menu_id"):
+            edit_id = int(request.GET.get("edit_menu_id"))
+            edit_name = request.GET.get("eidit_menu_name")
+            edit_category = int(request.GET.get("edit_catagory"))
+            edit_description = request.GET.get("edit_description")
+            edit_ingredients = request.GET.get("edit_ingredients")
+            edit_price = float(request.GET.get("eidit_price"))
+            edit_prep = int(request.GET.get("edit_preparation_time"))
+            
+            select_menu_items = "UPDATE menu SET name = %s, description = %s, price = %s, category_id = %s, ingredients = %s, preparation_time = %s WHERE menu_id = %s"
+            dt = (
+                edit_name, 
+                edit_description, 
+                edit_price, 
+                edit_category, 
+                edit_ingredients, 
+                edit_prep, 
+                edit_id 
+            ) 
+            mycursor.execute(sql, data)
+            mydb.commit()       
+        
     selectALL_menu_items = "SELECT menu_id, name, category_id, description, ingredients, preparation_time, price FROM menu"
     mycursor.execute(selectALL_menu_items)
     items_from_menu = mycursor.fetchall()

@@ -130,7 +130,7 @@
             <span id="closeEditModal" class="close">&times;</span>
             <h2>Edit Menu Item</h2>
 
-            <form action="adminmenu.html" method="get">
+            <form action="{% url 'admin_menu' %}" method="get">
 
                 <label>Menu ID</label>
                 <input type="number" name="edit_menu_id" id="edit_menu_id" >
