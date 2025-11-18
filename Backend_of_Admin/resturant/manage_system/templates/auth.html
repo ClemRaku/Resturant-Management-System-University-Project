@@ -1,3 +1,6 @@
+
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +17,7 @@
 
     <title>Sign In - Dhakaiya Bites</title>
 
-    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="{% static 'auth.css'%}" >
 
 </head>
 
@@ -112,8 +115,12 @@
 
                 {% comment %} ekhane lign up kore {% endcomment %}
                 <div class="tab-content" id="signup-content">
-
-                    <form action="auth.html" method="get" id="signup-form">
+                {% if missmatchh_passwd %}
+                    <div style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 15px; border-radius: 4px;">
+                        {{ missmatchh_passwd }}
+                    </div>
+                {% endif %}                    
+                    <form action="{% url 'authentication' %}" method="get" id="signup-form">
 
                         <div class="form-group">
 
@@ -165,7 +172,7 @@
 
 
 
-    <script src="auth.js"></script>
+    <script src="{% static 'auth.js' %}"></script>
 
 </body>
 

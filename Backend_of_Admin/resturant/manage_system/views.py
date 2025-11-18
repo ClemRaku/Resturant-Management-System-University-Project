@@ -79,8 +79,26 @@ def admin_menu(request):
     return render (request, 'adminmenu.html', context)
 
 
-#def signup_signin(request):
+def signup_signin(request):
+    mycursor = mydb.cursor()
+    context = {}
+    if request.GET.get('signup_email'):
+        name = request.GET.get('Full_name')
+        email = request.GET.get('signup_email') 
+        p1 = request.GET.get('signup_password')
+        p2 = request.GET.get('confrim_password')
+        if p1 and p2 and p1 == p2:
+            passwd = p1
+            insert_into_acc = "INSERT INTO accounts (email, password) VALUES(%s, %s)"
+            dtt = (email, passwd)
+            mycursor.execute(insert_into_acc, dtt)
+            mydb.commit()
+        else:
+            mismatch_passwd = 'Passwords Miss Match or fields are empty.'
+            context['missmatchh_passwd'] = mismatch_passwd
+        
+    return render(request, 'auth.html', context)
     
-# Create your views here.
+
 
 
