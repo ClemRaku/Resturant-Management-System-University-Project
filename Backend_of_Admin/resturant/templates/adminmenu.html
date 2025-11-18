@@ -134,6 +134,8 @@
             <span id="closeModal" class="close">&times;</span>
             <h2>Add New Menu Item</h2>
 
+            {% comment %} Raka nicher code ta add dise. {% endcomment %}
+            <form method="GET" action="/"> 
             <label>Menu ID</label>
             <input type="number" name="add_id" id="new_menu_id">
 
@@ -156,7 +158,10 @@
             <label>Description</label>
             <input type="text" name="new_description">
 
-            <button class="btn menu-btn">Add Item</button>
+            {% comment %} <button class="btn menu-btn">Add Item</button> {% endcomment %}
+            <button type="submit" class="btn menu-btn">Add Item</button>
+            {% comment %} RAKA add dise above code. {% endcomment %}
+        </form>
         </div>
     </div>
 
