@@ -1,6 +1,4 @@
 
-// new item add korar jonno
-
 const addModal = document.getElementById("menuModal");
 const openAddBtn = document.getElementById("openModal");
 const closeAddBtn = document.getElementById("closeModal");
@@ -13,8 +11,6 @@ window.addEventListener("click", e => {
 });
 
 
-// item edit korar jonno
-
 const editModal = document.getElementById("editMenuModal");
 const closeEditModal = document.getElementById("closeEditModal");
 
@@ -24,25 +20,24 @@ window.addEventListener("click", e => {
     if (e.target === editModal) editModal.style.display = "none";
 });
 
-
-// new item add function
-
+// new item add fucntion
 const addItemBtn = document.getElementById("addItemBtn");
 
 addItemBtn.addEventListener("click", () => {
 
-    // collect input values
-    const id = document.getElementById("add_id").value;
-    const name = document.getElementById("add_name").value;
-    const category = document.getElementById("add_category").value;
-    const description = document.getElementById("add_description").value;
-    const ingredients = document.getElementById("add_ingredients").value;
-    const time = document.getElementById("add_time").value;
-    const price = document.getElementById("add_price").value;
+   
+    const id = document.getElementById("new_menu_id").value;
+    const name = document.getElementById("new_menu_name").value;
+    const category = document.getElementById("new_catagory").value;
+    const description = document.getElementById("new_description").value;
+    const ingredients = document.getElementById("new_ingredients").value;
+    const time = document.getElementById("new_preparation_time").value;
+    const price = document.getElementById("new_price").value;
 
-    // insert input into Table 1
+   
     const table1 = document.getElementById("menuTable1");
     const row1 = document.createElement("tr");
+    row1.setAttribute("data-item", id);
 
     row1.innerHTML = `
         <td>${id}</td>
@@ -53,9 +48,10 @@ addItemBtn.addEventListener("click", () => {
 
     table1.appendChild(row1);
 
-    // insert input into Table 2
+    
     const table2 = document.getElementById("menuTable2");
     const row2 = document.createElement("tr");
+    row2.setAttribute("data-item", id);
 
     row2.innerHTML = `
         <td>${ingredients}</td>
@@ -67,6 +63,7 @@ addItemBtn.addEventListener("click", () => {
                 <option value="unavailable">Unavailable</option>
             </select>
         </td>
+
         <td>
             <button class="btn">
                 <i data-lucide="pencil" class="edit-btn"
@@ -79,44 +76,67 @@ addItemBtn.addEventListener("click", () => {
                     data-price="${price}">
                 </i>
             </button>
-            <button class="red-btn">
-                <i data-lucide="trash-2" class="delete"></i>
+
+            <button class="red-btn delete-btn" data-item="${id}">
+                <i data-lucide="trash-2"></i>
             </button>
         </td>
     `;
 
     table2.appendChild(row2);
 
-   
+  
     lucide.createIcons();
 
     
     activateEditButtons();
+    activateDeleteButtons();
 
     
     addModal.style.display = "none";
 
-   
-    document.querySelectorAll("#menuModal input").forEach(input => input.value = "");
+    
+    document.querySelectorAll("#menuModal input").forEach(i => i.value = "");
 });
 
 
+//menu edit ar jonno
 function activateEditButtons() {
     const editButtons = document.querySelectorAll(".edit-btn");
 
     editButtons.forEach(btn => {
         btn.onclick = () => {
+
             editModal.style.display = "flex";
 
-            document.getElementById("edit_id").value = btn.dataset.id;
-            document.getElementById("edit_name").value = btn.dataset.name;
+          
+            document.getElementById("edit_menu_id").value = btn.dataset.id;
+            document.getElementById("edit_menu_name").value = btn.dataset.name;
             document.getElementById("edit_category").value = btn.dataset.category;
             document.getElementById("edit_description").value = btn.dataset.description;
             document.getElementById("edit_ingredients").value = btn.dataset.ingredients;
             document.getElementById("edit_price").value = btn.dataset.price;
-            document.getElementById("edit_time").value = btn.dataset.time;
+            document.getElementById("edit_preparation_time").value = btn.dataset.time;
         };
     });
 }
 
+
+
+function activateDeleteButtons() {
+    const deleteButtons = document.querySelectorAll(".delete-btn");
+
+    deleteButtons.forEach(btn => {
+        btn.onclick = () => {
+            const id = btn.dataset.item;
+
+            if (confirm("Delete this item?")) {
+                document.querySelectorAll(`[data-item="${id}"]`).forEach(row => row.remove());
+            }
+        };
+    });
+}
+
+
 activateEditButtons();
+activateDeleteButtons();
