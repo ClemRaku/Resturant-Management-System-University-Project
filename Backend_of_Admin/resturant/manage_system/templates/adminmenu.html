@@ -1,4 +1,4 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +8,7 @@
     <title>Admin-Dhakaiya Bites</title>
     <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="{ % static  'admin.css' %}">
 </head>
 
 <body>
@@ -203,7 +203,7 @@
 
 
 
-    <script src="admin.js"></script>
+    <script src="{% static 'admin.js' %}"></script>
     <script>lucide.createIcons();</script>
 </body>
 
