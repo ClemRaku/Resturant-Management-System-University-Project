@@ -46,32 +46,9 @@
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
-                        <th>Catagory</th>
+                        <th>Category</th>
                         <th>Description</th>
-                    </tr>
-
-                </thead>
-                <!--ar akhne value add hbe-->
-
-                <tbody id="menuTable1">
-                    {% comment %} Raka ekhane add ditase {% endcomment %}
-                    {% for x in menu_items %}
-                    <tr>
-                        <td>{{ x.0 }}</td>  
-                        <td>{{ x.1 }}</td>  
-                        <td>{{ x.2 }}</td>  
-                        <td>{{ x.3 }}</td>  
-                    </tr>
-                {% endfor %}
-
-                </tbody>
-
-
-            </table>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Ingridients</th>
+                        <th>Ingredients</th>
                         <th>Preparation Time</th>
                         <th>Price</th>
                         <th>Status</th>
@@ -79,26 +56,22 @@
                     </tr>
 
                 </thead>
-                <tbody id="menuTable2">
-                    {% for y in menu_items %}
+                <!--ar akhne value add hbe-->
+
+                <tbody id="menuTable1">
+                    {% comment %} Raka ekhane add ditase {% endcomment %}
+                    {% for item in menu_items %}
                     <tr>
-                        <td>{{ y.4 }}</td>  
-                        <td>{{ y.5 }}</td>  
-                        <td>{{ y.6 }} Tk</td> 
-                        <td>Active</td>        
-                        <td>
+                        <td>{{ item.0 }}</td>  <td>{{ item.1 }}</td>  <td>{{ item.2 }}</td>  <td>{{ item.3 }}</td>  <td>{{ item.4 }}</td>  <td>{{ item.5 }}</td>  <td>{{ item.6 }} Tk</td> <td>Active</td>        <td>
                             <button class="edit-btn">Edit</button>
                             <button class="delete-btn">Delete</button>
-                        </td> 
-                    </tr>
-                    {% endfor %}
-                    
+                        </td> </tr>
+                {% endfor %}
 
                 </tbody>
 
 
             </table>
-
 
         </div>
 
