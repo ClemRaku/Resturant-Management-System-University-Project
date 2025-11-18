@@ -87,11 +87,19 @@ def signup_signin(request):
         email = request.GET.get('signup_email') 
         p1 = request.GET.get('signup_password')
         p2 = request.GET.get('confrim_password')
+        phone_no = int(request.GET.get('phone_number'))
+        addres = request.GET.get('address')
         if p1 and p2 and p1 == p2:
             passwd = p1
-            insert_into_acc = "INSERT INTO accounts (email, password) VALUES(%s, %s)"
-            dtt = (email, passwd)
+            insert_into_acc = "INSERT INTO accounts (email, password, phone_no) VALUES(%s, %s, %s)"
+            dtt = (email, passwd, phone_no)
             mycursor.execute(insert_into_acc, dtt)
+            mydb.commit()
+            
+            insert_into_customer = "INSERT INTO customer (email, name, phone_no, address, has_account) VALUES(%s, %s, %s, %s, %s)"
+            has_account_ = 1
+            dttt = (email, name, phone_no, addres, has_account_)
+            mycursor.execute(insert_into_customer, dttt)
             mydb.commit()
         else:
             mismatch_passwd = 'Passwords Miss Match or fields are empty.'
