@@ -97,6 +97,10 @@
     margin-top: 20px;
 }
 
+.gap{
+    margin-top: 20px;
+}
+
 .card {
     background: #fff;
     padding: 25px;
@@ -238,8 +242,12 @@ tbody td {
 }
 
 
+
 table input[type="text"],
 table input[type="number"],
+table input[type="email"],
+table input[type="tel"],
+table input[type="datetime-local"],
 table select {
     width: 100%;
     padding: 8px 10px;
