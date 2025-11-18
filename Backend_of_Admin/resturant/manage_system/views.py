@@ -31,9 +31,13 @@ def admin_menu(request):
         mydb.commit()
         
         
-        selectALL_menu_items
-        
+    selectALL_menu_items = "SELECT menu_id, name, category_id, description, ingredients, preparation_time, price FROM menu"
+    mycursor.execute(selectALL_menu_items)
+    items_from_menu = mycursor.fetchall()
+    
+    context = {'menu_items' : items_from_menu}
+    
     mycursor.close()
     
-    return render (request, 'adminmenu.html')
+    return render (request, 'adminmenu.html', context)
 # Create your views here.

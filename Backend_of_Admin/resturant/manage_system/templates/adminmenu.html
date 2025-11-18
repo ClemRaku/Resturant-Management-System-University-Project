@@ -54,6 +54,15 @@
                 <!--ar akhne value add hbe-->
 
                 <tbody id="menuTable1">
+                    {% comment %} Raka ekhane add ditase {% endcomment %}
+                    {% for x in menu_items %}
+                    <tr>
+                        <td>{{ x.0 }}</td>  
+                        <td>{{ x.1 }}</td>  
+                        <td>{{ x.2 }}</td>  
+                        <td>{{ x.3 }}</td>  
+                    </tr>
+                {% endfor %}
 
                 </tbody>
 
@@ -71,6 +80,19 @@
 
                 </thead>
                 <tbody id="menuTable2">
+                    {% for y in menu_items %}
+                    <tr>
+                        <td>{{ y.4 }}</td>  
+                        <td>{{ y.5 }}</td>  
+                        <td>{{ y.6 }} Tk</td> 
+                        <td>Active</td>        
+                        <td>
+                            <button class="edit-btn">Edit</button>
+                            <button class="delete-btn">Delete</button>
+                        </td> 
+                    </tr>
+                    {% endfor %}
+                    
 
                 </tbody>
 
