@@ -29,6 +29,10 @@ def admin_menu(request):
         data = (IDmenu, menu_name, description, price, categoryID, ingredients, prep_time_int)
         mycursor.execute(sql, data)
         mydb.commit()
+        
+        
+        selectALL_menu_items
+        
     mycursor.close()
     
     return render (request, 'adminmenu.html')
