@@ -12,13 +12,13 @@ mydb = mysql.connector.connect(
 def admin_menu(request):
     mycursor = mydb.cursor()
     
-    if request.GET.get("add_id"):
-        IDmenu_str = request.GET.get("add_id")
+    if request.GET.get("new_menu_id"):
+        IDmenu_str = request.GET.get("new_menu_id")
         IDmenu = int(IDmenu_str)
         menu_name = request.GET.get("new_menu_name")
         categoryID = request.GET.get("new_catagory")
         ingredients = request.GET.get("new_ingredients")
-        prep_time_str = request.GET.get("preparation_time")
+        prep_time_str = request.GET.get("new_preparation_time")
         prep_time_int = int(prep_time_str)
         price_str = request.GET.get("new_price")
         price = float(price_str)
