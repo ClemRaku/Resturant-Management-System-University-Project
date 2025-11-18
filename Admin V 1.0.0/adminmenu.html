@@ -50,7 +50,7 @@
                 <!--ar akhne value add hbe-->
 
                 <tbody id="menuTable1">
-                   
+
                 </tbody>
 
 
@@ -67,7 +67,7 @@
 
                 </thead>
                 <tbody id="menuTable2">
-                    
+
                 </tbody>
 
 
@@ -84,29 +84,34 @@
             <span id="closeModal" class="close">&times;</span>
             <h2>Add New Menu Item</h2>
 
-            <label>Menu ID</label>
-            <input type="number" name="new_menu_id" id="new_menu_id">
+
+            <form action="adminmenu.html" method="get">
+                <label>Menu ID</label>
+                <input type="number" name="new_menu_id" id="new_menu_id">
 
 
-            <label>Item Name</label>
-            <input type="text" name="new_menu_name" id="new_menu_name">
+                <label>Item Name</label>
+                <input type="text" name="new_menu_name" id="new_menu_name">
 
-            <label>Category</label>
-            <input type="text" name="new_catagory" id="new_catagory">
+                <label>Category</label>
+                <input type="text" name="new_catagory" id="new_catagory">
 
-            <label>Ingredients</label>
-            <input type="text" name="new_ingredients" id="new_ingredients">
+                <label>Ingredients</label>
+                <input type="text" name="new_ingredients" id="new_ingredients">
 
-            <label>Preparation Time</label>
-            <input type="text" name="new_preparation_time" id="new_preparation_time">
+                <label>Preparation Time</label>
+                <input type="text" name="new_preparation_time" id="new_preparation_time">
 
-            <label>Price ($)</label>
-            <input type="number" name="new_price" id="new_price">
+                <label>Price (Tk)</label>
+                <input type="number" name="new_price" min="0" step="0.01" id="new_price">
 
-            <label>Description</label>
-            <input type="text" name="new_description" id="new_description">
+                <label>Description</label>
+                <input type="text" name="new_description" id="new_description">
 
-            <button class="btn menu-btn" id="addItemBtn">Add Item</button>
+
+                <button class="btn menu-btn" id="addItemBtn">Add Item</button>
+
+            </form>
         </div>
     </div>
 
@@ -118,28 +123,31 @@
             <span id="closeEditModal" class="close">&times;</span>
             <h2>Edit Menu Item</h2>
 
-            <label>Menu ID</label>
-            <input type="text" name="edit_menu_id"  id="edit_menu_id" readonly>
+            <form action="adminmenu.html" method="get">
 
-            <label>Menu Name</label>
-            <input type="text" name="eidit_menu_name" id="edit_menu_name">
+                <label>Menu ID</label>
+                <input type="number" name="edit_menu_id" id="edit_menu_id" readonly>
 
-            <label>Category</label>
-            <input type="text" name="edit_catagory" id="edit_category">
+                <label>Menu Name</label>
+                <input type="text" name="eidit_menu_name" id="edit_menu_name">
 
-            <label>Description</label>
-            <input type="text" name="edit_decription" id="edit_description">
+                <label>Category</label>
+                <input type="text" name="edit_catagory" id="edit_category">
 
-            <label>Ingredients</label>
-            <input type="text" name="edit_ingredients" id="edit_ingredients">
+                <label>Description</label>
+                <input type="text" name="edit_decription" id="edit_description">
 
-            <label>Price ($)</label>
-            <input type="number" name="eidit_price" id="edit_price">
+                <label>Ingredients</label>
+                <input type="text" name="edit_ingredients" id="edit_ingredients">
 
-            <label>Preparation Time</label>
-            <input type="text" name="edit_preparation_time" id="edit_preparation_time">
+                <label>Price (Tk)</label>
+                <input type="number" name="eidit_price" min="0" step="0.01" id="edit_price">
 
-            <button id="saveEdit" class="btn menu-btn">Save Changes</button>
+                <label>Preparation Time</label>
+                <input type="text" name="edit_preparation_time" id="edit_preparation_time">
+
+                <button id="saveEdit" class="btn menu-btn">Save Changes</button>
+            </form>
         </div>
     </div>
 
