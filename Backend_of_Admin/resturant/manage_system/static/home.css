@@ -641,3 +641,15 @@ body {
   font-size: 0.9rem;
   color: #555;
 }
+
+
+.navbar-container .btn-primary {
+    width: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+    
+   
+    padding: 10px 20px; 
+    font-size: 16px; 
+    line-height: normal; 
+}

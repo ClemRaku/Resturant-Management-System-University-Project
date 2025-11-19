@@ -130,9 +130,4 @@ def signup_signin(request):
     return render(request, 'auth.html', context)
 
 def home(request):
-    
-    
-    
-
-
-
+    return render(request, 'home.html')

@@ -10,11 +10,13 @@
   <link rel="shortcut icon" href="{% static 'favicon2.png' %}" type="image/x-icon">
   <title>Dhakaiya Bites</title>
 
-  <link rel="stylesheet" href="{%static 'menu.css'%}">
-  <link rel="stylesheet" href="{%static 'auth.css'%}">
-  <link rel="stylesheet" href="{%static 'reserve.css'%}">
-  <link rel="stylesheet" href="{%static 'service.css' %}">
-  <link rel="stylesheet" href="{%static 'home.css' %}">
+  <link rel="stylesheet" href="{% static 'menu.css'%}">
+  <link rel="stylesheet" href="{% static 'reserve.css'%}">
+  <link rel="stylesheet" href="{% static 'service.css' %}">
+  <link rel="stylesheet" href="{% static 'auth.css'%}">
+  <link rel="stylesheet" href="{% static 'home.css' %}">
+  
+
   
 </head>
 
@@ -25,18 +27,18 @@
         <nav class="navbar">
             <div class="navbar-container">
                 <div class="logo-wrapper">
-                    <img src="{%static 'LOGO.png' %}" alt="Dhakaiya-Bites" class="logo">
+                    <img src="{% static 'LOGO.png' %}" alt="Dhakaiya-Bites" class="logo">
                 </div>
 
                 <ul class="navbar-links" id="navbar-links">
-                    <li><a href="home.html" class="active">Home</a></li>
+                    <li><a href="{% url 'home' %}" class="active">Home</a></li>
                     <li><a href="../menu/menu.html">Menu</a></li>
                     <li><a href="../reservation/reserve.html">Reservation</a></li>
                     <li><a href="../services/service.html">Services</a></li>
                     <li><a href="../About/about.html">About</a></li>
                 </ul>
 
-                <a href="../Auth/auth.html" class="btn btn-primary">Sign In</a>
+                <a href="{% url 'authentication' %}" class="btn btn-primary">Sign In</a>
 
                 <button class="mobile-menu-btn" id="mobile-menu-btn">
                     <i data-lucide="menu"></i>
@@ -93,7 +95,7 @@
     <div class="cta-content">
         <h2>Ready to Order?</h2>
         <p>Create an account and get started today. Enjoy your favorite Dhakaiya dishes at your doorstep!</p>
-        <a href="../Auth/auth.html" class="btn-light">Sign Up Now</a>
+        <a href="{% url 'authentication' %}" class="btn-light">Sign Up Now</a>
     </div>
     <img src="{% static 'cta-food.png' %}" alt="Delicious Dhakaiya Food">
 </section>
