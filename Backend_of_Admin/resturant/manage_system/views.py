@@ -82,6 +82,8 @@ def admin_menu(request):
 def signup_signin(request):
     mycursor = mydb.cursor()
     context = {}
+    
+    #sign UP part
     if request.GET.get('signup_email'):
         name = request.GET.get('Full_name')
         email = request.GET.get('signup_email') 
@@ -105,7 +107,8 @@ def signup_signin(request):
             mismatch_passwd = 'Passwords Miss Match '
             context['missmatchh_passwd'] = mismatch_passwd
         
-        
+    
+    #sign in part    
     if request.GET.get('signin_email'):
         mail = request.GET.get('signin_email')
         passw = request.GET.get('signin_password')
