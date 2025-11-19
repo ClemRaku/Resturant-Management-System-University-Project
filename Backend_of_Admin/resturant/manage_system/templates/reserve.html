@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +7,10 @@
     <title>Reservation - Dhakaiya Bites</title>
     <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="shortcut icon" href="../image/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="reserve.css">
+
+    
+    <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'reserve.css' %}">
     
 </head>
 <body>
@@ -22,14 +25,14 @@
                 </div>
 
                 <ul class="navbar-links" id="navbar-links">
-                    <li><a href="../Home/home.html" class="active">Home</a></li>
-                    <li><a href="../menu/menu.html">Menu</a></li>
-                    <li><a href="reserve.html">Reservation</a></li>
+                    <li><a href="{% url 'home' %}" class="active">Home</a></li>
+                    <li><a href="{% url 'menu_home' %}">Menu</a></li>
+                    <li><a href="{% url 'customer_reserve' %}">Reservation</a></li>
                     <li><a href="../services/service.html">Services</a></li>
                     <li><a href="../About/about.html">About</a></li>
                 </ul>
 
-                <a href="../Auth/auth.html" class="btn btn-primary">Sign In</a>
+                <a href="{% url 'authentication' %}" class="btn btn-primary">Sign In</a>
 
                 <button class="mobile-menu-btn" id="mobile-menu-btn">
                     <i data-lucide="menu"></i>
@@ -45,30 +48,34 @@
     </div>
 
     <div class="card">
-      <form id="reservation-form">
+
+{% comment %} shuru {% endcomment %}
+      <form id="reservation-form" action = "{% url 'customer_reserve' %}">
+
+
         <div class="form-group">
           <label class="form-label">Full Name *</label>
-          <input type="text" id="name" class="form-input" required>
+          <input type="text" name = "full_name" id="name" class="form-input" required>
         </div>
 
         <div class="form-group">
           <label class="form-label">Email *</label>
-          <input type="email" id="email" class="form-input" required>
+          <input type="email" name = "email" id="email" class="form-input" required>
         </div>
 
         <div class="form-group">
           <label class="form-label">Phone Number *</label>
-          <input type="tel" id="phone" class="form-input" required>
+          <input type="tel" name = "phone" id="phone" class="form-input" required>
         </div>
 
         <div class="form-group">
           <label class="form-label">Date *</label>
-          <input type="date" id="date" class="form-input" required>
+          <input type="date" name = "date" id="date" class="form-input" required>
         </div>
 
         <div class="form-group">
           <label class="form-label">Time *</label>
-          <select id="time" class="form-select" required>
+          <select id="time" name = "time" class="form-select" required>
             <option value="">Select time</option>
             <option value="11:00">11:00 AM</option>
             <option value="11:30">11:30 AM</option>
@@ -87,7 +94,7 @@
 
         <div class="form-group">
           <label class="form-label">Number of Guests *</label>
-          <select id="guests" class="form-select" required>
+          <select id="guests" name = "no_of_guest" class="form-select" required>
             <option value="">Select guests</option>
             <option value="1">1 Guest</option>
             <option value="2">2 Guests</option>
@@ -102,19 +109,22 @@
 
         <div class="form-group">
           <label class="form-label">Special Requests</label>
-          <textarea id="requests" class="form-textarea" rows="4" placeholder="Any dietary restrictions or special occasions..."></textarea>
+          <textarea id="requests" name = "special_req" class="form-textarea" rows="4" placeholder="Any dietary restrictions or special occasions..."></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary" id="submit-btn">
           Reserve Table
         </button>
       </form>
+
+
+
     </div>
   </div>
-  <script src="../Home/home.js"></script>
-  <script src="../menu/menu.js"></script>
-  <script src="../Auth/auth.js"></script>
-  <script src="reserve.js"></script>
+  <script src="{% static 'home.js' %}"></script>
+  <script src="{% static 'menu.js' %}"></script>
+  <script src="{% static '.auth.js' %}"></script>
+  <script src="{% static 'reserve.js' %}"></script>
   <script src="../About/about.js"></script>
   <script>lucide.createIcons();</script>
  

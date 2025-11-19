@@ -136,3 +136,8 @@ def home(request):
     return render(request, 'home.html')
 def menu(request):
     return render(request, 'menu.html')
+
+
+def customer_reserver(request):
+    
+    return render(request, 'reserve.html')
