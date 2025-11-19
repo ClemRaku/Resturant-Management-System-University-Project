@@ -131,3 +131,5 @@ def signup_signin(request):
 
 def home(request):
     return render(request, 'home.html')
+def menu(rquest):
+    return render(request, 'menu.html')
