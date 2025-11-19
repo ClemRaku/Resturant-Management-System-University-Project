@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import mysql.connector
+from datetime import datetime
 
 mydb = mysql.connector.connect(
     host = 'localhost',
@@ -142,7 +143,7 @@ def customer_reserver(request):
     mycursor = mydb.cursor()
     if(request.GET.get('full_name')):
         
-        name = request.GEt.get('full_name')
+        name = request.GET.get('full_name')
         email = request.GET.get('email')
         phone_no = int(request.GET.get('phone'))
         date = request.GET.get('date')
@@ -150,11 +151,29 @@ def customer_reserver(request):
         no_of_guest = int(request.GET.get('no_of_guest'))
         special_request = request.GET.get('special_req')
         statuss = 1
+        datetime_string = f"{date} {time}"
+        reserve_datetime = datetime.strptime(datetime_string, '%Y-%m-%d %H:%M')
+        
     
-    sql_insert = "INSERT into reservation (name, phone_no, no_of_customer, special_resquests, reserve_date, status, email) VALUES(%s, %s, %s, %s, %s, %s, %s)"
-    vv = (name, phone_no, no_of_guest, special_request, date, time, statuss, email)
-    mycursor.execute()
-    mydb.commit()
+
+        old_customer = "select customer_id from customer where email = %s"
+        mycursor.execute(old_customer, (email,))
+        old_customer_id_ = mycursor.fetchone()
+    
+        if old_customer_id_:
+            customer_id = old_customer_id_[0]
+            sql_insert = "INSERT into reservation (name, phone_no, no_of_customer, special_resquests, reserve_date, status, email, customer_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
+            vv = (name, phone_no, no_of_guest, special_request, reserve_datetime, statuss, email, customer_id)
+            mycursor.execute(sql_insert, vv)
+            mydb.commit()
+            
+        else:
+            sql_insert = "INSERT into reservation (name, phone_no, no_of_customer, special_resquests, reserve_date, status, email) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+            vv = (name, phone_no, no_of_guest, special_request, reserve_datetime, statuss, email)
+            mycursor.execute(sql_insert, vv)
+            mydb.commit()
+            
+     
     
     
     
