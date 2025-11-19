@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,13 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
   <script src="https://unpkg.com/lucide@latest"></script>  
-  <link rel="shortcut icon" href="../image/favicon2.png" type="image/x-icon">
+
+  <link rel="shortcut icon" href="{% static 'favicon2.png' %}" type="image/x-icon">
   <title>Dhakaiya Bites</title>
-  <link rel="stylesheet" href="../menu/menu.css">
-  <link rel="stylesheet" href="../Auth/auth.css">
-  <link rel="stylesheet" href="../reservation/reserve.css">
-  <link rel="stylesheet" href="../services/service.css">
-  <link rel="stylesheet" href="home.css">
+
+  <link rel="stylesheet" href="{%static 'menu.css'%}">
+  <link rel="stylesheet" href="{%static 'auth.css'%}">
+  <link rel="stylesheet" href="{%static 'reserve.css'%}">
+  <link rel="stylesheet" href="{%static 'service.css' %}">
+  <link rel="stylesheet" href="{%static 'home.css' %}">
   
 </head>
 
@@ -22,7 +25,7 @@
         <nav class="navbar">
             <div class="navbar-container">
                 <div class="logo-wrapper">
-                    <img src="../image/LOGO.png" alt="Dhakaiya-Bites" class="logo">
+                    <img src="{%static 'LOGO.png' %}" alt="Dhakaiya-Bites" class="logo">
                 </div>
 
                 <ul class="navbar-links" id="navbar-links">
@@ -44,7 +47,7 @@
 
     <!-- HERO SECTION -->
     <section class="hero">
-        <img src="../image/hero.png" alt="Dhakaiya Bites" class="hero-img">
+        <img src="{% static 'hero.png' %}" alt="Dhakaiya Bites" class="hero-img">
         <div class="hero-text">
             <h1>Bite into</h1>
             <h1>Dhakaiya Magic!</h1>
@@ -59,7 +62,7 @@
         <!-- Top: main image + description -->
         <div class="highlight-top">
             <div class="highlight-left">
-                <img src="../image/food.png" alt="Special Dish" class="highlight-food">
+                <img src="{% static 'food.png' %}" alt="Special Dish" class="highlight-food">
             </div>
             <div class="highlight-right">
                 <h2>Discover Real Dhakaiya Flavor</h2>
@@ -92,7 +95,7 @@
         <p>Create an account and get started today. Enjoy your favorite Dhakaiya dishes at your doorstep!</p>
         <a href="../Auth/auth.html" class="btn-light">Sign Up Now</a>
     </div>
-    <img src="../image/cta-food.png" alt="Delicious Dhakaiya Food">
+    <img src="{% static 'cta-food.png' %}" alt="Delicious Dhakaiya Food">
 </section>
 
 
@@ -146,12 +149,12 @@
   </div>
 </footer>
 
-    <script src="home.js"></script>
-    <script src="../menu/menu.js"></script>
-    <script src="../Auth/auth.js"></script>
-    <script src="../reservation/reserve.js"></script>
-    <script src="../services/service.js"></script>
-    <script src="../Auth/auth.js"></script>
+    <script src="{% static 'home.js' %}"></script>
+    <script src="{% static 'menu.js' %}"></script>
+    <script src="{% static '.auth.js' %}"></script>
+    <script src="{% static 'reserve.js' %}"></script>
+    <script src="{% static 'service.js' %}"></script>
+    <script src="{% static 'auth.js' %}"></script>
     <script>lucide.createIcons();</script>
 </body>
 
