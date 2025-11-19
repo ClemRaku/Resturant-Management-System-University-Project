@@ -129,6 +129,12 @@
     margin-bottom: 10px;
 }
 
+.card input[type="text"]{
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+}
+
 .btn {
     padding: 20px;
     color: #eee;
