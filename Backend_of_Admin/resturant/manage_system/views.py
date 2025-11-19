@@ -102,8 +102,30 @@ def signup_signin(request):
             mycursor.execute(insert_into_customer, dttt)
             mydb.commit()
         else:
-            mismatch_passwd = 'Passwords Miss Match or fields are empty.'
+            mismatch_passwd = 'Passwords Miss Match '
             context['missmatchh_passwd'] = mismatch_passwd
+        
+        
+    if request.GET.get('signin_email'):
+        mail = request.GET.get('signin_email')
+        passw = request.GET.get('signin_password')
+        
+        mycursor.execute("select email, password from accounts")
+        e_and_p = mycursor.fetchall()
+        access = False
+        #[(email1, pass1),
+        #(email2, pass2)]
+        for x in e_and_p:
+            if x[0] == mail and x[1] == passw:
+                access = True
+        if access:
+            return redirect('admin_menu')
+        else:
+            wrong_mail_or_pass = 'Password or email is wrong Buddy'
+            context = {'error' : wrong_mail_or_pass }
+            return render(request, 'auth.html', context)
+        
+        
         
     return render(request, 'auth.html', context)
     

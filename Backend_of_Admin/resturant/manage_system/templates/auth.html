@@ -85,10 +85,16 @@
                 </div>
 
 
-
+{% comment %} ekhn eijagar kaj korbo {% endcomment %}
                 <div class="tab-content active" id="signin-content">
+                    {% if error %}
+                        <div style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 15px; border-radius: 4px;">
+                        {{ wrong_mail_or_pass }}
+                    </div>
+                    {% endif %}
 
-                    <form action="auth.html" method="get" id="signin-form">
+
+                    <form action="{% url 'authentication' %}" method="get" id="signin-form">
 
                         <div class="form-group">
 
