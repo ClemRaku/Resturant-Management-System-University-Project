@@ -139,9 +139,25 @@ def menu(request):
 
 
 def customer_reserver(request):
+    mycursor = mydb.cursor()
     if(request.GET.get('full_name')):
+        
         name = request.GEt.get('full_name')
         email = request.GET.get('email')
-        phone_no = request.GET.get()
+        phone_no = int(request.GET.get('phone'))
+        date = request.GET.get('date')
+        time = request.GET.get('time')
+        no_of_guest = int(request.GET.get('no_of_guest'))
+        special_request = request.GET.get('special_req')
+        statuss = 1
     
+    sql_insert = "INSERT into reservation (name, phone_no, no_of_customer, special_resquests, reserve_date, status, email) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+    vv = (name, phone_no, no_of_guest, special_request, date, time, statuss, email)
+    mycursor.execute()
+    mydb.commit()
+    
+    
+    
+    
+    #check with email for customer id.
     return render(request, 'reserve.html')
