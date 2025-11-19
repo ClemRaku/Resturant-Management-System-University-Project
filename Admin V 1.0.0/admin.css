@@ -358,6 +358,14 @@ table select {
 
 /*popup styling ends and also menu part*/
 
+.order-card{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px; 
+}
+
+
+
 
 
 /*mobile and tab adjustment ar jonno*/

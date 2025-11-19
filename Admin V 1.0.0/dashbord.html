@@ -19,7 +19,7 @@
         <ul class="navbar-links" id="navbar-links">
             <li><a href="dashbord.html" class="active"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
             <li><a href="adminmenu.html"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
-            <li><a href="staff.html"><i data-lucide="users-round"></i>Saff</a></li>
+            <li><a href="staff.html"><i data-lucide="users-round"></i>Staff</a></li>
             <li><a href="order.html"><i data-lucide="shopping-cart"></i>Order</a></li>
             <li><a href="adminreservation.html"><i data-lucide="calendar"></i>Reservation</a></li>
             <li><a href="inventory.html"><i data-lucide="package"></i>Inventory</a></li>
@@ -79,10 +79,11 @@
                 <form action="dashbord.html" method="Get">
                     <input type="number" name="revenue" class="value" style="width: 100px;" value=""><span
                         style="font-size: 32px; font-weight: 700;"> .Tk</span>
+                </form>
             </div>
 
 
-            <!--Raka this values will come from database order table and change accroding to DBT-->
+            <!--Raka this values will come from database order table and automatic change accroding to DBT-->
 
 
 
@@ -93,35 +94,67 @@
         <div class="recent">
             <div class="card">
                 <h2>Recent Orders</h2>
+                <div class="recent-order-item">
 
-                <form action="dashbord.html" class="order-items" >
+                    <div class="recent-left">
+                        <form action="dashbord.html" method="get">
 
-                    <input type="number" name="order_id" value="" style="border: block; width: 80px;"> -
-                    <input type="text" name="customer" value="" style="border: block; width: 120px;">
-                    <input type="number" name="price" value="" min="0" step="0.01" required
-                        style="border: block; width: 60px; margin-left: 160px;"> .Tk
+                            <input type="number" name="order_id" value="" class="recent-s1">
+                            <input type="text" name="item_name" value="" class="recent-s3">
+                            <input type="time" name="time" value="" class="recent-s3">
+                        </form>
+                    </div>
+
+                    <div class="recent-right">
+                        <form action="dashbord.html" method="get">
+                            <input type="text" name="customer" value="" class="recent-s2">
+                            <input type="text" name="price" value="" min="0" step="0.01" required class="recent-s2">
+                            <!--price tk sohokare asbre like  120 .Tk-->
 
 
-                    <input type="text" name="item_name" value="" style="border: block;">
-                    <input type="time" name="time" value="">min ago
-                    <select name="status" id="status" required>
-                        <option value="pending"> Pending</option>
-                        <option value="processing" > Processing</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
-                    </select>
-                    <!--status a if else condition porbe-->
-                </form>
+                            <select name="status" id="status" class="recent-s4" required>
+                                <option value="pending"> Pending</option>
+                                <option value="processing"> Processing</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            <!--status a if else condition porbe-->
+
+
+
+                        </form>
+
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
             </div>
 
             <div class="card">
                 <h2>Popular Items</h2>
 
-                <form action="dashbord.html" method="GET" class="popular-items">
-                    <input type="text" name="item_name" value="">
-                    <input type="number" name="orders" value=""> orders
-                    <input type="number" name="p_price" value=""> .Tk <!--p_price is popular item price-->
-                </form>
+                <div class="popular-item">
+                    <form action="dashbord.html" method="get">
+                        <input type="text" name="item_name" value="" class="popular-s1">
+                        <input type="number" name="orders" value="" class="popular-s2">orders
+                    </form>
+                    <form action="dashbord.html" method="get">
+                        <input type="text" name="p_price" value="" min="0" step="0.01"
+                            class="popular-s1">
+
+                        <!--p_price is popular item price ar price tk sohokare asbre like  120 .Tk-->
+
+                    </form>
+
+                </div>
+
+
 
             </div>
         </div>
