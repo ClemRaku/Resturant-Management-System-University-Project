@@ -139,5 +139,9 @@ def menu(request):
 
 
 def customer_reserver(request):
+    if(request.GET.get('full_name')):
+        name = request.GEt.get('full_name')
+        email = request.GET.get('email')
+        phone_no = request.GET.get()
     
     return render(request, 'reserve.html')
