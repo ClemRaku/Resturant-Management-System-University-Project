@@ -1,23 +1,48 @@
-const highlightContainer = document.getElementById('highlight-featured-dishes');
+document.querySelectorAll('.order-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    window.location.href = '../menu/menu.html';
+  });
+});
 
-const highlightDishes = [
-  { name: 'Beef Kabab', description: 'Juicy kababs grilled to perfection', price: 299, image: '../image/Beef kabab.jpg' },
-  { name: 'Momo', description: 'Steamed dumplings filled with tender meat', price: 210, image:'../image/momo.jpg' },
-  { name: 'Kacchi', description: 'Traditional slow-cooked kacchi, bursting with flavors', price: 400, image:'../image/kacchi.jpg' }
-];
 
-if (highlightContainer) {
-  highlightContainer.innerHTML = highlightDishes.map(dish =>
-    `<div class="card">
-       <img src="${dish.image}" alt="${dish.name}">
-       <h3>${dish.name}</h3>
-       <p>${dish.description}</p>
-       <div class="price-row">
-       <span class="price">${dish.price}tk</span>        
-         <button class="btn btn-primary">Order Now</button>
-       </div>
-    </div>`).join('');
-}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Load saved images
+    document.querySelectorAll(".preview").forEach(preview => {
+        const id = preview.dataset.id;
+        const savedImage = localStorage.getItem("home_image_" + id);
+        if (savedImage) {
+            preview.src = savedImage;
+            preview.style.display = "block";
+        }
+    });
+
+    // Handle new uploads
+    document.querySelectorAll(".imageInput").forEach(input => {
+        input.addEventListener("change", function () {
+            const id = this.dataset.id;
+            const file = this.files[0];
+            if (!file) return;
+
+            const preview = document.querySelector('.preview[data-id="' + id + '"]');
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+
+                // Save image in localStorage
+                localStorage.setItem("home_image_" + id, e.target.result);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+});
+
+
+
 
 
 // Navbar mobile menu button//
