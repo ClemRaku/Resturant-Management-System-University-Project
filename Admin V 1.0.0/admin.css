@@ -97,6 +97,10 @@
     margin-top: 20px;
 }
 
+.gap{
+    margin-top: 20px;
+}
+
 .card {
     background: #fff;
     padding: 25px;
@@ -123,6 +127,12 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
+}
+
+.card input[type="text"]{
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
 }
 
 .btn {
@@ -238,8 +248,12 @@ tbody td {
 }
 
 
+
 table input[type="text"],
 table input[type="number"],
+table input[type="email"],
+table input[type="tel"],
+table input[type="datetime-local"],
 table select {
     width: 100%;
     padding: 8px 10px;
@@ -343,6 +357,14 @@ table select {
 }
 
 /*popup styling ends and also menu part*/
+
+.order-card{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px; 
+}
+
+
 
 
 

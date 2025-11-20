@@ -140,3 +140,26 @@ function activateDeleteButtons() {
 
 activateEditButtons();
 activateDeleteButtons();
+const searchInput = document.getElementById("searchMenu");
+
+searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+
+    const table1Rows = document.querySelectorAll("#menuTable1 tr");
+    const table2Rows = document.querySelectorAll("#menuTable2 tr");
+
+    table1Rows.forEach((row, index) => {
+        const id = row.children[0].innerText.toLowerCase();
+        const name = row.children[1].innerText.toLowerCase();
+
+        if (id.includes(query) || name.includes(query)) {
+            row.style.display = "";
+            table2Rows[index].style.display = "";
+        } else {
+            row.style.display = "none";
+            table2Rows[index].style.display = "none";
+        }
+    });
+});
+
+

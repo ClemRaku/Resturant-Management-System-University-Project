@@ -4,94 +4,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin-Dhakaiya Bites</title>
+    <title>Admin - Reservation Management</title>
     <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="admin.css">
 </head>
 
 <body>
+
     <div class="navbar">
-
         <h2>Dhakaiya Bites Admin</h2>
-
-
-        <ul class="navbar-links" id="navbar-links">
-            <li><a href="dashbord.html" class="active"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+        <ul class="navbar-links">
+            <li><a href="dashbord.html"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
             <li><a href="adminmenu.html"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
-            <li><a href="staff.html"><i data-lucide="users-round"></i>Saff</a></li>
+            <li><a href="staff.html"><i data-lucide="users-round"></i>Staff</a></li>
             <li><a href="order.html"><i data-lucide="shopping-cart"></i>Order</a></li>
-            <li><a href="adminreservation.html"><i data-lucide="calendar"></i>Reservation</a></li>
+            <li><a href="adminreservation.html" class="active"><i data-lucide="calendar"></i>Reservation</a></li>
             <li><a href="inventory.html"><i data-lucide="package"></i>Inventory</a></li>
-
         </ul>
-
     </div>
 
     <div class="main-content">
 
-        <h1>Menu Management</h1>
-        <p class="sub-title">Manage your restaurant menu items</p>
-        <a href="#" class="btn menu-btn"><i data-lucide="plus"></i> Add Menu Items</a>
-
+        <h1>Reservation Management</h1>
+        <p class="sub-title">Manage table reservations</p>
 
         <div class="card">
-            <h2>Menu Items</h2>
+            <h2>All Reservations</h2>
+
+            <label>Search Reservation:</label>
+            <input type="text" id="searchReservation" placeholder="Enter ID or Name...">
+
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Catagory</th>
-                        <th>Price</th>
+                        <th>ID</th>
+                        <th>Customer Name</th>
+                        <th>Phone</th>
+                        <th>Date - Time</th>
+                        <th>Guests</th>
+                    </tr>
+                </thead>
+                <tbody id="reservationTable1"></tbody>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Special Request</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
-
                 </thead>
 
-                <tbody>
-                    <form action="adminmenu.html" method="GET" class="menu-items">
-
-                        <tr>
-                            <td>
-
-                                <input type="text" name="admin_menu_item" value="">
-
-                            </td>
-                            <td>
-                                <input type="text" name="admin_catagory" value=""> <!--ar akhne value add hbe-->
-                            </td>
-                            <td>
-                                <input type="number" name="item_price" value="">.Tk
-                            </td>
-                            <td>
-                                <button class="btn">
-                                    <select name="availability" required>
-                                        <option value="available">Available</option> <!--Akane if else ar kaj add hbe-->
-                                        <option value="unavaiable">Unavaiable</option>
-                                    </select>
-                                </button>
-                            </td>
-                            <td>
-                                <i data-lucide="pencil"></i>
-                                <i data-lucide="trash-2"></i>
-                            </td>
-                        </tr>
-                    </form>
-                </tbody>
-
-
+                <tbody id="reservationTable2"></tbody>
             </table>
 
-
         </div>
-
     </div>
 
+    
+    <div id="editReservationModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditResModal" class="close">&times;</span>
+            <h2>Edit Reservation</h2>
 
+            <label>ID</label>
+            <input type="number" id="edit_res_id" readonly>
 
-    <script src="adminmenu.js"></script>
+            <label>Name</label>
+            <input type="text" id="edit_res_name">
+
+            <label>Phone</label>
+            <input type="text" id="edit_res_phone">
+
+            <label>Email</label>
+            <input type="email" id="edit_res_email">
+
+            <label>Date & Time</label>
+            <input type="datetime-local" id="edit_res_datetime">
+
+            <label>Guests</label>
+            <input type="number" id="edit_res_guests">
+
+            <label>Special Request</label>
+            <input type="text" id="edit_res_request">
+
+            <label>Status</label>
+            <select id="edit_res_status">
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+
+            <button class="btn menu-btn" id="saveEditedReservation">Save Changes</button>
+        </div>
+    </div>
+
+    <script src="reservation.js"></script>
     <script>lucide.createIcons();</script>
+
 </body>
 
 </html>
