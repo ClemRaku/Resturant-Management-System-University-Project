@@ -43,19 +43,8 @@ function activateEditButtons() {
     });
 }
 
-function activateDeleteButtons() {
-    const deleteButtons = document.querySelectorAll(".delete-btn");
 
-    deleteButtons.forEach(btn => {
-        btn.onclick = () => {
-            const row = btn.closest("tr");       
-            if (confirm("Delete this item?")) {
-                row.remove();                   
-            }
-        };
-    });
-}
 
 
 activateEditButtons();
-activateDeleteButtons();
+

@@ -68,6 +68,14 @@ def admin_menu(request):
         mycursor.execute(select_menu_items, dt)
         mydb.commit()       
         
+    if request.GET.get("delete_menu_id"):
+        delete_id = int(request.GET.get("delete_menu_id"))
+        
+        sql_delete = "DELETE FROM menu WHERE menu_id = %s"
+        mycursor.execute(sql_delete, (delete_id,))
+        mydb.commit()    
+    
+    
     selectALL_menu_items = "SELECT menu_id, name, category_id, description, ingredients, preparation_time, price FROM menu"
     mycursor.execute(selectALL_menu_items)
     items_from_menu = mycursor.fetchall()

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin-Dhakaiya Bites</title>
     <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/x-icon">
 
 
@@ -72,7 +72,7 @@
                         <td>Active</td>        
                         <td>
                             <button class="edit-btn">Edit</button>
-                            <button class="delete-btn">Delete</button>
+                            <a href="{% url 'admin_menu' %}?delete_menu_id={{ x.0 }}" class="delete-btn" onclick="return confirm('Are you sure you want to delete menu item {{ x.1 }}?');">Delete</a>
                         </td> </tr>
                 {% endfor %}
 
@@ -163,6 +163,7 @@
 
 
     <script src="{% static 'admin.js' %}"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>lucide.createIcons();</script>
 </body>
 
