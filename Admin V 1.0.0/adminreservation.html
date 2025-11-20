@@ -33,7 +33,8 @@
             <h2>All Reservations</h2>
 
             <label>Search Reservation:</label>
-            <input type="text" id="searchReservation" placeholder="Enter ID or Name..." style="padding: 10px; margin: 10px; border-radius: 10px;">
+            <input type="text" id="searchReservation" placeholder="Enter ID or Name..."
+                style="padding: 10px; margin: 10px; border-radius: 10px;">
 
             <table>
                 <thead>
@@ -43,7 +44,7 @@
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Date - Time</th>
-                        <th>Guests</th>              
+                        <th>Guests</th>
                         <th>Email</th>
                         <th>Special Request</th>
                         <th>Status</th>
@@ -53,6 +54,21 @@
 
 
                 <tbody>
+                    <button class="edit-btn" 
+                    data-reservation-id="" 
+                    data-customer-id="" 
+                    data-name="" 
+                    data-phone=""    
+                    data-datetime="" 
+                    data-guests="" 
+                    data-email="" 
+                    data-special-request="" 
+                    data-status="">
+                    <i data-lucide="pencil"></i>
+                    </button>
+                    <button class="delete-btn">
+                    <i data-lucide="trash"></i>
+                    </button>
 
                 </tbody>
             </table>
@@ -60,7 +76,7 @@
         </div>
     </div>
 
-    
+
     <div id="editReservationModal" class="modal">
         <div class="modal-content">
             <span id="closeEditResModal" class="close">&times;</span>
@@ -69,7 +85,7 @@
             <label>Reservation ID</label>
             <input type="text" name="reservation_id" id="edit_res_id" readonly>
 
-             <label>Customer ID</label>
+            <label>Customer ID</label>
             <input type="text" name="res_customer_id" id="edit_res_customer_id" readonly>
 
             <label>Name</label>
