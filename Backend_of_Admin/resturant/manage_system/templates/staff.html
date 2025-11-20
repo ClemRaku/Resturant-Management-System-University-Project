@@ -69,7 +69,7 @@
                                         Inactive
                                     {% endif %}
                                 </td>
-                                    <td>
+                                <td>
                                         <button class="edit-btn"
                                             data-id="{{ a.0 }}"
                                             data-name="{{ a.1 }}"
@@ -81,13 +81,17 @@
                                             data-status="{% if a.8 == 1 %}active{% else %}inactive{% endif %}">
                                             <i data-lucide="pencil"></i>
                                         </button>
-                                        <button class="delete-btn">
-                                            <i data-lucide="trash"></i>
-                                        </button>
-                                    </td>
-                            </tr>
-                            {% endfor %}
 
+                                        <form action="{% url 'staff' %}" method="get" style="display: inline;">
+                                            <input type="hidden" name="delete_staff_id" value="{{ a.0 }}">
+                                            
+                                            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete staff ID {{ a.0 }}?')">
+                                                <i data-lucide="trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
                         </tbody>
                 </table>
         </div>
@@ -98,12 +102,18 @@
         <div class="modal-content">
             <span id="closeStaffModal" class="close">&times;</span>
             <h2>Add New Staff Member</h2>
+            
+
+                    {% if error_message %}
+                        <p style="color: red; font-weight: bold; margin-bottom: 15px;">
+                            Error: {{ error_msg }}
+                        </p>
+                    {% endif %}            
 
 
-
-            <form action="staff.html" method="get" id="staffForm">
-                <label>Employee ID</label>
-                <input type="text" name="new_staff_id" id="new_staff_id" required>
+            <form action="{% url 'staff' %}" method="get" id="staffForm">
+                {% comment %} <label>Employee ID</label>
+                <input type="text" name="new_staff_id" id="new_staff_id" required> {% endcomment %}
 
                 <label>Name</label>
                 <input type="text" name="new_staff_name" id="new_staff_name" required>
@@ -122,10 +132,10 @@
 
                 <label>Email</label>
                 <input type="email" name="new_staff_email" id="new_staff_email" required>
+                <small style="color: gray; display: block; margin-top: -8px; margin-bottom: 5px; font-size: 0.9em;">(Only staff with an existing account can be added)</small>
 
                 <label>Phone Number</label>
                 <input type="text" name="new_staff_phone" id="new_staff_phone" required>
-
                 <button class="btn menu-btn" id="addStaffBtn">Add Staff</button>
             </form>
         </div>
@@ -139,6 +149,7 @@
 
 
             <form action="{% url 'staff' %}" method="get" id="editStaffForm">
+                
                 {% comment %} <label>Employee ID</label> {% endcomment %}
                 <input type="hidden" name="edit_staff_id" id="edit_staff_id" required>
 

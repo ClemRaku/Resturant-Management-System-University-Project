@@ -7,8 +7,8 @@ const closeStaffBtn = document.getElementById("closeStaffModal");
 const editStaffModal = document.getElementById("editStaffModal");
 const closeEditStaffBtn = document.getElementById("closeEditStaffModal");
 
-openStaffBtn.onclick = (e) => {
-    e.preventDefault();
+openStaffBtn.onclick = () => {
+
     staffModal.style.display = "flex";
 };
 
@@ -30,8 +30,7 @@ const staffTable = document.getElementById("staff");
 
 const addStaffBtn = document.getElementById("addStaffBtn");
 
-addStaffBtn.addEventListener("click", (e) => {
-    e.preventDefault();
+addStaffBtn.addEventListener("click", () => {
 
     const id = document.getElementById("new_staff_id").value;
     const name = document.getElementById("new_staff_name").value;
@@ -114,15 +113,7 @@ function activateButtons() {
         };
     });
 
-    // DELETE BUTTON
-    deleteBtns.forEach(btn => {
-        btn.onclick = () => {
-            const row = btn.closest("tr");
-            if (confirm("Are you sure you want to delete this staff?")) {
-                row.remove();
-            }
-        };
-    });
+    
 }
 
 activateButtons();

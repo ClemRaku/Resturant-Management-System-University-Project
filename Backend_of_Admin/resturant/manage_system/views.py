@@ -188,7 +188,18 @@ def staff_view(request):
     mycursor.execute(fetch_employees)
     all_employees = mycursor.fetchall()
     
-    context = {'all_employees' : all_employees}
+ 
+
+    if request.GET.get('delete_staff_id'):
+            staff_id_to_delete = request.GET.get('delete_staff_id')
+            
+            # 1. SQL to delete the employee record from the 'employees' table
+            delete = "DELETE FROM employees WHERE employee_id = %s"
+            mycursor.execute(delete, (staff_id_to_delete,))
+            mydb.commit()
+            
+            # 2. PRG Pattern: Redirect back to the staff page
+            return redirect('staff')    
     
     
     
@@ -228,9 +239,36 @@ def staff_view(request):
             vlll = (name, tenure, address, role, employement_date_database, phone_no, status_int, staff_id)
             mycursor.execute(edit_all_other_info, vlll)
             mydb.commit()
-    
+    no_acc = None
+    no_email_in_acc = {}
     #adding new memebrs
-    
-    
+    if request.GET.get('new_staff_name'):
+        
+        
+        #staff_id = int(request.GET.get('new_staff_id'))#gonna be default
+        name= request.GET.get('new_staff_name')
+        tenure = int(request.GET.get('new_staff_tenure'))
+        address = request.GET.get('new_staff_address')
+        role = request.GET.get('new_staff_role')
+        
+        datem = request.GET.get('new_staff_date')
+        date = datetime.strptime(datem, '%Y-%m-%d').date()
+        
+        email = request.GET.get('new_staff_email')#must have an account
+        phone_no = int(request.GET.get('new_staff_phone'))
+        
+        search_email = "SELECT email FROM accounts WHERE email = %s"
+        mycursor.execute(search_email, (email,))
+        account_exist = mycursor.fetchone()
+
+        if account_exist:    
+            inserting_staff = "insert into employees (name, phone_no, tenure, address, job_position, employement_date, email) values(%s, %s, %s, %s, %s, %s, %s)"
+            v = (name, phone_no, tenure, address, role, date, email)
+            mycursor.execute(inserting_staff, v)
+            mydb.commit()
+            return redirect('staff')
+        else:
+            no_acc = "The email DOES NOT have any account. MUST CREATE ACCOUNT to join STAFF."
+            
     mycursor.close()
-    return render(request, 'staff.html', context)
+    return render(request, 'staff.html', {'all_employees': all_employees, 'error_message': no_acc}) 
