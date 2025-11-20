@@ -283,4 +283,4 @@ def staff_view(request):
 
 
 def admin_reserve(request):
-    pass
+    return render(request, 'adminreservation.html')
