@@ -132,8 +132,8 @@ activateButtons();
 
 const saveStaffEditBtn = document.getElementById("saveStaffEdit");
 
-saveStaffEditBtn.addEventListener("click", (e) => {
-    e.preventDefault();
+saveStaffEditBtn.addEventListener("click", () => {
+    
 
     const id = document.getElementById("edit_staff_id").value;
     const name = document.getElementById("edit_staff_name").value;

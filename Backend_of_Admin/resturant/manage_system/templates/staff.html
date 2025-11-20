@@ -59,7 +59,7 @@
                                 <td>{{ a.2 }}</td> 
                                 <td>{{ a.3 }}</td> 
                                 <td>{{ a.4 }}</td> 
-                                <td>{{ a.5 }}</td> 
+                                <td>{{ a.5|date:'Y-m-d' }}</td> 
                                 <td>{{ a.6 }}</td> 
                                 <td>{{ a.7 }}</td> 
                                 <td>
@@ -69,10 +69,22 @@
                                         Inactive
                                     {% endif %}
                                 </td>
-                                <td>
-                                    <button class="edit-btn">Edit</button>
-                                    <button class="delete-btn">Delete</button>
-                                </td>
+                                    <td>
+                                        <button class="edit-btn"
+                                            data-id="{{ a.0 }}"
+                                            data-name="{{ a.1 }}"
+                                            data-tenure="{{ a.2 }}"
+                                            data-address="{{ a.3 }}"
+                                            data-role="{{ a.4 }}"
+                                            data-date="{{ a.5|date:'Y-m-d' }}"
+                                            data-phone="{{ a.7 }}"
+                                            data-status="{% if a.8 == 1 %}active{% else %}inactive{% endif %}">
+                                            <i data-lucide="pencil"></i>
+                                        </button>
+                                        <button class="delete-btn">
+                                            <i data-lucide="trash"></i>
+                                        </button>
+                                    </td>
                             </tr>
                             {% endfor %}
 
@@ -126,7 +138,7 @@
             <h2>Edit Staff Member Info</h2>
 
 
-            <form action="staff.html" method="get" id="editStaffForm">
+            <form action="{% url 'staff' %}" method="get" id="editStaffForm">
                 {% comment %} <label>Employee ID</label> {% endcomment %}
                 <input type="hidden" name="edit_staff_id" id="edit_staff_id" required>
 
