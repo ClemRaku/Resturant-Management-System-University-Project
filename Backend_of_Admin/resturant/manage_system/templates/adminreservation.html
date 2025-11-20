@@ -68,40 +68,42 @@
             <span id="closeEditResModal" class="close">&times;</span>
             <h2>Edit Reservation</h2>
 
-            <label>Reservation ID</label>
-            <input type="text" id="edit_res_id" readonly>
+            <form action="{% url 'admin_reserve' %}" method="get">
+                <label>Reservation ID</label>
+                <input type="text" name="edit_res_id" id="edit_res_id" readonly>
 
-             <label>Customer ID</label>
-            <input type="text" id="edit_res_id" readonly>
+                <label>Customer ID</label>
+                <input type="text" name="edit_customer_id" id="edit_customer_id" readonly>
 
-            <label>Name</label>
-            <input type="text" id="edit_res_name">
+                <label>Name</label>
+                <input type="text" name="edit_res_name" id="edit_res_name">
 
-            <label>Phone</label>
-            <input type="text" id="edit_res_phone">
+                <label>Phone</label>
+                <input type="text" name="edit_res_phone" id="edit_res_phone">
 
-            <label>Email</label>
-            <input type="email" id="edit_res_email">
+                <label>Email</label>
+                <input type="email" name="edit_res_email" id="edit_res_email">
 
-            <label>Date & Time</label>
-            <input type="datetime-local" id="edit_res_datetime">
+                <label>Date & Time</label>
+                <input type="datetime-local" name="edit_res_datetime" id="edit_res_datetime">
 
-            <label>Guests</label>
-            <input type="number" id="edit_res_guests">
+                <label>Guests</label>
+                <input type="number" name="edit_res_guests" id="edit_res_guests">
 
-            <label>Special Request</label>
-            <input type="text" id="edit_res_request">
+                <label>Special Request</label>
+                <input type="text" name="edit_res_request" id="edit_res_request">
 
-            <label>Status</label>
-            <select id="edit_res_status">
-                <option value="Pending">Pending</option>
-                <option value="Confirmed">Confirmed</option>
-                <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
-            </select>
+                <label>Status</label>
+                <select name="edit_res_status" id="edit_res_status">
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
 
-            <button class="btn menu-btn" id="saveEditedReservation">Save Changes</button>
-        </div>
+                <button class="btn menu-btn" id="saveEditedReservation">Save Changes</button>
+            </form>
+            </div>
     </div>
 
     <script src="{% static 'reservation.js' %}"></script>
