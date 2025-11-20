@@ -229,5 +229,8 @@ def staff_view(request):
             mycursor.execute(edit_all_other_info, vlll)
             mydb.commit()
     
+    #adding new memebrs
+    
+    
     mycursor.close()
     return render(request, 'staff.html', context)
