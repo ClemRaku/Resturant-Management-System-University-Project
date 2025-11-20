@@ -180,3 +180,7 @@ def customer_reserver(request):
     
     #check with email for customer id.
     return render(request, 'reserve.html')
+
+
+def staff_view(requst):
+    return render(requst, 'staff.html')
