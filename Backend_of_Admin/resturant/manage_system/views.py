@@ -280,3 +280,7 @@ def staff_view(request):
             
     mycursor.close()
     return render(request, 'staff.html', {'all_employees': all_employees, 'error_message': no_acc}) 
+
+
+def admin_reserve(request):
+    pass
