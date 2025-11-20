@@ -4,216 +4,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin-Dhakaiya Bites</title>
+    <title>Admin - Reservation Management</title>
     <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="admin.css">
 </head>
 
 <body>
+
     <div class="navbar">
-
         <h2>Dhakaiya Bites Admin</h2>
-
-
-        <ul class="navbar-links" id="navbar-links">
-            <li><a href="dashbord.html" ><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
-            <li><a href="adminmenu.html" ><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
-            <li><a href="staff.html"><i data-lucide="users-round"></i>Saff</a></li>
+        <ul class="navbar-links">
+            <li><a href="dashbord.html"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="adminmenu.html"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
+            <li><a href="staff.html"><i data-lucide="users-round"></i>Staff</a></li>
             <li><a href="order.html"><i data-lucide="shopping-cart"></i>Order</a></li>
             <li><a href="adminreservation.html" class="active"><i data-lucide="calendar"></i>Reservation</a></li>
             <li><a href="inventory.html"><i data-lucide="package"></i>Inventory</a></li>
-
         </ul>
-
     </div>
-
 
     <div class="main-content">
-        <div class="header">
-            <h1>Reservation Management</h1>
-            <p class="sub-title">Manage table reservations</p>
-        </div>
 
+        <h1>Reservation Management</h1>
+        <p class="sub-title">Manage table reservations</p>
 
+        <div class="card">
+            <h2>All Reservations</h2>
 
+            <label>Search Reservation:</label>
+            <input type="text" id="searchReservation" placeholder="Enter ID or Name...">
 
-        <div class="dashboard-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer Name</th>
+                        <th>Phone</th>
+                        <th>Date - Time</th>
+                        <th>Guests</th>
+                    </tr>
+                </thead>
+                <tbody id="reservationTable1"></tbody>
+            </table>
 
-            <div class="card">
-                <div class="header">
-                    <h4>Pending</h4>
-                </div>
-                <form action="adminreservation.html" method="get">
-                    <input type="number" name="pending" class="value" style="width: 100px;" min="0" value="">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Special Request</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-                </form>
-            </div>
-
-            <div class="card">
-                <div class="header">
-                    <h4>Confrimed</h4>
-                </div>
-                <form action="adminmenu.html" method="get">
-                    <input type="number" name="confrimed" class="value" min="0" style="width: 100px;" value="">
-
-                </form>
-            </div>
-
-
-
-            <div class="card">
-                <div class="header">
-                    <h4>Completed</h4>
-                </div>
-                <form action="adminreservation.html" method="get">
-                    <input type="number" name="completed" class="value" style="width: 100px;" value="">
-            </div>
-
-            <div class="card">
-                <div class="header">
-                    <h4>Cencelled</h4>
-                </div>
-                <form action="adminreservation.html" method="get">
-                    <input type="number" name="cencelled" class="value" style="width: 100px;" value="">
-            </div>
+                <tbody id="reservationTable2"></tbody>
+            </table>
 
         </div>
-
-        <div class="gap">
-            <div class="card">
-                <h2>All Reservations</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Reservation ID</th>
-                            <th>Customer ID</th>
-                            <th>Name</th>
-                            <th>phone</th>
-                            <th>Date-Time</th>
-                        </tr>
-                    </thead>
-
-
-
-
-                    <thead>
-                        <tr>
-                            <th>Email</th>
-                            <th>Guests</th>
-                            <th>Special Request</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td>
-                                <form action="adminreservation.html" method="get">
-                                    <input type="number" name="reservation_id" id="reservation_id">
-                                </form>
-
-                            </td>
-
-                            <td>
-                                <form action="adminreservation.html" method="get">
-                                    <input type="text" name="customer_id" id="customer_id">
-                                </form>
-                            </td>
-                            <td>
-                                <form action="adminreservation.html" method="get">
-                                    <input type="text" name="customer_name" id="customer_name">
-                                </form>
-                            </td>
-
-                            <td>
-                                <form action="adminreservation.html" method="GET">
-                                    <input type="text" name="reservation_phone" id="reservation_phone">
-                                </form>
-
-                            </td>
-
-                            <td>
-                                <form action="adminreservation.html" method="get">
-                                    <input type="datetime-local" name="reserve_date" value="">
-                                </form>
-
-
-                            </td>
-                        </tr>
-                    </tbody>
-
-
-
-                    <tbody>
-                        <tr>
-
-                            <td>
-                                <form action="adminreservation.html" method="get">
-                                    <input type="email" name="customer_email" id="customer_email">
-                                </form>
-                            </td>
-
-
-
-                            <td>
-                                <form action="adminreservation.html" method="get">
-                                    <input type="number" name="no_of_customer" id="guests">
-                                </form>
-
-
-                            </td>
-                            <td>
-                                <form action="adminreservation.html" method="get">
-                                    <input type="text" name="special_request" id="special_request">
-                                </form>
-                            </td>
-
-                            <td>
-                                <form action="adminreservation.html" method="GET">
-                                    <select name="reservation_status" id="status" required>
-                                        <option value="pending"> Pending</option>
-                                        <option value="confrimed"> Processing</option>
-                                        <option value="completed">Completed</option>
-                                        <option value="cancelled">Cancelled</option>
-                                    </select>
-                                </form>
-
-
-                            </td>
-
-
-                            <td>
-                                <button class="btn">Complete</button>
-                                <button class="red-btn">X</button>
-                            </td>
-                        </tr>
-
-
-
-
-
-                    </tbody>
-
-
-                </table>
-            </div>
-        </div>
-
-
-
-
-
-
-
     </div>
 
+    
+    <div id="editReservationModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditResModal" class="close">&times;</span>
+            <h2>Edit Reservation</h2>
 
+            <label>ID</label>
+            <input type="number" id="edit_res_id" readonly>
 
-    <script src="admin.js"></script>
+            <label>Name</label>
+            <input type="text" id="edit_res_name">
+
+            <label>Phone</label>
+            <input type="text" id="edit_res_phone">
+
+            <label>Email</label>
+            <input type="email" id="edit_res_email">
+
+            <label>Date & Time</label>
+            <input type="datetime-local" id="edit_res_datetime">
+
+            <label>Guests</label>
+            <input type="number" id="edit_res_guests">
+
+            <label>Special Request</label>
+            <input type="text" id="edit_res_request">
+
+            <label>Status</label>
+            <select id="edit_res_status">
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+
+            <button class="btn menu-btn" id="saveEditedReservation">Save Changes</button>
+        </div>
+    </div>
+
+    <script src="reservation.js"></script>
     <script>lucide.createIcons();</script>
+
 </body>
 
 </html>
