@@ -182,7 +182,7 @@ def customer_reserver(request):
     return render(request, 'reserve.html')
 
 
-def staff_view(requst):
+def staff_view(request):
     mycursor = mydb.cursor()
     fetch_employees = ("select employee_id, name, tenure, address, job_position, employement_date, email, phone_no, availability from employees")
     mycursor.execute(fetch_employees)
@@ -230,4 +230,4 @@ def staff_view(requst):
             mydb.commit()
     
     mycursor.close()
-    return render(requst, 'staff.html', context)
+    return render(request, 'staff.html', context)
