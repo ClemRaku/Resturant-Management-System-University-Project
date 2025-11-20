@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Staff Management</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    
+    <div class="navbar">
+        <h2>Dhakaiya Bites Admin</h2>
+        <ul class="navbar-links">
+            <li><a href="dashbord.html"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+            <li><a href="adminmenu.html"><i data-lucide="fork-knife-crossed"></i> Menu</a></li>
+            <li><a href="staff.html" class="active"><i data-lucide="users-round"></i> Staff</a></li>
+            <li><a href="order.html"><i data-lucide="shopping-cart"></i> Order</a></li>
+            <li><a href="adminreservation.html"><i data-lucide="calendar"></i> Reservation</a></li>
+            <li><a href="inventory.html"><i data-lucide="package"></i> Inventory</a></li>
+        </ul>
+    </div>
+
+    
+    <div class="main-content">
+        <h1>Staff Management</h1>
+        <p class="sub-title">Manage your restaurant team</p>
+
+        <input type="text" name="staff_search" id="staffSearch" placeholder="Search by ID or Name..." style="margin-bottom: 10px; padding: 10px; border-radius: 10px; width: 250px;">
+
+        <a href="#" class="btn menu-btn" id="openStaffModal"><i data-lucide="plus"></i> Add Staff Member</a>
+
+        <div class="card">
+            <h2>Staff Members</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Employment Tenure</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody id="staffTable1"></tbody>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Employment Date</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="staffTable2"></tbody>
+            </table>
+        </div>
+    </div>
+
+    
+    <div id="staffModal" class="modal">
+        <div class="modal-content">
+            <span id="closeStaffModal" class="close">&times;</span>
+            <h2>Add New Staff Member</h2>
+
+
+
+            <form action="staff.html" method="get" id="staffForm">
+                <label>Employee ID</label>
+                <input type="text" name="new_staff_id" id="new_staff_id" required>
+
+                <label>Name</label>
+                <input type="text" name="new_staff_name" id="new_staff_name" required>
+
+                <label>Employment Tenure</label>
+                <input type="text" name="new_staff_tenure" id="new_staff_tenure" required>
+
+                <label>Address</label>
+                <input type="text" name="new_staff_address" id="new_staff_address" required>
+
+                <label>Role</label>
+                <input type="text" name="new_staff_role" id="new_staff_role" required>
+
+                <label>Employment Date</label>
+                <input type="date" name="new_staff_date" id="new_staff_date" required>
+
+                <label>Email</label>
+                <input type="email" name="new_staff_email" id="new_staff_email" required>
+
+                <label>Phone Number</label>
+                <input type="text" name="new_staff_phone" id="new_staff_phone" required>
+
+                <button class="btn menu-btn" id="addStaffBtn">Add Staff</button>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="editStaffModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditStaffModal" class="close">&times;</span>
+            <h2>Edit Staff Member Info</h2>
+
+
+            <form action="staff.html" method="get" id="editStaffForm">
+                <label>Employee ID</label>
+                <input type="text" name="edit_staff_id" id="edit_staff_id" required>
+
+                <label>Name</label>
+                <input type="text" name="edit_staff_name" id="edit_staff_name" required>
+
+                <label>Employment Tenure</label>
+                <input type="text" name="edit_staff_tenure" id="edit_staff_tenure" required>
+
+                <label>Address</label>
+                <input type="text" name="edit_staff_address" id="edit_staff_address" required>
+
+                <label>Role</label>
+                <input type="text" name="edit_staff_role" id="edit_staff_role" required>
+
+                <label>Employment Date</label>
+                <input type="date" name="edit_staff_date" id="edit_staff_date" required>
+
+                <label>Email</label>
+                <input type="email" name="edit_staff_email" id="edit_staff_email" required>
+
+                <label>Phone Number</label>
+                <input type="text" name="edit_staff_phone" id="edit_staff_phone" required>
+
+                <label>Status</label>
+                <select name="edit_staff_status" id="edit_staff_status">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+
+                <button class="btn menu-btn" id="saveStaffEdit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    
+    <script src="staff.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
