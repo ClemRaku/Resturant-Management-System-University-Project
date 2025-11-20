@@ -1,108 +1,96 @@
-
+// Initialize reservations from localStorage
 let reservations = JSON.parse(localStorage.getItem("reservations")) || [];
 
+// DOM elements
+const tbody = document.querySelector("table tbody");
+const searchInput = document.getElementById("searchReservation");
+const editModal = document.getElementById("editReservationModal");
+const closeModal = document.getElementById("closeEditResModal");
 
-function updateReservationTables() {
-    const t1 = document.getElementById("reservationTable1");
-    const t2 = document.getElementById("reservationTable2");
-
-    t1.innerHTML = "";
-    t2.innerHTML = "";
-
-    reservations.forEach(res => {
-        t1.innerHTML += `
-            <tr>
-                <td>${res.id}</td>
-                <td>${res.name}</td>
-                <td>${res.phone}</td>
-                <td>${res.datetime}</td>
-                <td>${res.guests}</td>
-            </tr>
+// Render reservations table
+function renderTable(data = reservations) {
+    tbody.innerHTML = "";
+    data.forEach(res => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${res.reservationId}</td>
+            <td>${res.customerId}</td>
+            <td>${res.name}</td>
+            <td>${res.phone}</td>
+            <td>${res.datetime}</td>
+            <td>${res.guests}</td>
+            <td>${res.email}</td>
+            <td>${res.request}</td>
+            <td>${res.status}</td>
+            <td>
+                <button class="btn" onclick="openEditReservation(${res.reservationId})">Edit</button>
+                <button class="red-btn" onclick="deleteReservation(${res.reservationId})">Delete</button>
+            </td>
         `;
-
-        t2.innerHTML += `
-            <tr>
-                <td>${res.email}</td>
-                <td>${res.request}</td>
-                <td>${res.status}</td>
-                <td>
-                    <button class="btn" onclick="openEditReservation(${res.id})">Edit</button>
-                    <button class="red-btn" onclick="deleteReservation(${res.id})">Delete</button>
-                </td>
-            </tr>
-        `;
+        tbody.appendChild(tr);
     });
 }
 
-updateReservationTables();
-
-
+// Delete a reservation
 function deleteReservation(id) {
-    reservations = reservations.filter(r => r.id != id);
+    reservations = reservations.filter(r => r.reservationId != id);
     localStorage.setItem("reservations", JSON.stringify(reservations));
-    updateReservationTables();
+    renderTable();
 }
 
-
+// Open modal and populate fields
 function openEditReservation(id) {
-    let r = reservations.find(x => x.id == id);
+    const res = reservations.find(r => r.reservationId == id);
+    if (!res) return;
 
-    document.getElementById("edit_res_id").value = r.id;
-    document.getElementById("edit_res_name").value = r.name;
-    document.getElementById("edit_res_phone").value = r.phone;
-    document.getElementById("edit_res_email").value = r.email;
-    document.getElementById("edit_res_datetime").value = r.datetime;
-    document.getElementById("edit_res_guests").value = r.guests;
-    document.getElementById("edit_res_request").value = r.request;
-    document.getElementById("edit_res_status").value = r.status;
+    document.getElementById("edit_res_id").value = res.reservationId;
+    document.getElementById("edit_res_customer_id").value = res.customerId;
+    document.getElementById("edit_res_name").value = res.name;
+    document.getElementById("edit_res_phone").value = res.phone;
+    document.getElementById("edit_res_email").value = res.email;
+    document.getElementById("edit_res_datetime").value = res.datetime;
+    document.getElementById("edit_res_guests").value = res.guests;
+    document.getElementById("edit_res_request").value = res.request;
+    document.getElementById("edit_res_status").value = res.status;
 
-    editReservationModal.style.display = "flex";
+    editModal.style.display = "flex";
 }
 
-
+// Save edited reservation
 document.getElementById("saveEditedReservation").onclick = () => {
-    let id = document.getElementById("edit_res_id").value;
-    let r = reservations.find(x => x.id == id);
+    const id = document.getElementById("edit_res_id").value;
+    const res = reservations.find(r => r.reservationId == id);
 
-    r.name = document.getElementById("edit_res_name").value;
-    r.phone = document.getElementById("edit_res_phone").value;
-    r.email = document.getElementById("edit_res_email").value;
-    r.datetime = document.getElementById("edit_res_datetime").value;
-    r.guests = document.getElementById("edit_res_guests").value;
-    r.request = document.getElementById("edit_res_request").value;
-    r.status = document.getElementById("edit_res_status").value;
+    if (!res) return;
+
+    res.name = document.getElementById("edit_res_name").value;
+    res.phone = document.getElementById("edit_res_phone").value;
+    res.email = document.getElementById("edit_res_email").value;
+    res.datetime = document.getElementById("edit_res_datetime").value;
+    res.guests = parseInt(document.getElementById("edit_res_guests").value) || 0;
+    res.request = document.getElementById("edit_res_request").value;
+    res.status = document.getElementById("edit_res_status").value;
 
     localStorage.setItem("reservations", JSON.stringify(reservations));
-    updateReservationTables();
-    editReservationModal.style.display = "none";
+    renderTable();
+    editModal.style.display = "none";
 };
 
-
-document.getElementById("searchReservation").addEventListener("keyup", function () {
-    let value = this.value.toLowerCase();
-
-    document.querySelectorAll("#reservationTable1 tr").forEach((row, i) => {
-        let name = reservations[i].name.toLowerCase();
-        let id = reservations[i].id.toLowerCase();
-
-        if (name.includes(value) || id.includes(value)) {
-            row.style.display = "";
-            document.querySelectorAll("#reservationTable2 tr")[i].style.display = "";
-        } else {
-            row.style.display = "none";
-            document.querySelectorAll("#reservationTable2 tr")[i].style.display = "none";
-        }
-    });
+// Search functionality
+searchInput.addEventListener("input", function () {
+    const query = this.value.toLowerCase();
+    const filtered = reservations.filter(r =>
+        r.name.toLowerCase().includes(query) ||
+        r.reservationId.toString().includes(query)
+    );
+    renderTable(filtered);
 });
 
-
-const editReservationModal = document.getElementById("editReservationModal");
-const closeEditResModal = document.getElementById("closeEditResModal");
-
-closeEditResModal.onclick = () => editReservationModal.style.display = "none";
-
+// Close modal
+closeModal.onclick = () => editModal.style.display = "none";
 window.addEventListener("click", e => {
-    if (e.target === editReservationModal) {
-        editReservationModal.style.display = "none";
-    }
+    if (e.target === editModal) editModal.style.display = "none";
 });
+
+// Initial render
+renderTable();
