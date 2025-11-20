@@ -183,4 +183,12 @@ def customer_reserver(request):
 
 
 def staff_view(requst):
-    return render(requst, 'staff.html')
+    mycursor = mydb.cursor()
+    fetch_employees = ("select employee_id, name, tenure, address, job_position, employement_date, email, phone_no, availability from employees")
+    mycursor.execute(fetch_employees)
+    all_employees = mycursor.fetchall()
+    
+    context = {'all_employees' : all_employees}
+    mycursor.close()
+    
+    return render(requst, 'staff.html', context)

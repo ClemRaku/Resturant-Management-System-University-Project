@@ -51,7 +51,31 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="staff">
+                        <tbody id="staff">
+                            {% for a in all_employees %}
+                            <tr>
+                                <td>{{ a.0 }}</td> 
+                                <td>{{ a.1 }}</td> 
+                                <td>{{ a.2 }}</td> 
+                                <td>{{ a.3 }}</td> 
+                                <td>{{ a.4 }}</td> 
+                                <td>{{ a.5 }}</td> 
+                                <td>{{ a.6 }}</td> 
+                                <td>{{ a.7 }}</td> 
+                                <td>
+                                    {% if a.8 == 1 %}
+                                        Active
+                                    {% else %}
+                                        Inactive
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button class="edit-btn">Edit</button>
+                                    <button class="delete-btn">Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
                         </tbody>
                 </table>
         </div>
