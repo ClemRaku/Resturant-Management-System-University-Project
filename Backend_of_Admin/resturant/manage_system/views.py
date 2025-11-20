@@ -189,6 +189,45 @@ def staff_view(requst):
     all_employees = mycursor.fetchall()
     
     context = {'all_employees' : all_employees}
-    mycursor.close()
     
+    
+    
+
+#now for editing the employees and stuff.
+    if request.GET.get('edit_staff_name'):
+        staff_id = int(request.GET.get('edit_staff_id'))
+        name = request.GET.get('edit_staff_name')
+        tenure = int(request.GET.get('edit_staff_tenure'))
+        address = request.GET.get('edit_staff_address')
+        role = request.GET.get('edit_staff_role')
+        
+        employement_date_str = request.GET.get('edit_staff_date')
+        employement_date_database = datetime.strptime(employement_date_str, '%Y-%m-%d').date()
+        
+        phone_no = int(request.GET.get('edit_staff_phone'))
+        status = request.GET.get('edit_staff_status')
+        status_int = 0
+        if status == 'active':
+            status_int = 1
+            
+        old_accounts_email_passwd = "SELECT email, phone_no FROM employees WHERE employee_id = %s"
+        mycursor.execute(old_accounts_email_passwd, (staff_id,))
+        old_account_info = mycursor.fetchone()
+        
+        if old_account_info:
+            old_email = old_account_info[0]
+            old_phone_no = old_account_info[1]
+            #ONLY PHONE NUMBER EDITABLE
+            if phone_no != old_phone_no: 
+                edit_acc = "UPDATE accounts SET phone_no = %s WHERE email = %s"
+                a = (phone_no, old_email)
+                mycursor.execute(edit_acc, a)
+                mydb.commit()
+                
+            edit_all_other_info = ("UPDATE employees SET name = %s, tenure = %s, address = %s, job_position = %s,employement_date = %s, phone_no = %s, availability = %s WHERE employee_id = %s")
+            vlll = (name, tenure, address, role, employement_date_database, phone_no, status_int, staff_id)
+            mycursor.execute(edit_all_other_info, vlll)
+            mydb.commit()
+    
+    mycursor.close()
     return render(requst, 'staff.html', context)
