@@ -365,6 +365,15 @@ table select {
     width: 100%;
 }
 
+.sales-card{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px; 
+    width: 100%;
+
+}
+
+
 
 
 

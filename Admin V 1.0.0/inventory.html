@@ -20,7 +20,7 @@
             <li><a href="sales.html"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
             <li><a href="staff.html"><i data-lucide="users-round"></i>Staff</a></li>
             <li><a href="order.html"><i data-lucide="shopping-cart"></i>Order</a></li>
-            <li><a href="adminreservation.html" ><i data-lucide="calendar"></i>Reservation</a></li>
+            <li><a href="adminreservation.html"><i data-lucide="calendar"></i>Reservation</a></li>
             <li><a href="inventory.html" class="active"><i data-lucide="package"></i>Inventory</a></li>
         </ul>
     </div>
@@ -36,7 +36,7 @@
             <h2>Inventory Items</h2>
 
             <label>Search Reservation:</label>
-            <input type="text" id="searchReservation" placeholder="Enter ID or Name..."
+            <input type="text" id="searchInventory" placeholder="Enter ID or Name..."
                 style="padding: 10px; margin: 10px; border-radius: 10px;">
 
             <table>
@@ -68,35 +68,37 @@
         <div class="modal-content">
             <span id="closeAddModal" class="close">&times;</span>
             <h2>Add New Inventory Item</h2>
+            <form action="inventory.html" method="get">
+                <label>Item Name</label>
+                <input type="text" id="add_item_name">
 
-            <label>Item Name</label>
-            <input type="text" id="add_item_name">
+                <label>Quantity</label>
+                <input type="number" id="add_quantity">
 
-            <label>Quantity</label>
-            <input type="number" id="add_quantity">
+                <label>Minimum Stock</label>
+                <input type="number" id="add_min_stock">
 
-            <label>Minimum Stock</label>
-            <input type="number" id="add_min_stock">
+                <label>Last Restocked</label>
+                <input type="datetime-local" id="add_restock">
 
-            <label>Last Restocked</label>
-            <input type="datetime-local" id="add_restock">
+                <label>Supplier ID</label>
+                <input type="text" id="add_sup_id">
 
-            <label>Supplier ID</label>
-            <input type="text" id="add_sup_id">
+                <label>Supplier Name</label>
+                <input type="text" id="add_sup_name">
 
-            <label>Supplier Name</label>
-            <input type="text" id="add_sup_name">
+                <label>Supplier Contact</label>
+                <input type="text" id="add_sup_contact">
 
-            <label>Supplier Contact</label>
-            <input type="text" id="add_sup_contact">
+                <label>Status</label>
+                <select name="int_new_status" id="add_status">
+                    <option value="Avilable">Stocked</option>
+                    <option value="Unavailable">Low Stock</option>
+                    <option value="Out_of_stock">Out of Stock</option>
+                </select>
 
-            <label>Status</label>
-            <select id="add_status">
-                <option value="Available">Available</option>
-                <option value="Unavailable">Unavailable</option>
-            </select>
-
-            <button class="btn menu-btn" id="saveNewItem">Add Item</button>
+                <button class="btn menu-btn" id="saveNewItem">Add Item</button>
+            </form>
         </div>
     </div>
 
@@ -105,39 +107,41 @@
         <div class="modal-content">
             <span id="closeEditIntModal" class="close">&times;</span>
             <h2>Edit Inventory Items</h2>
+            <form action="inventory.html" method="get">
+                <label>Inventory ID</label>
+                <input type="text" name="inventotry_id" id="edit_int_id" readonly>
 
-            <label>Inventory ID</label>
-            <input type="text" name="inventotry_id" id="edit_int_id" readonly>
+                <label>Items Name</label>
+                <input type="text" name="int_item_name" id="edit_int_item_name" readonly>
 
-            <label>Items Name</label>
-            <input type="text" name="int_item_name" id="edit_int_item_name" readonly>
+                <label>Quantity</label>
+                <input type="text" name="int_quantity" id="edit_int_quantity">
 
-            <label>Quantity</label>
-            <input type="text" name="int_quantity" id="edit_int_quantity">
+                <label>Minimum Stock</label>
+                <input type="text" name="int_mini_stock" id="edit_int_mini_stock">
 
-            <label>Minimum Stock</label>
-            <input type="text" name="int_mini_stock" id="edit_int_mini_stock">
+                <label>Last Restocked</label>
+                <input type="datetime-local" id="edit_int_restock">
 
-            <label>Last Restocked</label>
-            <input type="datetime-local" id="edit_int_restock">
+                <label>Supplier ID</label>
+                <input type="text" name="int_sup_id" id="edit_sup_id">
 
-            <label>Supplier ID</label>
-            <input type="text" name="int_sup_id" id="edit_sup_id">
+                <label>Supplier Name</label>
+                <input type="text" name="int_sup_name" id="edit_sup_name">
 
-            <label>Supplier Name</label>
-            <input type="text" name="int_sup_name" id="edit_sup_name">
+                <label>Supplier Contect</label>
+                <input type="tel" name="int_sup_contact" id="edit_sup_contact">
 
-            <label>Special Request</label>
-            <input type="tel" name="int_sup_contact" id="edit_sup_contact">
+                <label>Status</label>
+                <select name="int_status" id="edit_int_status">
+                    <option value="Avilable">Stocked</option>
+                    <option value="Unavailable">Low Stock</option>
+                    <option value="Out_of_stock">Out of Stock</option>
 
-            <label>Status</label>
-            <select name="int_status" id="edit_int_status">
-                <option value="Avilable">Available</option>
-                <option value="Unavailable">Unavailable</option>
+                </select>
 
-            </select>
-
-            <button class="btn menu-btn" id="saveEditedReservation">Save Changes</button>
+                <button class="btn menu-btn" id="saveEditedInventory">Save Changes</button>
+            </form>
         </div>
     </div>
 

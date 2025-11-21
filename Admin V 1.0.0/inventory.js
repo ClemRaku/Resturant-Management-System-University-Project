@@ -1,131 +1,75 @@
+inventory = JSON.parse(localStorage.getItem("inventory_data")) || [];
 
-let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
+const tableBody = document.querySelector("tbody");
 
-//to change the table
-function updateInventoryTable() {
-    const tableBody = document.querySelector("table tbody");
+// Modal elements
+const addModal = document.getElementById("addInventoryModal");
+const editModal = document.getElementById("editInventoryModal");
+
+const openAddBtn = document.getElementById("openModal");
+const closeAddBtn = document.getElementById("closeAddModal");
+const closeEditBtn = document.getElementById("closeEditIntModal");
+
+const saveNewItemBtn = document.getElementById("saveNewItem");
+const saveEditedItemBtn = document.getElementById("saveEditedInventory");
+
+const searchInput = document.getElementById("searchInventory");
+
+openAddBtn.onclick = () => addModal.style.display = "block";
+closeAddBtn.onclick = () => addModal.style.display = "none";
+closeEditBtn.onclick = () => editModal.style.display = "none";
+
+window.onclick = function (event) {
+    if (event.target == addModal) addModal.style.display = "none";
+    if (event.target == editModal) editModal.style.display = "none";
+};
+
+
+function saveData() {
+    localStorage.setItem("inventory_data", JSON.stringify(inventory));
+}
+
+
+// GENERATE UNIQUE ID
+
+function generateID() {
+    return "INV" + Math.floor(Math.random() * 90000 + 10000);
+}
+
+
+function loadTable() {
     tableBody.innerHTML = "";
 
     inventory.forEach(item => {
-        tableBody.innerHTML += `
-            <tr>
-                <td>${item.id}</td>
-                <td>${item.item_name}</td>
-                <td>${item.quantity}</td>
-                <td>${item.min_stock}</td>
-                <td>${item.restock}</td>
-                <td>${item.sup_id}</td>
-                <td>${item.sup_name}</td>
-                <td>${item.sup_contact}</td>
-                <td>${item.status}</td>
+        const row = document.createElement("tr");
 
-                <td>
-                    <button class="btn" onclick="openEditInventory('${item.id}')">Edit</button>
-                    <button class="red-btn" onclick="deleteInventory('${item.id}')">Delete</button>
-                </td>
-            </tr>
+        row.innerHTML = `
+            <td>${item.inventory_id}</td>
+            <td>${item.item_name}</td>
+            <td>${item.quantity}</td>
+            <td>${item.min_stock}</td>
+            <td>${item.restock}</td>
+            <td>${item.sup_id}</td>
+            <td>${item.sup_name}</td>
+            <td>${item.sup_contact}</td>
+            <td>${item.status}</td>
+            <td>
+                <button class="editBtn" data-id="${item.inventory_id}">Edit</button>
+                <button class="deleteBtn" data-id="${item.inventory_id}">Delete</button>
+            </td>
         `;
+        tableBody.appendChild(row);
     });
+
+    addTableListeners();
 }
 
-updateInventoryTable();
+//add new item
+saveNewItemBtn.addEventListener("click", function (e) {
+    e.preventDefault();
 
-//to delete item
-function deleteInventory(id) {
-    inventory = inventory.filter(item => item.id != id);
-    localStorage.setItem("inventory", JSON.stringify(inventory));
-    updateInventoryTable();
-}
-
-//open edit page
-function openEditInventory(id) {
-    let item = inventory.find(x => x.id == id);
-    if (!item) return;
-
-    document.getElementById("edit_int_id").value = item.id;
-    document.getElementById("edit_int_item_name").value = item.item_name;
-    document.getElementById("edit_int_quantity").value = item.quantity;
-    document.getElementById("edit_int_mini_stock").value = item.min_stock;
-    document.getElementById("edit_int_restock").value = item.restock;
-    document.getElementById("edit_sup_id").value = item.sup_id;
-    document.getElementById("edit_sup_name").value = item.sup_name;
-    document.getElementById("edit_sup_contact").value = item.sup_contact;
-    document.getElementById("edit_int_status").value = item.status;
-
-    document.getElementById("editInventoryModal").style.display = "flex";
-}
-
-// save edited part 
-document.getElementById("saveEditedReservation").onclick = () => {
-    let id = document.getElementById("edit_int_id").value;
-    let item = inventory.find(x => x.id == id);
-
-    item.quantity = document.getElementById("edit_int_quantity").value;
-    item.min_stock = document.getElementById("edit_int_mini_stock").value;
-    item.restock = document.getElementById("edit_int_restock").value;
-    item.sup_id = document.getElementById("edit_sup_id").value;
-    item.sup_name = document.getElementById("edit_sup_name").value;
-    item.sup_contact = document.getElementById("edit_sup_contact").value;
-    item.status = document.getElementById("edit_int_status").value;
-
-    localStorage.setItem("inventory", JSON.stringify(inventory));
-    updateInventoryTable();
-    document.getElementById("editInventoryModal").style.display = "none";
-};
-
-// for search function
-document.getElementById("searchReservation").addEventListener("keyup", function () {
-    let value = this.value.toLowerCase();
-    let rows = document.querySelectorAll("table tbody tr");
-
-    rows.forEach((row, i) => {
-        let name = inventory[i].item_name.toLowerCase();
-        let id = inventory[i].id.toLowerCase();
-
-        if (name.includes(value) || id.includes(value)) {
-            row.style.display = "";
-        } else {
-            row.style.display = "none";
-        }
-    });
-});
-
-//to close popup page 
-document.getElementById("closeEditIntModal").onclick = () =>
-    document.getElementById("editInventoryModal").style.display = "none";
-
-// click outside also close popup page
-window.addEventListener("click", e => {
-    if (e.target === document.getElementById("editInventoryModal")) {
-        document.getElementById("editInventoryModal").style.display = "none";
-    }
-});
-
-
-// add new items
-
-
-document.getElementById("openModal").onclick = () => {
-    document.getElementById("addInventoryModal").style.display = "flex";
-};
-
-
-document.getElementById("closeAddModal").onclick = () =>
-    document.getElementById("addInventoryModal").style.display = "none";
-
-
-window.addEventListener("click", e => {
-    if (e.target === document.getElementById("addInventoryModal")) {
-        document.getElementById("addInventoryModal").style.display = "none";
-    }
-});
-
-
-// to save new items
-document.getElementById("saveNewItem").onclick = () => {
-
-    let newItem = {
-        id: "INT" + Math.floor(Math.random() * 100000),
+    const newItem = {
+        inventory_id: generateID(),
         item_name: document.getElementById("add_item_name").value,
         quantity: document.getElementById("add_quantity").value,
         min_stock: document.getElementById("add_min_stock").value,
@@ -136,15 +80,86 @@ document.getElementById("saveNewItem").onclick = () => {
         status: document.getElementById("add_status").value
     };
 
-    
     inventory.push(newItem);
+    saveData();
+    loadTable();
 
-    
-    localStorage.setItem("inventory", JSON.stringify(inventory));
+    addModal.style.display = "none";
+});
 
-    
-    updateInventoryTable();
 
-    
-    document.getElementById("addInventoryModal").style.display = "none";
-};
+function addTableListeners() {
+    document.querySelectorAll(".editBtn").forEach(btn => {
+        btn.addEventListener("click", openEditModal);
+    });
+
+    document.querySelectorAll(".deleteBtn").forEach(btn => {
+        btn.addEventListener("click", deleteItem);
+    });
+}
+
+//open edit popup
+function openEditModal() {
+    const id = this.dataset.id;
+    const item = inventory.find(t => t.inventory_id === id);
+
+    document.getElementById("edit_int_id").value = item.inventory_id;
+    document.getElementById("edit_int_item_name").value = item.item_name;
+    document.getElementById("edit_int_quantity").value = item.quantity;
+    document.getElementById("edit_int_mini_stock").value = item.min_stock;
+    document.getElementById("edit_int_restock").value = item.restock;
+    document.getElementById("edit_sup_id").value = item.sup_id;
+    document.getElementById("edit_sup_name").value = item.sup_name;
+    document.getElementById("edit_sup_contact").value = item.sup_contact;
+    document.getElementById("edit_int_status").value = item.status;
+
+    editModal.style.display = "block";
+}
+
+//save edit
+saveEditedItemBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const id = document.getElementById("edit_int_id").value;
+
+    const index = inventory.findIndex(t => t.inventory_id === id);
+
+    inventory[index] = {
+        inventory_id: id,
+        item_name: document.getElementById("edit_int_item_name").value,
+        quantity: document.getElementById("edit_int_quantity").value,
+        min_stock: document.getElementById("edit_int_mini_stock").value,
+        restock: document.getElementById("edit_int_restock").value,
+        sup_id: document.getElementById("edit_sup_id").value,
+        sup_name: document.getElementById("edit_sup_name").value,
+        sup_contact: document.getElementById("edit_sup_contact").value,
+        status: document.getElementById("edit_int_status").value
+    };
+
+    saveData();
+    loadTable();
+    editModal.style.display = "none";
+});
+
+//delete item
+function deleteItem() {
+    const id = this.dataset.id;
+    inventory = inventory.filter(item => item.inventory_id !== id);
+    saveData();
+    loadTable();
+}
+
+//search option
+searchInput.addEventListener("keyup", function () {
+    const value = searchInput.value.toLowerCase();
+
+    document.querySelectorAll("tbody tr").forEach(row => {
+        row.style.display =
+            row.innerText.toLowerCase().includes(value) ? "" : "none";
+    });
+});
+
+// -------------------------------
+// INITIAL LOAD
+// -------------------------------
+loadTable();
