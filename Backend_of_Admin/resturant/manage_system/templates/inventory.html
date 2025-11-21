@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Reservation Management</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h2>Dhakaiya Bites Admin</h2><a href="../Restuarant project - frontend/Home/home.html" class="home"><i data-lucide="house"></i></a>
+        <ul class="navbar-links">
+            <li><a href="dashbord.html"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="adminmenu.html"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
+            <li><a href="sales.html"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
+            <li><a href="staff.html"><i data-lucide="users-round"></i>Staff</a></li>
+            <li><a href="order.html"><i data-lucide="shopping-cart"></i>Order</a></li>
+            <li><a href="adminreservation.html"><i data-lucide="calendar"></i>Reservation</a></li>
+            <li><a href="inventory.html" class="active"><i data-lucide="package"></i>Inventory</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+
+        <h1>Inventory Management</h1>
+        <p class="sub-title">Track and manage your restaurant supplies</p>
+        <a href="#" class="btn menu-btn" id="openModal"> <i data-lucide="plus"></i> Add Menu Items</a>
+
+
+        <div class="card">
+            <h2>Inventory Items</h2>
+
+            <label>Search Reservation:</label>
+            <input type="text" id="searchInventory" placeholder="Enter ID or Name..."
+                style="padding: 10px; margin: 10px; border-radius: 10px;">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Inventory ID</th>
+                        <th>Items Name</th>
+                        <th>Quantity</th>
+                        <th>Minimum Stock</th>
+                        <th>Last Restocked</th>
+                        <th>Supplier ID</th>
+                        <th>Supplier Name</th>
+                        <th>Supplier Contact</th>
+                        <th>Avilability</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div id="addInventoryModal" class="modal">
+
+        <div class="modal-content">
+            <span id="closeAddModal" class="close">&times;</span>
+            <h2>Add New Inventory Item</h2>
+            <form action="inventory.html" method="get">
+                <label>Item Name</label>
+                <input type="text" id="add_item_name">
+
+                <label>Quantity</label>
+                <input type="number" id="add_quantity">
+
+                <label>Minimum Stock</label>
+                <input type="number" id="add_min_stock">
+
+                <label>Last Restocked</label>
+                <input type="datetime-local" id="add_restock">
+
+                <label>Supplier ID</label>
+                <input type="text" id="add_sup_id">
+
+                <label>Supplier Name</label>
+                <input type="text" id="add_sup_name">
+
+                <label>Supplier Contact</label>
+                <input type="text" id="add_sup_contact">
+
+                <label>Status</label>
+                <select name="int_new_status" id="add_status">
+                    <option value="Avilable">Stocked</option>
+                    <option value="Unavailable">Low Stock</option>
+                    <option value="Out_of_stock">Out of Stock</option>
+                </select>
+
+                <button class="btn menu-btn" id="saveNewItem">Add Item</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="editInventoryModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditIntModal" class="close">&times;</span>
+            <h2>Edit Inventory Items</h2>
+            <form action="inventory.html" method="get">
+                <label>Inventory ID</label>
+                <input type="text" name="inventotry_id" id="edit_int_id" readonly>
+
+                <label>Items Name</label>
+                <input type="text" name="int_item_name" id="edit_int_item_name" readonly>
+
+                <label>Quantity</label>
+                <input type="text" name="int_quantity" id="edit_int_quantity">
+
+                <label>Minimum Stock</label>
+                <input type="text" name="int_mini_stock" id="edit_int_mini_stock">
+
+                <label>Last Restocked</label>
+                <input type="datetime-local" id="edit_int_restock">
+
+                <label>Supplier ID</label>
+                <input type="text" name="int_sup_id" id="edit_sup_id">
+
+                <label>Supplier Name</label>
+                <input type="text" name="int_sup_name" id="edit_sup_name">
+
+                <label>Supplier Contect</label>
+                <input type="tel" name="int_sup_contact" id="edit_sup_contact">
+
+                <label>Status</label>
+                <select name="int_status" id="edit_int_status">
+                    <option value="Avilable">Stocked</option>
+                    <option value="Unavailable">Low Stock</option>
+                    <option value="Out_of_stock">Out of Stock</option>
+
+                </select>
+
+                <button class="btn menu-btn" id="saveEditedInventory">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="inventory.js"></script>
+    <script>lucide.createIcons();</script>
+
+</body>
+
+</html>
