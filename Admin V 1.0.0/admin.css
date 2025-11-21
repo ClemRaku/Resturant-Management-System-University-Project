@@ -28,6 +28,12 @@
     margin-bottom: 30px;
     color: #f79d20;
 }
+.navbar .home svg{
+    width: 30px;
+    height: auto;
+    color: #f79d20;
+    text-decoration: none;
+}
 
 .navbar-links {
     list-style: none;
@@ -92,7 +98,7 @@
 
 .recent {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(1, 1fr);
     gap: 25px;
     margin-top: 20px;
 }
@@ -366,6 +372,15 @@ table select {
 }
 
 .sales-card{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px; 
+    width: 100%;
+
+}
+
+
+.upcomming-card{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 25px; 
