@@ -323,8 +323,26 @@ def admin_reserve(request):
         mydb.commit()
         
         return redirect('admin_reserve')
+    
+    search_indicator = request.GET.get('search_query')
+    
+    if search_indicator:
+        sspp = []
+        filtered_sql = "SELECT reservation_id, customer_id, name, phone_no, reserve_date, no_of_customer, email, special_resquests, status FROM reservation"
         
-        
+        search_term = '%' + search_indicator + '%'
+        filtered_sql += " WHERE name LIKE %s OR phone_no LIKE %s"
+        sspp.append(search_term)
+        sspp.append(search_term)
+        try:
+            search_id = int(search_indicator)
+            filtered_sql += " OR reservation_id = %s"
+            sspp.append(search_id)
+        except ValueError:
+            pass     
+        mycursor.execute(filtered_sql, tuple(sspp, ))
+        all_reservation_info = mycursor.fetchall()
+    mycursor.close()
         
 
     

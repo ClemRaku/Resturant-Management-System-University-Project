@@ -2,7 +2,7 @@ let reservations = JSON.parse(localStorage.getItem("reservations")) || [];
 
 // DOM elements
 
-const searchInput = document.getElementById("searchReservation");
+
 const editModal = document.getElementById("editReservationModal");
 const closeModal = document.getElementById("closeEditResModal");
 
@@ -115,6 +115,8 @@ closeModal.onclick = () => editModal.style.display = "none";
 window.addEventListener("click", e => {
     if (e.target === editModal) editModal.style.display = "none";
 });
+
+
 
 // Initial render
 renderTable();

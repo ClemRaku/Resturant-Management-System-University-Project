@@ -34,9 +34,20 @@
         <div class="card">
             <h2>All Reservations</h2>
 
-            <label>Search Reservation:</label>
-            <input type="text" id="searchReservation" placeholder="Enter ID or Name..." style="padding: 10px; margin: 10px; border-radius: 10px;">
+            <form action="{% url 'admin_reserve' %}" method="get" style="display: flex; align-items: center; margin-bottom: 20px;">
+                <label for="searchReservation" style="margin-right: 10px;">Search Reservation:</label>
+                <input type="text" name="search_query" id="searchReservation" placeholder="Enter ID, Name, or Phone..." 
+                       style="padding: 10px; margin-right: 10px; border-radius: 10px;" 
+                       value="{{ search_query_value|default:'' }}">
+                
+                <button type="submit" class="btn" style="padding: 10px 15px;">Search</button>
 
+                {% if search_query_value %}
+                <a href="{% url 'admin_reserve' %}" class="btn" 
+                   style="margin-left: 10px; padding: 10px 15px; background-color: #6c757d; color: white; border-radius: 10px; text-decoration: none;">Clear Search</a>
+                {% endif %}
+            </form>
+            
             <table>
                 <thead>
                     <tr>
@@ -135,7 +146,7 @@
 
                 <button type="submit" class="btn menu-btn">Save Changes</button>
             </form>
-        </div>
+            </div>
     </div>
 
 
