@@ -1,3 +1,22 @@
+function updateReservationCounters() {
+    const counts = {
+        Pending: 0,
+        Confirmed: 0,
+        Completed: 0,
+        Cancelled: 0
+    };
+
+    reservations.forEach(r => counts[r.status]++);
+
+    document.querySelector('input[name="pending"]').value = counts.Pending;
+    document.querySelector('input[name="Confirmed"]').value = counts.Confirmed;
+    document.querySelector('input[name="completed"]').value = counts.Completed;
+    document.querySelector('input[name="cancelled"]').value = counts.Cancelled;
+}
+
+
+
+
 // Initialize reservations from localStorage
 let reservations = JSON.parse(localStorage.getItem("reservations")) || [];
 
