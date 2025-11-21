@@ -6,6 +6,31 @@ const searchInput = document.getElementById("searchReservation");
 const editModal = document.getElementById("editReservationModal");
 const closeModal = document.getElementById("closeEditResModal");
 
+const statusIntToText = {
+    1: "Pending",
+    2: "Confirmed",
+    3: "Completed",
+    0: "Cancelled"
+};
+function openEditModal(id, customerId, name, phone, email, datetime, guests, request, statusInt) {
+    document.getElementById("edit_res_id").value = id;
+    document.getElementById("edit_customer_id").value = customerId;
+    document.getElementById("edit_res_name").value = name;
+    document.getElementById("edit_res_phone").value = phone;
+    document.getElementById("edit_res_email").value = email;
+    document.getElementById("edit_res_datetime").value = datetime; 
+    document.getElementById("edit_res_guests").value = guests;
+    document.getElementById("edit_res_request").value = request;
+    
+    document.getElementById("edit_res_status").value = statusIntToText[statusInt] || "Pending";
+
+    editModal.style.display = "flex";
+}
+closeModal.onclick = () => editModal.style.display = "none";
+window.addEventListener("click", e => {
+    if (e.target === editModal) editModal.style.display = "none";
+});
+
 // Render reservations table
 function renderTable(data = reservations) {
     tbody.innerHTML = "";

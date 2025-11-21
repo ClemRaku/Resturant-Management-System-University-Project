@@ -75,14 +75,17 @@
 
                         
                             <td>
-                                <button class="btn edit-btn" onclick="openEditModal({{ z.0 }}, '{{ z.2|default:"Unknown" }}', '{{ z.3|default:"N/A" }}', '{{ z.6|default:"N/A" }}','{{ z.4|date:"Y-m-d\TH:i" }}',  {{ z.5|default:0 }}, '{{ z.7|default:"None" }}','{{ z.8 }}')">
+                                <button class="btn edit-btn" onclick="openEditModal({{ z.0 }}, '{{ z.1|default:"-" }}', '{{ z.2|default:"Unknown" }}', '{{ z.3|default:"N/A" }}', '{{ z.6|default:"N/A" }}','{{ z.4|date:"Y-m-d\TH:i" }}',  {{ z.5|default:0 }}, '{{ z.7|default:"None" }}','{{ z.8 }}')">
                                     <i data-lucide="edit-2" style="width: 16px; height: 16px;"></i>
                                 </button>
                                 
-                                    <form action="{% url 'admin_reserve' %}" method="get">
-                                        <button class="btn menu-btn" id="saveEditedReservation">Save Changes</button>
-                                    </form>                         
-                            </td>                    
+                                <a href="{% url 'admin_reserve' %}?delete_res_id={{ z.0 }}" 
+                                    class="btn delete-btn" 
+                                    style="background-color: #dc3545; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                                    <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                                </a>
+                                                     
+                            </td>                   
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -130,11 +133,10 @@
                     <option value="Cancelled">Cancelled</option>
                 </select>
 
-                <button class="btn menu-btn" id="saveEditedReservation">Save Changes</button>
+                <button type="submit" class="btn menu-btn">Save Changes</button>
             </form>
-            </div>
+        </div>
     </div>
-
 
 
     <script src="{% static 'reservation.js' %}"></script>

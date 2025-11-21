@@ -293,7 +293,42 @@ def admin_reserve(request):
     select_reservation_info = "SELECT reservation_id, customer_id, name, phone_no, reserve_date, no_of_customer, email, special_resquests, status FROM reservation"
     mycursor.execute(select_reservation_info)
     all_reservation_info = mycursor.fetchall()
+    
+    if request.GET.get('delete_res_id'):
+        del_id = request.GET.get('delete_res_id')
+        delete_sql = "DELETE FROM reservation WHERE reservation_id = %s"
+        mycursor.execute(delete_sql, (del_id, ) )
+        mydb.commit()
+        return redirect('admin_reserve')
+    
+    if request.GET.get('edit_res_id'):
+        res_id = request.GET.get('edit_res_id')
+        customer_id = request.GET.get('edit_customer_id')
+        name = request.GET.get('edit_res_name')
+        phone_no = int(request.GET.get('edit_res_phone'))
+        email = request.GET.get('edit_res_email')
+        
+        date_time = request.GET.get('edit_res_datetime')
+        resrve_date_time = datetime.strptime(date_time, '%Y-%m-%dT%H:%M')
+        
+        no_guest = request.GET.get('edit_res_guests')
+        specail_req = request.GET.get('edit_res_request')
+        stat = request.GET.get('edit_res_status')
+        stat_int = {'Pending': 1, 'Confirmed': 2, 'Completed': 3, 'Cancelled': 0}
+        stat_actual_value = stat_int.get(stat)
+        
+        edit_sql = "UPDATE reservation SET name = %s, phone_no = %s, email = %s, reserve_date = %s, no_of_customer = %s, special_resquests = %s, status = %s WHERE reservation_id = %s"
+        d = (name, phone_no, email, resrve_date_time, no_guest, specail_req, stat_actual_value, res_id)
+        mycursor.execute(edit_sql, d)
+        mydb.commit()
+        
+        return redirect('admin_reserve')
+        
+        
+        
 
+    
+    
     
     
     return render(request, 'adminreservation.html', {'reserve_info' : all_reservation_info})
