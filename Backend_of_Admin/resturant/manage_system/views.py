@@ -298,5 +298,5 @@ def admin_reserve(request):
     
     return render(request, 'adminreservation.html', {'reserve_info' : all_reservation_info})
 
-def inventory(request):
-    return render(request, 'inventory.html')
+#def inventory(request):
+#    return render(request, 'inventory.html')
