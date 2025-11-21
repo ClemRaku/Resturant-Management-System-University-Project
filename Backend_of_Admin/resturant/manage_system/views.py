@@ -283,4 +283,17 @@ def staff_view(request):
 
 
 def admin_reserve(request):
-    return render(request, 'adminreservation.html')
+    mydb = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        passwd='raka',
+        database='resturant'
+    )
+    mycursor = mydb.cursor()
+    select_reservation_info = "SELECT reservation_id, customer_id, name, phone_no, reserve_date, no_of_customer, email, special_resquests, status FROM reservation"
+    mycursor.execute(select_reservation_info)
+    all_reservation_info = mycursor.fetchall()
+
+    
+    
+    return render(request, 'adminreservation.html', {'reserve_info' : all_reservation_info})

@@ -55,7 +55,35 @@
 
 
                 <tbody>
+                    {% for z in reserve_info %}
+                    <tr>
+                        <td>{{ z.0|default:'-' }}</td> 
+                        <td>{{ z.1|default:'-' }}</td> 
+                        <td>{{ z.2|default:'Unknown' }}</td>
+                        <td>{{ z.3|default:'N/A' }}</td> 
+                        <td>{{ z.4|date:"M. j, Y, P"|default:'N/A' }}</td> 
+                        <td>{{ z.5|default:'0' }}</td> <td>{{ z.6|default:'N/A' }}</td> 
+                        <td>{{ z.7|default:'None' }}</td> 
+                        <td>
+                                        {% if z.8 == 1 %}Pending
+                                        {% elif z.8 == 2 %}Confirmed
+                                        {% elif z.8 == 3 %}Completed
+                                        {% elif z.8 == 0 %}Cancelled
+                                        {% else %}Unknown
+                                        {% endif %}
+                        </td>
 
+                        
+                        <td>
+                            <button class="btn edit-btn" onclick="openEditModal({{ z.0 }})">
+                                <i data-lucide="edit-2" style="width: 16px; height: 16px;"></i>
+                            </button>
+                            <button class="btn delete-btn">
+                                <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
 
@@ -106,6 +134,10 @@
             </div>
     </div>
 
+
+    <script>
+        var djangoReservations = {{ reserve_info|safe }};
+    </script>
     <script src="{% static 'reservation.js' %}"></script>
     <script>lucide.createIcons();</script>
 
