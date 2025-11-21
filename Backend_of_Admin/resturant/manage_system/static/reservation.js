@@ -1,22 +1,7 @@
-let reservations = [];
-if (typeof djangoReservations !== 'undefined' && djangoReservations.length > 0) {
-    reservations = djangoReservations.map(res => ({
-        reservationId: res[0],
-        customerId: res[1],
-        name: res[2],
-        phone: res[3],
-        datetime: res[4],
-        guests: res[5],
-        email: res[6],
-        request: res[7],
-        status: res[8]
-    }));
-} else {
-    localStorage.setItem("reservations", JSON.stringify(reservations));
-}
+let reservations = JSON.parse(localStorage.getItem("reservations")) || [];
 
 // DOM elements
-//const tbody = document.querySelector("table tbody");
+
 const searchInput = document.getElementById("searchReservation");
 const editModal = document.getElementById("editReservationModal");
 const closeModal = document.getElementById("closeEditResModal");
