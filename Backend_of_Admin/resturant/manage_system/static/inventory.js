@@ -1,8 +1,14 @@
-inventory = JSON.parse(localStorage.getItem("inventory_data")) || [];
+let inventory = JSON.parse(localStorage.getItem("inventory_data")) || [];
 
+function saveInventory() {
+    localStorage.setItem("inventory_data", JSON.stringify(inventory));
+}
+
+// ============================
+// DOM Elements
+// ============================
 const tableBody = document.querySelector("tbody");
 
-// Modal elements
 const addModal = document.getElementById("addInventoryModal");
 const editModal = document.getElementById("editInventoryModal");
 
@@ -11,155 +17,143 @@ const closeAddBtn = document.getElementById("closeAddModal");
 const closeEditBtn = document.getElementById("closeEditIntModal");
 
 const saveNewItemBtn = document.getElementById("saveNewItem");
-const saveEditedItemBtn = document.getElementById("saveEditedInventory");
+const saveEditedInventoryBtn = document.getElementById("saveEditedInventory");
 
 const searchInput = document.getElementById("searchInventory");
 
+// ============================
+// Modal Open/Close
+// ============================
 openAddBtn.onclick = () => addModal.style.display = "block";
 closeAddBtn.onclick = () => addModal.style.display = "none";
 closeEditBtn.onclick = () => editModal.style.display = "none";
 
-window.onclick = function (event) {
-    if (event.target == addModal) addModal.style.display = "none";
-    if (event.target == editModal) editModal.style.display = "none";
+window.onclick = function (e) {
+    if (e.target === addModal) addModal.style.display = "none";
+    if (e.target === editModal) editModal.style.display = "none";
 };
 
-
-function saveData() {
-    localStorage.setItem("inventory_data", JSON.stringify(inventory));
-}
-
-
-// GENERATE UNIQUE ID
-
-function generateID() {
-    return "INV" + Math.floor(Math.random() * 90000 + 10000);
-}
-
-
-function loadTable() {
+// ============================
+// Display Inventory Table
+// ============================
+function displayInventory(items = inventory) {
     tableBody.innerHTML = "";
 
-    inventory.forEach(item => {
+    items.forEach((item, index) => {
         const row = document.createElement("tr");
 
         row.innerHTML = `
-            <td>${item.inventory_id}</td>
-            <td>${item.item_name}</td>
+            <td>${item.id}</td>
+            <td>${item.name}</td>
             <td>${item.quantity}</td>
-            <td>${item.min_stock}</td>
+            <td>${item.minStock}</td>
             <td>${item.restock}</td>
-            <td>${item.sup_id}</td>
-            <td>${item.sup_name}</td>
-            <td>${item.sup_contact}</td>
+            <td>${item.supplierId}</td>
+            <td>${item.supplierName}</td>
+            <td>${item.supplierContact}</td>
+            <td>${item.price}</td>
             <td>${item.status}</td>
+
             <td>
-                <button class="editBtn" data-id="${item.inventory_id}">Edit</button>
-                <button class="deleteBtn" data-id="${item.inventory_id}">Delete</button>
+                <button class="btn" onclick="editItem(${index})">✏ Edit</button>
+                <button class="btn" onclick="deleteItem(${index})" style="background:red;">🗑 Delete</button>
             </td>
         `;
+
         tableBody.appendChild(row);
     });
-
-    addTableListeners();
 }
 
-//add new item
+displayInventory();
+
+// ============================
+// Add New Inventory Item
+// ============================
 saveNewItemBtn.addEventListener("click", function (e) {
-    e.preventDefault();
+    
 
     const newItem = {
-        inventory_id: generateID(),
-        item_name: document.getElementById("add_item_name").value,
+        id: Date.now(),
+        name: document.getElementById("add_item_name").value,
         quantity: document.getElementById("add_quantity").value,
-        min_stock: document.getElementById("add_min_stock").value,
+        minStock: document.getElementById("add_min_stock").value,
         restock: document.getElementById("add_restock").value,
-        sup_id: document.getElementById("add_sup_id").value,
-        sup_name: document.getElementById("add_sup_name").value,
-        sup_contact: document.getElementById("add_sup_contact").value,
+        supplierId: document.getElementById("add_sup_id").value,
+        supplierName: document.getElementById("add_sup_name").value,
+        supplierContact: document.getElementById("add_sup_contact").value,
+        price: document.getElementById("add_int_price").value,
         status: document.getElementById("add_status").value
     };
 
     inventory.push(newItem);
-    saveData();
-    loadTable();
+    saveInventory();
+    displayInventory();
 
     addModal.style.display = "none";
 });
 
+// ============================
+// Edit Inventory Item
+// ============================
+function editItem(index) {
+    const item = inventory[index];
 
-function addTableListeners() {
-    document.querySelectorAll(".editBtn").forEach(btn => {
-        btn.addEventListener("click", openEditModal);
-    });
-
-    document.querySelectorAll(".deleteBtn").forEach(btn => {
-        btn.addEventListener("click", deleteItem);
-    });
-}
-
-//open edit popup
-function openEditModal() {
-    const id = this.dataset.id;
-    const item = inventory.find(t => t.inventory_id === id);
-
-    document.getElementById("edit_int_id").value = item.inventory_id;
-    document.getElementById("edit_int_item_name").value = item.item_name;
+    // Fill modal inputs
+    document.getElementById("edit_int_id").value = item.id;
+    document.getElementById("edit_int_item_name").value = item.name;
     document.getElementById("edit_int_quantity").value = item.quantity;
-    document.getElementById("edit_int_mini_stock").value = item.min_stock;
+    document.getElementById("edit_int_mini_stock").value = item.minStock;
     document.getElementById("edit_int_restock").value = item.restock;
-    document.getElementById("edit_sup_id").value = item.sup_id;
-    document.getElementById("edit_sup_name").value = item.sup_name;
-    document.getElementById("edit_sup_contact").value = item.sup_contact;
+    document.getElementById("edit_sup_id").value = item.supplierId;
+    document.getElementById("edit_sup_name").value = item.supplierName;
+    document.getElementById("edit_sup_contact").value = item.supplierContact;
+    document.getElementById("edit_int_price").value = item.price;
     document.getElementById("edit_int_status").value = item.status;
 
     editModal.style.display = "block";
-}
 
-//save edit
-saveEditedItemBtn.addEventListener("click", function (e) {
-    e.preventDefault();
+    saveEditedInventoryBtn.onclick = function (e) {
+        e.preventDefault();
 
-    const id = document.getElementById("edit_int_id").value;
+        item.quantity = document.getElementById("edit_int_quantity").value;
+        item.minStock = document.getElementById("edit_int_mini_stock").value;
+        item.restock = document.getElementById("edit_int_restock").value;
+        item.supplierId = document.getElementById("edit_sup_id").value;
+        item.supplierName = document.getElementById("edit_sup_name").value;
+        item.supplierContact = document.getElementById("edit_sup_contact").value;
+        item.price = document.getElementById("edit_int_price").value;
+        item.status = document.getElementById("edit_int_status").value;
 
-    const index = inventory.findIndex(t => t.inventory_id === id);
-
-    inventory[index] = {
-        inventory_id: id,
-        item_name: document.getElementById("edit_int_item_name").value,
-        quantity: document.getElementById("edit_int_quantity").value,
-        min_stock: document.getElementById("edit_int_mini_stock").value,
-        restock: document.getElementById("edit_int_restock").value,
-        sup_id: document.getElementById("edit_sup_id").value,
-        sup_name: document.getElementById("edit_sup_name").value,
-        sup_contact: document.getElementById("edit_sup_contact").value,
-        status: document.getElementById("edit_int_status").value
+        saveInventory();
+        displayInventory();
+        editModal.style.display = "none";
     };
-
-    saveData();
-    loadTable();
-    editModal.style.display = "none";
-});
-
-//delete item
-function deleteItem() {
-    const id = this.dataset.id;
-    inventory = inventory.filter(item => item.inventory_id !== id);
-    saveData();
-    loadTable();
 }
 
-//search option
-searchInput.addEventListener("keyup", function () {
+// ============================
+// Delete Item
+// ============================
+function deleteItem(index) {
+    if (confirm("Are you sure you want to delete this item?")) {
+        inventory.splice(index, 1);
+        saveInventory();
+        displayInventory();
+    }
+}
+
+window.editItem = editItem;
+window.deleteItem = deleteItem;
+
+// ============================
+// Search Inventory
+// ============================
+searchInput.addEventListener("keyup", () => {
     const value = searchInput.value.toLowerCase();
 
-    document.querySelectorAll("tbody tr").forEach(row => {
-        row.style.display =
-            row.innerText.toLowerCase().includes(value) ? "" : "none";
-    });
-});
+    const filtered = inventory.filter(item =>
+        item.name.toLowerCase().includes(value) ||
+        item.id.toString().includes(value)
+    );
 
-// -------------------------------
-// INITIAL LOAD
-// -------------------------------
-loadTable();
+    displayInventory(filtered);
+});

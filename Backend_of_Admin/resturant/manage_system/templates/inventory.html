@@ -71,29 +71,31 @@
             <span id="closeAddModal" class="close">&times;</span>
             <h2>Add New Inventory Item</h2>
             <form action="{% url 'admin_inventory' %}" method="get">
+                {% csrf_token %}
+
                 <label>Item Name</label>
-                <input type="text" name="add_item_name" id="add_item_name">
+                <input type="text" name="add_item_name" id="add_item_name" required>
 
                 <label>Quantity</label>
-                <input type="text" name="add_int_quantity" id="add_quantity">
+                <input type="number" name="add_int_quantity" id="add_quantity" required>
 
                 <label>Minimum Stock</label>
-                <input type="text" name="add_int_min_stock" id="add_min_stock">
+                <input type="number" name="add_int_min_stock" id="add_min_stock" required>
 
                 <label>Last Restocked</label>
                 <input type="datetime-local" name="add_int_restock" id="add_restock">
 
                 <label>Supplier ID</label>
-                <input type="text" name="add_sup_id" id="add_sup_id">
+                <input type="number" name="add_sup_id" id="add_sup_id">
 
                 <label>Supplier Name</label>
                 <input type="text" name="add_sup_name" id="add_sup_name">
 
                 <label>Supplier Contact</label>
-                <input type="text" name="add_sup_contact" id="add_sup_contact">
+                <input type="tel" name="add_sup_contact" id="add_sup_contact">
 
                 <label>Price</label>
-                <input type="text" name="addPRICE" id="add_int_price" step = 0.01>
+                <input type="number" name="addPRICE" id="add_int_price" step="0.01" required>
 
                 <label>Status</label>
                 <select name="int_new_status" id="add_status">
@@ -102,8 +104,9 @@
                     <option value="Out_of_stock">Out of Stock</option>
                 </select>
 
-                <button class="btn menu-btn" id="saveNewItem">Add Item</button>
+                <button type="submit" class="btn menu-btn" id="saveNewItem">Add Item</button>
             </form>
+
         </div>
     </div>
 

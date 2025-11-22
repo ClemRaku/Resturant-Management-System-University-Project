@@ -354,7 +354,8 @@ def admin_reserve(request):
 def inventory(request):
     mycursor = mydb.cursor()
     #adding into inventory
-    if request.GET.get('add_item_name'):
+    if  request.GET.get('add_item_name'):
+
         name = request.GET.get('add_item_name')
         quantity = int(request.GET.get('add_int_quantity'))
         price = float(request.GET.get('addPRICE'))
@@ -381,7 +382,7 @@ def inventory(request):
         
         
         
-    #showing all the values in the table.
+    #showing all the values in the table. WILL DO THIS LATER, BUT FIRST LETS FIXX THE ADD
     fetching_all_invent = ""
         
         
