@@ -371,7 +371,7 @@ def inventory(request):
         supplier_name = request.GET.get('add_sup_name')
         suplier_contact = int(request.GET.get('add_sup_contact'))
         status = request.GET.get('int_new_status')
-        statusINT = {'Avilable' : 1, 'Unavailable' : 0, 'Out_of_stock' : 2}
+        statusINT = {'Stocked' : 1, 'Low Stock' : 0, 'Out_of_stock' : 2}
         real_status = statusINT.get(status)
         
         adding_item = "insert into inventory (ingredient_name, quantity, minimum_stock_level, last_restocked, supplier, availability, supplier_id, price, supplier_contact) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
