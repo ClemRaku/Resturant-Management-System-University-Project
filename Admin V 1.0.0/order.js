@@ -1,3 +1,4 @@
+
 let orders = JSON.parse(localStorage.getItem("orders_data")) || [];
 
 const orderTable = document.getElementById("orderTable");
@@ -33,7 +34,7 @@ function saveOrders() {
 }
 
 
-//load into table 
+//load data on table
 function loadOrderTable() {
     orderTable.innerHTML = "";
 
@@ -70,7 +71,7 @@ function loadOrderTable() {
 }
 
 
-//update couters
+//update counter 
 function updateCounters() {
     const counter = {
         pending: 0,
@@ -89,8 +90,7 @@ function updateCounters() {
     document.querySelector('input[name="cancelled"]').value = counter.cancelled;
 }
 
-
-//add new order
+//add order
 saveNewOrder.addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -111,7 +111,7 @@ saveNewOrder.addEventListener("click", (e) => {
 });
 
 
-//edit orders
+//order edit ar jonno
 function openEditModal(order) {
     document.getElementById("edit_order_id").value = order.order_id;
     document.getElementById("edit_order_customer_id").value = order.customer_id;
@@ -146,12 +146,13 @@ saveEditedOrder.addEventListener("click", (e) => {
 });
 
 
-//delete orders
+//order delete ar jonno
 function deleteOrder(id) {
     orders = orders.filter(o => o.order_id !== id);
     saveOrders();
     loadOrderTable();
 }
+
 
 
 function attachListeners() {
@@ -170,7 +171,7 @@ function attachListeners() {
 }
 
 
-//search fuction
+//search function ar jonno
 searchInput.addEventListener("keyup", () => {
     const value = searchInput.value.toLowerCase();
 
