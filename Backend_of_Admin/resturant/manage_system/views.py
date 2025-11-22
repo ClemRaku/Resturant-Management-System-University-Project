@@ -352,4 +352,38 @@ def admin_reserve(request):
     return render(request, 'adminreservation.html', {'reserve_info' : all_reservation_info})
 
 def inventory(request):
+    mycursor = mydb.cursor()
+    #adding into inventory
+    if request.GET.get('add_item_name'):
+        name = request.GET.get('add_item_name')
+        quantity = int(request.GET.get('add_int_quantity'))
+        price = float(request.GET.get('addPRICE'))
+        min_stock = float(request.GET.get('add_int_min_stock'))
+        
+        last_restockedDATE = request.GET.get('add_int_restock')
+        last_restock = None        
+        
+        if last_restockedDATE:
+            last_restock = datetime.strptime(last_restockedDATE, '%Y-%m-%dT%H:%M')
+        
+        
+        supplier_id = int(request.GET.get('add_sup_id'))
+        supplier_name = request.GET.get('add_sup_name')
+        suplier_contact = int(request.GET.get('add_sup_contact'))
+        status = request.GET.get('int_new_status')
+        statusINT = {'Avilable' : 1, 'Unavailable' : 0, 'Out_of_stock' : 2}
+        real_status = statusINT.get(status)
+        
+        adding_item = "insert into inventory (ingredient_name, quantity, minimum_stock_level, last_restocked, supplier, availability, supplier_id, price, supplier_contact) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        z = (name, quantity, min_stock, last_restock, supplier_name, real_status, supplier_id, price, suplier_contact)
+        mycursor.execute(adding_item, z)
+        mydb.commit()
+        
+        
+        
+    #showing all the values in the table.
+    fetching_all_invent = ""
+        
+        
+    
     return render(request, 'inventory.html')
