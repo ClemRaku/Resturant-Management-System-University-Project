@@ -28,6 +28,7 @@
     <div class="main-content">
         <h1>Order Management</h1>
         <p class="sub-title">Track and update customer orders</p>
+        <a href="#" class="btn menu-btn" id="openModal"> <i data-lucide="plus"></i> Add New Order</a>
 
 
         <div class="order-card">
@@ -137,6 +138,44 @@
 
     </div>
 
+    <div id="addOrderModal" class="modal">
+
+        <div class="modal-content">
+            <span id="closeAddModal" class="close">&times;</span>
+            <h2>Add New Orders</h2>
+            <form action="order.html" method="get">
+                <label>Order ID</label>
+                <input type="text" name="add_order_id" id="add_order_id">
+
+                <label>Customer ID</label>
+                <input type="text" name="add_order_cus_id" id="add_order_cus_id">
+
+                <label>Menu ID</label>
+                <input type="text" name="add_order_menu_id" id="add_order_menu_id">
+
+                <label>Salse ID</label>
+                <input type="text" name="add_order_salse_id" id="add_order_salse_id">
+
+                <label>Order Time</label>
+                <input type="datetime-local" name="add_order_time" id="add_order_time">
+
+                <label>Price</label>
+                <input type="text" name="add_order_price" id="add_order_price">
+
+                <label>Status</label>
+                <select name="add_order_status" id="add_order_status">
+                    <option value="pending">Pending</option>
+                    <option value="processing">Preparing</option>
+                    <option value="ready">Ready</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+
+                <button class="btn menu-btn" id="saveNewOrder">Add Item</button>
+            </form>
+        </div>
+    </div>
+
 
     <div id="editOrderModal" class="modal">
         <div class="modal-content">
@@ -162,7 +201,7 @@
                 <input type="text" name="order-price" id="edit_order_price">
 
                 <label>Status</label>
-                <select id="edit_order_status">
+                <select name="edit_order_status" id="edit_order_status">
                     <option value="pending">Pending</option>
                     <option value="processing">Preparing</option>
                     <option value="ready">Ready</option>

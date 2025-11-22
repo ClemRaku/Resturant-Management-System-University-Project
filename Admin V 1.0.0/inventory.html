@@ -29,7 +29,7 @@
 
         <h1>Inventory Management</h1>
         <p class="sub-title">Track and manage your restaurant supplies</p>
-        <a href="#" class="btn menu-btn" id="openModal"> <i data-lucide="plus"></i> Add Menu Items</a>
+        <a href="#" class="btn menu-btn" id="openModal"> <i data-lucide="plus"></i> Add Items</a>
 
 
         <div class="card">
@@ -70,25 +70,25 @@
             <h2>Add New Inventory Item</h2>
             <form action="inventory.html" method="get">
                 <label>Item Name</label>
-                <input type="text" id="add_item_name">
+                <input type="text" name="add_int_item" id="add_item_name">
 
                 <label>Quantity</label>
-                <input type="number" id="add_quantity">
+                <input type="text" name="add_int_quantity" id="add_quantity">
 
                 <label>Minimum Stock</label>
-                <input type="number" id="add_min_stock">
+                <input type="text" name="add_int_min_stock" id="add_min_stock">
 
                 <label>Last Restocked</label>
-                <input type="datetime-local" id="add_restock">
+                <input type="datetime-local" name="add_int_restock" id="add_restock">
 
                 <label>Supplier ID</label>
-                <input type="text" id="add_sup_id">
+                <input type="text" name="add_sup_id" id="add_sup_id">
 
                 <label>Supplier Name</label>
-                <input type="text" id="add_sup_name">
+                <input type="text" name="add_sup_name" id="add_sup_name">
 
                 <label>Supplier Contact</label>
-                <input type="text" id="add_sup_contact">
+                <input type="text" name="add_sup_contact" id="add_sup_contact">
 
                 <label>Status</label>
                 <select name="int_new_status" id="add_status">
