@@ -1,106 +1,111 @@
+const CART_KEY = "restaurant_cart";
 
-const CART_KEY = 'restaurant_cart';
+let cart = [];
+// -------------------------------
+// DOM ELEMENTS
+// -------------------------------
+const cartSidebar = document.getElementById("cartSidebar");
+const cartItemsContainer = document.getElementById("cartItems");
+const cartCount = document.getElementById("cartCount");
+const subtotalEl = document.getElementById("subtotal");
+const totalEl = document.getElementById("total");
+const deliveryFeeEl = document.getElementById("deliveryFee");
+const checkoutBtn = document.getElementById("checkoutBtn");
+const menuCartBtn = document.getElementById("menu-cart-btn");
+const closeCartBtn = document.getElementById("closeCart");
 
-function getCart() {
-  return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+const DELIVERY_FEE = 100;
+
+// -------------------------------
+// FUNCTIONS
+// -------------------------------
+
+// Save cart to localStorage
+function saveCart() {
+  //localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  updateCartUI();
 }
 
-function saveCart(cart) {
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  updateCartCount();
-  window.dispatchEvent(new CustomEvent('cartUpdated'));
-}
-
-function addToCart(item) {
-  const cart = getCart();
-  const existing = cart.find(i => i.id === item.id);
-  if (existing) existing.quantity++;
-  else cart.push({ ...item, quantity: 1 });
-  saveCart(cart);
-  showToast`(${item.name} added to cart!)`;
-}
-
-function removeFromCart(id) {
-  const cart = getCart().filter(i => i.id !== id);
-  saveCart(cart);
-}
-
-function updateQuantity(id, qty) {
-  const cart = getCart();
-  const item = cart.find(i => i.id === id);
-  if (!item) return;
-  item.quantity = Math.max(0, qty);
-  if (item.quantity === 0) removeFromCart(id);
-  else saveCart(cart);
-}
-
-function clearCart() {
-  localStorage.removeItem(CART_KEY);
-  updateCartCount();
-  window.dispatchEvent(new CustomEvent('cartUpdated'));
-}
-
-function getCartTotal(cart) {
-  return cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
-}
-
-function renderCart() {
-  const cart = getCart();
-  const container = document.getElementById('cartItems');
-  const subtotalEl = document.getElementById('subtotal');
-  const totalEl = document.getElementById('total');
-  if (!container) return;
+// Update cart sidebar UI
+function updateCartUI() {
+  cartCount.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   if (cart.length === 0) {
-    container.innerHTML = `
-      <p class="empty-cart">Your cart is empty<br><small>Add items from the menu to get started</small></p>
-    `;
+    cartItemsContainer.innerHTML = `<p class="empty-cart">Your cart is empty<br><small>Add items from the menu to get started</small></p>`;
   } else {
-    container.innerHTML = cart
-      .map(
-        item => `
+    cartItemsContainer.innerHTML = cart.map(item => `
       <div class="cart-item">
-        <img src="${item.image}" alt="${item.name}">
+        ${item.image ? `<img src="${item.image}" alt="${item.name}">` : ""}
         <div class="cart-info">
           <h4>${item.name}</h4>
-          <p>${item.price}tk</p>
-          <div class="qty-controls">
-            <button onclick="updateQuantity('${item.id}', ${item.quantity - 1})">-</button>
+          <p>${item.price} tk</p>
+          <div class="cart-qty">
+            <button class="qty-btn" onclick="changeQuantity('${item.id}', -1)">-</button>
             <span>${item.quantity}</span>
-            <button onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
+            <button class="qty-btn" onclick="changeQuantity('${item.id}', 1)">+</button>
           </div>
         </div>
-        <button class="remove-btn" onclick="removeFromCart('${item.id}')">
-          <i data-lucide="trash-2"></i>
-        </button>
+        <button class="remove-btn" onclick="removeItem('${item.id}')">&times;</button>
       </div>
-    `
-      )
-      .join('');
+    `).join("");
   }
 
-  const subtotal = getCartTotal(cart);
-  const delivery = cart.length > 0 ? 2.99 : 0; // You can also change delivery to tk if needed
-  subtotalEl.textContent = `${subtotal.toFixed(2)}tk`;
-  totalEl.textContent = `${(subtotal + delivery).toFixed(2)}tk`;
-  updateCartCount();
-  lucide.createIcons();
+  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  subtotalEl.textContent = subtotal.toFixed(2) + " tk";
+  totalEl.textContent = (subtotal + DELIVERY_FEE).toFixed(2) + " tk";
+  deliveryFeeEl.textContent = DELIVERY_FEE + " tk";
 }
 
-function updateCartCount() {
-  const count = getCart().reduce((sum, i) => sum + i.quantity, 0);
-  const el = document.getElementById('cart-count');
-  const el2 = document.getElementById('cartCount');
-  if (el) el.textContent = count;
-  if (el2) el2.textContent = count;
+// Add item to cart
+function addToCart(item) {
+  const existing = cart.find(i => i.id === item.id);
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ ...item, quantity: 1 });
+  }
+  saveCart();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('menu-cart-btn')?.addEventListener('click', () => {
-    document.getElementById('cartSidebar').classList.add('open');
-  });
-  document.getElementById('closeCart')?.addEventListener('click', () => {
-    document.getElementById('cartSidebar').classList.remove('open');
-  });
-  renderCart();
+// Change item quantity
+function changeQuantity(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.quantity += delta;
+  if (item.quantity <= 0) {
+    removeItem(id);
+  } else {
+    saveCart();
+  }
+}
+
+// Remove item from cart
+function removeItem(id) {
+  cart = cart.filter(i => i.id !== id);
+  saveCart();
+}
+
+// -------------------------------
+// EVENT LISTENERS
+// -------------------------------
+menuCartBtn.addEventListener("click", () => {
+  cartSidebar.style.right = "0";
+});
+
+closeCartBtn.addEventListener("click", () => {
+  cartSidebar.style.right = "-400px";
+});
+
+checkoutBtn.addEventListener("click", () => {
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+  alert("Proceeding to checkout...");
+  // Here you can implement checkout logic
+});
+
+// Initialize UI
+document.addEventListener("DOMContentLoaded", () => {
+  updateCartUI();
 });
