@@ -13,11 +13,12 @@
 <body>
     <div class="navbar">
 
-        <h2>Dhakaiya Bites Admin</h2><a href="../Restuarant project - frontend/Home/home.html" class="home"><i data-lucide="house"></i></a>
+        <h2>Dhakaiya Bites Admin</h2><a href="../Restuarant project - frontend/Home/home.html" class="home"><i
+                data-lucide="house"></i></a>
 
 
         <ul class="navbar-links" id="navbar-links">
-            <li><a href="dashbord.html" ><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="dashbord.html"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
             <li><a href="adminmenu.html" class="active"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
             <li><a href="sales.html"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
             <li><a href="staff.html"><i data-lucide="users-round"></i>Saff</a></li>
@@ -39,28 +40,15 @@
         <div class="card">
             <h2>Menu Items</h2>
             <label for="searchMenu">Search Menu:</label>
-            <input type="text" name="search_menu" id="searchMenu" placeholder="Enter ID or Name..." >
+            <input type="text" name="search_menu" id="searchMenu" placeholder="Enter ID or Name...">
             <table>
                 <thead>
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
+                        <th>Images</th>
                         <th>Catagory</th>
                         <th>Description</th>
-                    </tr>
-
-                </thead>
-                <!--ar akhne value add hbe-->
-
-                <tbody id="menuTable1">
-
-                </tbody>
-
-
-            </table>
-            <table>
-                <thead>
-                    <tr>
                         <th>Ingridients</th>
                         <th>Preparation Time</th>
                         <th>Price</th>
@@ -69,13 +57,9 @@
                     </tr>
 
                 </thead>
-                <tbody id="menuTable2">
-
-                </tbody>
-
+                <!--ar akhne value add hbe-->
 
             </table>
-
 
         </div>
 
@@ -95,6 +79,10 @@
 
                 <label>Item Name</label>
                 <input type="text" name="new_menu_name" id="new_menu_name">
+
+                <label>Item Images</label>
+                <input type="file" name="menu_item_img" class="imageInput" data-id="1" accept="image/*">
+                <img class="preview" data-id="1" style="display:none; width:100%; margin-top:10px;">
 
                 <label>Category</label>
                 <input type="text" name="new_catagory" id="new_catagory">
@@ -133,6 +121,10 @@
 
                 <label>Menu Name</label>
                 <input type="text" name="eidit_menu_name" id="edit_menu_name">
+
+                <label>Item Image</label>
+                <input type="file" name="menu_item_img" class="imageInput" data-id="1" accept="image/*">
+                <img class="preview" data-id="1" style="display:none; width:100%; margin-top:10px;">
 
                 <label>Category</label>
                 <input type="text" name="edit_catagory" id="edit_category">
