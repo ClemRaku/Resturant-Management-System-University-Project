@@ -354,7 +354,7 @@ def admin_reserve(request):
 def inventory(request):
     mycursor = mydb.cursor()
     #adding into inventory
-    if  request.GET.get('add_item_name'):
+    if request.GET.get('add_item_name') and request.GET.get('action_type') == 'add_new_item':
 
         name = request.GET.get('add_item_name')
         quantity = int(request.GET.get('add_int_quantity'))
@@ -384,9 +384,9 @@ def inventory(request):
         
         
     #showing all the values in the table. WILL DO THIS LATER, BUT FIRST LETS FIXX THE ADD
-    fetching_all_invent = "SELECT inventory_id, ingredient_name, quantity, minimum_stock_level, last_restocked, supplier_id, supplier, supplier_contact, price,    availability   FROM inventory"
-    mycursor.execute(fetching_all_invent)
-    all_info_inventory = mycursor.fetchall()
+    ##fetching_all_invent = "SELECT inventory_id, ingredient_name, quantity, minimum_stock_level, last_restocked, supplier_id, supplier, supplier_contact, price,    availability   FROM inventory"
+    ##mycursor.execute(fetching_all_invent)
+    ##all_info_inventory = mycursor.fetchall()
     
     #editting
     if request.GET.get('int_item_name'):
@@ -417,6 +417,39 @@ def inventory(request):
         
         mycursor.execute(updateINVENTORYsql, updatedata)
         mydb.commit()
+        return redirect('admin_inventory')
         
+    #DELETING
+    if request.GET.get('delete_inventory_id'):
+        inventory_id = request.GET.get('delete_inventory_id')
+        
+        del_inventory_sql = "DELETE FROM inventory WHERE inventory_id = %s"
+        mycursor.execute(del_inventory_sql, (inventory_id, ))
+        mydb.commit()
+        return redirect('admin_inventory')
+        
+        
+    #searching
+    search_term = request.GET.get('search_query', '').strip()
     
-    return render(request, 'inventory.html', {'all_inventory_info' : all_info_inventory})
+    fetching_all_invent = "SELECT inventory_id, ingredient_name, quantity, minimum_stock_level, last_restocked, supplier_id, supplier, supplier_contact, price, availability FROM inventory"
+    
+    query_params = []
+    
+    if search_term:
+        fetching_all_invent += " WHERE ingredient_name LIKE %s"
+        query_params.append(f'%{search_term}%')
+        
+        try:
+            inventory_id_for_search = int(search_term)
+            fetching_all_invent += " OR inventory_id = %s"
+            query_params.append(inventory_id_for_search)
+        except ValueError:
+            pass        
+    
+    mycursor.execute(fetching_all_invent, tuple(query_params)) 
+    all_info_inventory = mycursor.fetchall() 
+    mycursor.close()
+
+    # 5. The final render statement for the page
+    return render(request, 'inventory.html', {'all_inventory_info' : all_info_inventory, 'search_query': search_term})

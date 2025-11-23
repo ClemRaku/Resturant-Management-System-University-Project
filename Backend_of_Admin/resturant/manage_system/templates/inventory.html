@@ -30,16 +30,27 @@
 
         <h1>Inventory Management</h1>
         <p class="sub-title">Track and manage your restaurant supplies</p>
-        <a href="#" class="btn menu-btn" id="openModal"> <i data-lucide="plus"></i> Add Inventory Items</a>
-
-
-        <div class="card">
+        
+            <a href="#" class="btn menu-btn" id="openModal"> <i data-lucide="plus"></i> Add Inventory Items</a>
+              
+        <div class="card" style="clear: both;">
             <h2>Inventory Items</h2>
 
-            <label>Search Reservation:</label>
-            <input type="text" id="searchInventory" placeholder="Enter ID or Name..."
-                style="padding: 10px; margin: 10px; border-radius: 10px;">
-
+            <div class="search-container" style="margin-bottom: 20px;">
+                <form method="get" action=".">
+                    <label>Search Inventory:</label>
+                    <input type="text" name="search_query" id="searchInventory" placeholder="Enter ID or Name..."
+                        style="padding: 10px; margin: 10px; border-radius: 10px;"
+                        value="{{ request.GET.search_query|default:'' }}">
+                    
+                    <button type="submit" class="btn">Search</button>
+                    
+                    {% if request.GET.search_query %}
+                        <a href="." class="btn menu-btn" style="background-color: #888;">Clear Search</a>
+                    {% endif %}
+                </form>
+            </div>
+            
             <table>
                 <thead>
                     <tr>
@@ -107,6 +118,7 @@
             <h2>Add New Inventory Item</h2>
             <form action="{% url 'admin_inventory' %}" method="get">
                 
+                <input type="hidden" name="action_type" value="add_new_item">
 
                 <label>Item Name</label>
                 <input type="text" name="add_item_name" id="add_item_name" required>

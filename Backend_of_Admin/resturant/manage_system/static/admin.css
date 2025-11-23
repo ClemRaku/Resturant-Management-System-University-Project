@@ -435,3 +435,9 @@ table select {
     max-height: 90vh;
   }
 }
+
+.card {
+    /* Existing card styles go here... */
+    clear: both; 
+    /* This ensures the card starts below any preceding floated elements */
+}
