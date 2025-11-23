@@ -379,12 +379,44 @@ def inventory(request):
         z = (name, quantity, min_stock, last_restock, supplier_name, real_status, supplier_id, price, suplier_contact)
         mycursor.execute(adding_item, z)
         mydb.commit()
+        return redirect('admin_inventory')
         
         
         
     #showing all the values in the table. WILL DO THIS LATER, BUT FIRST LETS FIXX THE ADD
-    fetching_all_invent = ""
+    fetching_all_invent = "SELECT inventory_id, ingredient_name, quantity, minimum_stock_level, last_restocked, supplier_id, supplier, supplier_contact, price,    availability   FROM inventory"
+    mycursor.execute(fetching_all_invent)
+    all_info_inventory = mycursor.fetchall()
+    
+    #editting
+    if request.GET.get('int_item_name'):
+        inventory_id = request.GET.get('inventory_id')
+        quantity = int(request.GET.get('int_quantity'))
+        min_stock = float(request.GET.get("int_mini_stock"))
         
+        last_restock_date = request.GET.get('edit_int_restock')
+        last_restock = None
+        if last_restock_date:
+            last_restock = datetime.strptime(last_restock_date, '%Y-%m-%dT%H:%M')
+        
+        supplier_id = int(request.GET.get('int_sup_id'))
+        supplier_name = request.GET.get('int_sup_name')
+        supplier_contact = int(request.GET.get('int_sup_contact'))
+        price = float(request.GET.get('edit_int_price'))
+        
+        
+        statuess = request.GET.get('int_status')
+        
+        
+        back_to_int = {'Stocked' : 1, 'Low Stock' : 0, 'Out_of_stock' : 2}
+        availability = back_to_int.get(statuess)
+        
+        
+        updateINVENTORYsql = "UPDATE inventory SET  quantity = %s, minimum_stock_level = %s, last_restocked = %s, supplier_id = %s, supplier = %s, supplier_contact = %s, price = %s, availability = %s WHERE inventory_id = %s"
+        updatedata = (quantity, min_stock, last_restock, supplier_id, supplier_name, supplier_contact, price, availability, inventory_id) # This must be the last item for the WHERE clause)
+        
+        mycursor.execute(updateINVENTORYsql, updatedata)
+        mydb.commit()
         
     
-    return render(request, 'inventory.html')
+    return render(request, 'inventory.html', {'all_inventory_info' : all_info_inventory})

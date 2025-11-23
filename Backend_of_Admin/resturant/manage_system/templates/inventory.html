@@ -58,8 +58,43 @@
                 </thead>
 
                 <tbody>
-
-                </tbody>
+                    {% for q in all_inventory_info %}
+                    <tr>
+                        <td>{{ q.0 }}</td>
+                        <td>{{ q.1 }}</td>
+                        <td>{{ q.2 }}</td>
+                        <td>{{ q.3 }}</td>
+                        <td>{{ q.4|date:"Y-m-d H:i" }}</td>
+                        <td>{{ q.5 }}</td>
+                        <td>{{ q.6 }}</td>
+                        <td>{{ q.7 }}</td>
+                        <td>${{ q.8|floatformat:2 }}</td>
+                        <td>
+                            {% if q.9 == 1 %}
+                                Stocked
+                            {% elif q.9 == 0 %}
+                                Low Stock
+                            {% else %}
+                                Out of Stock
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="action-btn edit-btn" data-inventory-id="{{ q.0 }}" data-item-name="{{ q.1 }}" 
+                                data-quantity="{{ q.2 }}" data-min-stock="{{ q.3 }}" 
+                                data-restocked="{{ q.4|date:"Y-m-d\TH:i" }}" data-supplier-id="{{ q.5 }}" 
+                                data-supplier-name="{{ q.6 }}" data-supplier-contact="{{ q.7 }}" 
+                                data-price="{{ q.8|floatformat:2 }}" data-status="{{ q.9 }}">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                            <button class="action-btn delete-btn" data-inventory-id="{{ q.0 }}"><i data-lucide="trash-2"></i></button>
+                        </td>                    
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="11" style="text-align: center;">No inventory items found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>            
             </table>
 
         </div>
@@ -71,7 +106,7 @@
             <span id="closeAddModal" class="close">&times;</span>
             <h2>Add New Inventory Item</h2>
             <form action="{% url 'admin_inventory' %}" method="get">
-                {% csrf_token %}
+                
 
                 <label>Item Name</label>
                 <input type="text" name="add_item_name" id="add_item_name" required>
@@ -83,7 +118,7 @@
                 <input type="number" name="add_int_min_stock" id="add_min_stock" required>
 
                 <label>Last Restocked</label>
-                <input type="datetime-local" name="add_int_restock" id="add_restock">
+                <input type="datetime-local" name="edit_int_restock" id="add_restock">
 
                 <label>Supplier ID</label>
                 <input type="number" name="add_sup_id" id="add_sup_id">
@@ -117,7 +152,7 @@
             <h2>Edit Inventory Items</h2>
             <form action="{% url 'admin_inventory' %}" method="get">
                 <label>Inventory ID</label>
-                <input type="text" name="inventotry_id" id="edit_int_id" readonly>
+                <input type="text" name="inventory_id" id="edit_int_id" readonly>
 
                 <label>Items Name</label>
                 <input type="text" name="int_item_name" id="edit_int_item_name" readonly>
@@ -129,7 +164,7 @@
                 <input type="text" name="int_mini_stock" id="edit_int_mini_stock">
 
                 <label>Last Restocked</label>
-                <input type="datetime-local"name = 'add_int_restock' id="edit_int_restock">
+                <input type="datetime-local"name = 'edit_int_restock' id="edit_int_restock">
 
                 <label>Supplier ID</label>
                 <input type="text" name="int_sup_id" id="edit_sup_id">

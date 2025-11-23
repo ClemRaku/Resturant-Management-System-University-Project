@@ -1,14 +1,9 @@
-let inventory = JSON.parse(localStorage.getItem("inventory_data")) || [];
+// =================================================================================
+// CORE JS: Modal Control and Server-Side Action Setup
+// REMOVED: All client-side data management (localStorage, displayInventory, etc.)
+// =================================================================================
 
-function saveInventory() {
-    localStorage.setItem("inventory_data", JSON.stringify(inventory));
-}
-
-// ============================
-// DOM Elements
-// ============================
-const tableBody = document.querySelector("tbody");
-
+// 1. DOM Elements for Modals
 const addModal = document.getElementById("addInventoryModal");
 const editModal = document.getElementById("editInventoryModal");
 
@@ -16,144 +11,74 @@ const openAddBtn = document.getElementById("openModal");
 const closeAddBtn = document.getElementById("closeAddModal");
 const closeEditBtn = document.getElementById("closeEditIntModal");
 
-const saveNewItemBtn = document.getElementById("saveNewItem");
-const saveEditedInventoryBtn = document.getElementById("saveEditedInventory");
+// Select all Edit and Delete buttons that are rendered by the Django template
+const editButtons = document.querySelectorAll(".action-btn.edit-btn");
+const deleteButtons = document.querySelectorAll(".action-btn.delete-btn");
 
-const searchInput = document.getElementById("searchInventory");
 
-// ============================
-// Modal Open/Close
-// ============================
+// 2. Modal Open/Close Logic
 openAddBtn.onclick = () => addModal.style.display = "block";
 closeAddBtn.onclick = () => addModal.style.display = "none";
 closeEditBtn.onclick = () => editModal.style.display = "none";
 
+// Close modals when user clicks outside
 window.onclick = function (e) {
     if (e.target === addModal) addModal.style.display = "none";
     if (e.target === editModal) editModal.style.display = "none";
 };
 
-// ============================
-// Display Inventory Table
-// ============================
-function displayInventory(items = inventory) {
-    tableBody.innerHTML = "";
 
-    items.forEach((item, index) => {
-        const row = document.createElement("tr");
+// 3. Edit Button Handler (Pulls data from HTML and populates the Edit Modal)
+editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        // Retrieve data from Django-rendered button attributes (using q.0, q.1, etc.)
+        const id = this.getAttribute('data-inventory-id');
+        const name = this.getAttribute('data-item-name');
+        const quantity = this.getAttribute('data-quantity');
+        const minStock = this.getAttribute('data-min-stock');
+        const restocked = this.getAttribute('data-restocked');
+        const supplierId = this.getAttribute('data-supplier-id');
+        const supplierName = this.getAttribute('data-supplier-name');
+        const supplierContact = this.getAttribute('data-supplier-contact');
+        const price = this.getAttribute('data-price');
+        const status = this.getAttribute('data-status'); // This is an integer (1, 0, 2)
 
-        row.innerHTML = `
-            <td>${item.id}</td>
-            <td>${item.name}</td>
-            <td>${item.quantity}</td>
-            <td>${item.minStock}</td>
-            <td>${item.restock}</td>
-            <td>${item.supplierId}</td>
-            <td>${item.supplierName}</td>
-            <td>${item.supplierContact}</td>
-            <td>${item.price}</td>
-            <td>${item.status}</td>
+        // Populate modal inputs
+        document.getElementById("edit_int_id").value = id;
+        document.getElementById("edit_int_item_name").value = name;
+        document.getElementById("edit_int_quantity").value = quantity;
+        document.getElementById("edit_int_mini_stock").value = minStock;
+        document.getElementById("edit_int_restock").value = restocked; 
+        document.getElementById("edit_sup_id").value = supplierId;
+        document.getElementById("edit_sup_name").value = supplierName;
+        document.getElementById("edit_sup_contact").value = supplierContact;
+        document.getElementById("edit_int_price").value = price;
+        
+        // Convert integer status back to the string value needed for the <select> element
+        let statusString = 'Out_of_stock';
+        if (status === '1') {
+            statusString = 'Stocked';
+        } else if (status === '0') {
+            statusString = 'Low Stock';
+        }
+        document.getElementById("edit_int_status").value = statusString;
 
-            <td>
-                <button class="btn" onclick="editItem(${index})">✏ Edit</button>
-                <button class="btn" onclick="deleteItem(${index})" style="background:red;">🗑 Delete</button>
-            </td>
-        `;
-
-        tableBody.appendChild(row);
+        // Show the modal
+        editModal.style.display = "block";
     });
-}
-
-displayInventory();
-
-// ============================
-// Add New Inventory Item
-// ============================
-saveNewItemBtn.addEventListener("click", function (e) {
-    
-
-    const newItem = {
-        id: Date.now(),
-        name: document.getElementById("add_item_name").value,
-        quantity: document.getElementById("add_quantity").value,
-        minStock: document.getElementById("add_min_stock").value,
-        restock: document.getElementById("add_restock").value,
-        supplierId: document.getElementById("add_sup_id").value,
-        supplierName: document.getElementById("add_sup_name").value,
-        supplierContact: document.getElementById("add_sup_contact").value,
-        price: document.getElementById("add_int_price").value,
-        status: document.getElementById("add_status").value
-    };
-
-    inventory.push(newItem);
-    saveInventory();
-    displayInventory();
-
-    addModal.style.display = "none";
 });
 
-// ============================
-// Edit Inventory Item
-// ============================
-function editItem(index) {
-    const item = inventory[index];
 
-    // Fill modal inputs
-    document.getElementById("edit_int_id").value = item.id;
-    document.getElementById("edit_int_item_name").value = item.name;
-    document.getElementById("edit_int_quantity").value = item.quantity;
-    document.getElementById("edit_int_mini_stock").value = item.minStock;
-    document.getElementById("edit_int_restock").value = item.restock;
-    document.getElementById("edit_sup_id").value = item.supplierId;
-    document.getElementById("edit_sup_name").value = item.supplierName;
-    document.getElementById("edit_sup_contact").value = item.supplierContact;
-    document.getElementById("edit_int_price").value = item.price;
-    document.getElementById("edit_int_status").value = item.status;
-
-    editModal.style.display = "block";
-
-    saveEditedInventoryBtn.onclick = function (e) {
-        e.preventDefault();
-
-        item.quantity = document.getElementById("edit_int_quantity").value;
-        item.minStock = document.getElementById("edit_int_mini_stock").value;
-        item.restock = document.getElementById("edit_int_restock").value;
-        item.supplierId = document.getElementById("edit_sup_id").value;
-        item.supplierName = document.getElementById("edit_sup_name").value;
-        item.supplierContact = document.getElementById("edit_sup_contact").value;
-        item.price = document.getElementById("edit_int_price").value;
-        item.status = document.getElementById("edit_int_status").value;
-
-        saveInventory();
-        displayInventory();
-        editModal.style.display = "none";
-    };
-}
-
-// ============================
-// Delete Item
-// ============================
-function deleteItem(index) {
-    if (confirm("Are you sure you want to delete this item?")) {
-        inventory.splice(index, 1);
-        saveInventory();
-        displayInventory();
-    }
-}
-
-window.editItem = editItem;
-window.deleteItem = deleteItem;
-
-// ============================
-// Search Inventory
-// ============================
-searchInput.addEventListener("keyup", () => {
-    const value = searchInput.value.toLowerCase();
-
-    const filtered = inventory.filter(item =>
-        item.name.toLowerCase().includes(value) ||
-        item.id.toString().includes(value)
-    );
-
-    displayInventory(filtered);
+// 4. Delete Button Handler (Redirects to Django view to handle deletion via database)
+deleteButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const id = this.getAttribute('data-inventory-id');
+        if (confirm("Are you sure you want to delete Inventory ID: " + id + "?")) {
+            // This URL redirect tells your Django view (views.py) to perform the SQL DELETE operation
+            window.location.href = `?delete_inventory_id=${id}`;
+        }
+    });
 });
+
+// 5. Initialize lucide icons
+lucide.createIcons();
