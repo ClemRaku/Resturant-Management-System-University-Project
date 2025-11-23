@@ -17,12 +17,14 @@
 <body>
     <div class="navbar">
 
-        <h2>Dhakaiya Bites Admin</h2><a href="../Restuarant project - frontend/Home/home.html" class="home"><i data-lucide="house"></i></a>
+        <h2>Dhakaiya Bites Admin</h2><a href="../Restuarant project - frontend/Home/home.html" class="home"><i
+                data-lucide="house"></i></a>
 
 
         <ul class="navbar-links" id="navbar-links">
-            <li><a href="dashbord.html" class="active"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="dashbord.html"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
             <li><a href="{% url 'admin_menu' %}"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
+            <li><a href="sales.html"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
             <li><a href="{% url 'staff' %}"><i data-lucide="users-round"></i>Saff</a></li>
             <li><a href="order.html"><i data-lucide="shopping-cart"></i>Order</a></li>
             <li><a href="{% url 'admin_reserve' %}"><i data-lucide="calendar"></i>Reservation</a></li>
@@ -41,6 +43,8 @@
 
         <div class="card">
             <h2>Menu Items</h2>
+            <label for="searchMenu">Search Menu:</label>
+            <input type="text" name="search_menu" id="searchMenu" placeholder="Enter ID or Name...">
             <table>
                 <thead>
                     <tr>
@@ -51,7 +55,7 @@
                         <th>Ingredients</th>
                         <th>Preparation Time</th>
                         <th>Price</th>
-                        <th>Status</th>
+                        <th>Images</th>
                         <th>Action</th>
                     </tr>
 
@@ -68,8 +72,8 @@
                         <td>{{ x.3 }}</td>  
                         <td>{{ x.4 }}</td>  
                         <td>{{ x.5 }}</td>  
-                        <td>{{ x.6 }} Tk</td> 
-                        <td>Active</td>        
+                        <td>{{ x.6 }} Tk</td>
+                        <td>IMAHES WILL BE HERE</td>         
                         <td>
                             <button class="edit-btn">Edit</button>
                             <a href="{% url 'admin_menu' %}?delete_menu_id={{ x.0 }}" class="delete-btn" onclick="return confirm('Are you sure you want to delete menu item {{ x.1 }}?');">Delete</a>
@@ -115,6 +119,10 @@
                 <label>Description</label>
                 <input type="text" name="new_description" id="new_description">
 
+                <label>Item Images</label>
+                <input type="file" name="menu_item_img" class="imageInput" data-id="1" accept="image/*">
+                <img class="preview" data-id="1" style="display:none; width:100%; margin-top:10px;">
+
 
                 <button class="btn menu-btn" id="addItemBtn">Add Item</button>
 
@@ -152,6 +160,12 @@
 
                 <label>Preparation Time</label>
                 <input type="text" name="edit_preparation_time" id="edit_preparation_time">
+
+                
+                <label>Item Image</label>
+                <input type="file" name="menu_item_img" class="imageInput" data-id="1" accept="image/*">
+                <img class="preview" data-id="1" style="display:none; width:100%; margin-top:10px;">
+
 
                 <button id="saveEdit" class="btn menu-btn">Save Changes</button>
             </form>
