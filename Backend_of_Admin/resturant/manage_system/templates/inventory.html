@@ -37,16 +37,16 @@
             <h2>Inventory Items</h2>
 
             <div class="search-container" style="margin-bottom: 20px;">
-                <form method="get" action=".">
+                <form method="get" action="{% url 'admin_inventory' %}">
                     <label>Search Inventory:</label>
-                    <input type="text" name="search_query" id="searchInventory" placeholder="Enter ID or Name..."
+                    <input type="text" name="search_query" id="searchInventory" placeholder="Enter ID"
                         style="padding: 10px; margin: 10px; border-radius: 10px;"
                         value="{{ request.GET.search_query|default:'' }}">
                     
                     <button type="submit" class="btn">Search</button>
                     
                     {% if request.GET.search_query %}
-                        <a href="." class="btn menu-btn" style="background-color: #888;">Clear Search</a>
+                        <a href="." class="btn" style="background-color: #888;">Clear Search</a>
                     {% endif %}
                 </form>
             </div>
