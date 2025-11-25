@@ -13,10 +13,8 @@ mydb = mysql.connector.connect(
 def admin_menu(request):
     mycursor = mydb.cursor()
     #adding to menu
-    if request.POST.get("new_menu_id"):
-        
-        IDmenu_str = request.POST.get("new_menu_id")
-        IDmenu = int(IDmenu_str)
+    if request.POST.get("new_menu_name") and request.method == 'POST':
+
         menu_name = request.POST.get("new_menu_name")
         categoryID = request.POST.get("new_catagory")
         ingredients = request.POST.get("new_ingredients")
@@ -30,10 +28,12 @@ def admin_menu(request):
         if image:
             image_url = '../static/' + image.name
 
-        sql = "INSERT INTO menu (menu_id, name, description, price, category_id, ingredients, preparation_time, image_url) values (%s, %s, %s, %s, %s, %s, %s, %s)"
-        data = (IDmenu, menu_name, description, price, categoryID, ingredients, prep_time_int, image_url)
+        sql = "INSERT INTO menu (name, description, price, category_id, ingredients, preparation_time, image_url) values (%s, %s, %s, %s, %s, %s, %s)"
+        data = (menu_name, description, price, categoryID, ingredients, prep_time_int, image_url)
         mycursor.execute(sql, data)
         mydb.commit()
+
+        return redirect('admin_menu')
         
         
         
@@ -85,11 +85,26 @@ def admin_menu(request):
         mydb.commit()    
     
     
-    selectALL_menu_items = "SELECT menu_id, name, category_id, description, ingredients, preparation_time, price, image_url FROM menu"
-    mycursor.execute(selectALL_menu_items)
+    search_term = request.GET.get('search_query', '').strip()
+
+    query = "SELECT menu_id, name, category_id, description, ingredients, preparation_time, price, image_url FROM menu"
+    params = []
+
+    if search_term:
+        try:
+            # Try to search by exact ID
+            id_search = int(search_term)
+            query += " WHERE menu_id = %s"
+            params.append(id_search)
+        except ValueError:
+            # If not an integer, search in name
+            query += " WHERE name LIKE %s"
+            params.append('%' + search_term + '%')
+
+    mycursor.execute(query, params)
     items_from_menu = mycursor.fetchall()
 
-    context = {'menu_items' : items_from_menu}
+    context = {'menu_items' : items_from_menu, 'search_query' : search_term}
     
     mycursor.close()
 

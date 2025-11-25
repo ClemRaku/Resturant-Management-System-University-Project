@@ -47,4 +47,3 @@ function activateEditButtons() {
 
 
 activateEditButtons();
-

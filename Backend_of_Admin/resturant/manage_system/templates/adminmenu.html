@@ -43,8 +43,14 @@
 
         <div class="card">
             <h2>Menu Items</h2>
-            <label for="searchMenu">Search Menu:</label>
-            <input type="text" name="search_menu" id="searchMenu" placeholder="Enter ID or Name...">
+            <form method="get" action="{% url 'admin_menu' %}">
+                <label for="searchMenu">Search Menu:</label>
+                <input type="text" name="search_query" id="searchMenu" placeholder="Enter ID or Name..." value="{{ search_query|default:'' }}">
+                <button type="submit" class="btn">Search</button>
+                {% if search_query %}
+                    <a href="{% url 'admin_menu' %}" class="btn" style="background-color: #888;">Clear Search</a>
+                {% endif %}
+            </form>
             <table>
                 <thead>
                     <tr>
