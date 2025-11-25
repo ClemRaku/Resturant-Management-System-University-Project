@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 import mysql.connector
 from datetime import datetime
+import os
 
 mydb = mysql.connector.connect(
     host = 'localhost',
@@ -12,61 +13,84 @@ mydb = mysql.connector.connect(
 
 def admin_menu(request):
     mycursor = mydb.cursor()
-    
-    if request.GET.get("new_menu_id"):
+    #adding to menu
+    if request.POST.get("new_menu_id"):
         
-        IDmenu_str = request.GET.get("new_menu_id")
+        IDmenu_str = request.POST.get("new_menu_id")
         IDmenu = int(IDmenu_str)
-        menu_name = request.GET.get("new_menu_name")
-        categoryID = request.GET.get("new_catagory")
-        ingredients = request.GET.get("new_ingredients")
-        prep_time_str = request.GET.get("new_preparation_time")
+        menu_name = request.POST.get("new_menu_name")
+        categoryID = request.POST.get("new_catagory")
+        ingredients = request.POST.get("new_ingredients")
+        prep_time_str = request.POST.get("new_preparation_time")
         prep_time_int = int(prep_time_str)
-        price_str = request.GET.get("new_price")
+        price_str = request.POST.get("new_price")
         price = float(price_str)
-        description = request.GET.get("new_description")
-        
-        
-        sql = "INSERT INTO menu (menu_id, name, description, price, category_id, ingredients, preparation_time) values (%s, %s, %s, %s, %s, %s, %s)"
-        data = (IDmenu, menu_name, description, price, categoryID, ingredients, prep_time_int)
+        description = request.POST.get("new_description")
+        image = request.FILES.get('menu_item_img')
+        image_url = ''
+        if image:
+            upload_dir = 'manage_system/static'
+            os.makedirs(upload_dir, exist_ok=True)
+            file_name = f"{IDmenu}_{image.name}"
+            file_path = os.path.join(upload_dir, file_name)
+            with open(file_path, 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
+            image_url = file_name
+
+        sql = "INSERT INTO menu (menu_id, name, description, price, category_id, ingredients, preparation_time, image_url) values (%s, %s, %s, %s, %s, %s, %s, %s)"
+        data = (IDmenu, menu_name, description, price, categoryID, ingredients, prep_time_int, image_url)
         mycursor.execute(sql, data)
         mydb.commit()
         
         
         
         #doing the editing bit now
-    if request.GET.get("edit_menu_id"):
-        edit_id = request.GET.get("edit_menu_id")
+    if request.POST.get("edit_menu_id"):
+        edit_id = request.POST.get("edit_menu_id")
         edit_id_int = int(edit_id)
-        
-        edit_name = request.GET.get("eidit_menu_name")
-        
-        edit_category = request.GET.get("edit_catagory")
-        edit_catagoryID = int(edit_category)
-        
-        edit_description = request.GET.get("edit_decription")
-        
-        edit_ingredients = request.GET.get("edit_ingredients")
-        
-        edit_price = request.GET.get("eidit_price")
-        edit_price_float = float(edit_price)
-        
-        edit_prep = request.GET.get("edit_preparation_time")
-        edit_prep_int = int(edit_prep)
-        
-        
-        select_menu_items = "UPDATE menu SET name = %s, description = %s, price = %s, category_id = %s, ingredients = %s, preparation_time = %s WHERE menu_id = %s"
+
+        edit_name = request.POST.get("eidit_menu_name")
+
+        edit_category = int(request.POST.get("edit_catagory"))
+
+        edit_description = request.POST.get("edit_decription")
+
+        edit_ingredients = request.POST.get("edit_ingredients")
+
+        edit_price = float(request.POST.get("eidit_price"))
+        edit_prep = int(request.POST.get("edit_preparation_time"))
+        # Handle image
+        image = request.FILES.get('menu_item_img')
+        if image:
+            upload_dir = 'manage_system/static'
+            os.makedirs(upload_dir, exist_ok=True)
+            file_name = f"{edit_id_int}_{image.name}"
+            file_path = os.path.join(upload_dir, file_name)
+            with open(file_path, 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
+            image_url = file_name
+        else:
+            # Keep existing image_url
+            select_existing = "SELECT image_url FROM menu WHERE menu_id = %s"
+            mycursor.execute(select_existing, (edit_id_int,))
+            existing = mycursor.fetchone()
+            image_url = existing[0] if existing and existing[0] else ''
+
+        select_menu_items = "UPDATE menu SET name = %s, description = %s, price = %s, category_id = %s, ingredients = %s, preparation_time = %s, image_url = %s WHERE menu_id = %s"
         dt = (
-            edit_name, 
-            edit_description, 
-            edit_price_float, 
-            edit_catagoryID, 
-            edit_ingredients, 
-            edit_prep_int, 
-            edit_id_int 
-        ) 
+            edit_name,
+            edit_description,
+            edit_price,
+            edit_category,
+            edit_ingredients,
+            edit_prep,
+            image_url,
+            edit_id_int
+        )
         mycursor.execute(select_menu_items, dt)
-        mydb.commit()       
+        mydb.commit()
         
     if request.GET.get("delete_menu_id"):
         delete_id = int(request.GET.get("delete_menu_id"))
@@ -76,10 +100,10 @@ def admin_menu(request):
         mydb.commit()    
     
     
-    selectALL_menu_items = "SELECT menu_id, name, category_id, description, ingredients, preparation_time, price FROM menu"
+    selectALL_menu_items = "SELECT menu_id, name, category_id, description, ingredients, preparation_time, price, image_url FROM menu"
     mycursor.execute(selectALL_menu_items)
     items_from_menu = mycursor.fetchall()
-    
+
     context = {'menu_items' : items_from_menu}
     
     mycursor.close()
