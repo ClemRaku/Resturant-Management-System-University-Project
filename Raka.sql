@@ -39,6 +39,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
+INSERT INTO `accounts` VALUES ('bigboss@gmail.com','147258369',1325467814),('clement1raka@gmail.com','123456789',1777338869),('solidsnake@gmail.com','258147369',1325467815);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,7 +51,7 @@ DROP TABLE IF EXISTS `customer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customer` (
-  `customer_id` int NOT NULL,
+  `customer_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `phone_no` int DEFAULT NULL,
   `visit_no` int DEFAULT NULL,
@@ -64,7 +65,7 @@ CREATE TABLE `customer` (
   KEY `fk_phone_account_customer` (`phone_no`),
   CONSTRAINT `fk_email_customer` FOREIGN KEY (`email`) REFERENCES `accounts` (`email`),
   CONSTRAINT `fk_phone_account_customer` FOREIGN KEY (`phone_no`) REFERENCES `accounts` (`phone_no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,6 +74,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+INSERT INTO `customer` VALUES (6,'Clement Raka De Costa',1777338869,NULL,NULL,NULL,'Banasree','clement1raka@gmail.com',1);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +86,7 @@ DROP TABLE IF EXISTS `employees`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employees` (
-  `employee_id` int NOT NULL,
+  `employee_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(60) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `phone_no` int DEFAULT NULL,
   `tenure` int DEFAULT NULL,
@@ -99,7 +101,7 @@ CREATE TABLE `employees` (
   KEY `fk_employee_phone_no_acc` (`phone_no`),
   CONSTRAINT `fk_employee_email_acc` FOREIGN KEY (`email`) REFERENCES `accounts` (`email`),
   CONSTRAINT `fk_employee_phone_no_acc` FOREIGN KEY (`phone_no`) REFERENCES `accounts` (`phone_no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,6 +110,7 @@ CREATE TABLE `employees` (
 
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
+INSERT INTO `employees` VALUES (1,'Big Boss',1325467814,4,'Uttara','Admin','2021-01-12','bigboss@gmail.com',1),(2,'Solid Snake',1325467815,2,'Banasree','Waiter','2023-04-01','solidsnake@gmail.com',0);
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +159,6 @@ CREATE TABLE `food_order` (
   KEY `menu_id` (`menu_id`),
   KEY `sale_id` (`sale_id`),
   CONSTRAINT `fk_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`menu_id`),
-  CONSTRAINT `fk_order_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
   CONSTRAINT `fk_sale` FOREIGN KEY (`sale_id`) REFERENCES `sale_transaction` (`sale_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -178,18 +180,18 @@ DROP TABLE IF EXISTS `inventory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `inventory` (
-  `inventory_id` int NOT NULL,
+  `inventory_id` int NOT NULL AUTO_INCREMENT,
   `ingredient_name` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
   `quantity` int NOT NULL,
   `minimum_stock_level` decimal(10,2) DEFAULT '0.00',
-  `last_restocked` date DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_restocked` datetime DEFAULT NULL,
   `supplier` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `availability` tinyint DEFAULT NULL,
+  `availability` int DEFAULT NULL,
   `supplier_id` int DEFAULT NULL,
   `price` double(8,2) DEFAULT NULL,
+  `supplier_contact` int DEFAULT NULL,
   PRIMARY KEY (`inventory_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,6 +200,7 @@ CREATE TABLE `inventory` (
 
 LOCK TABLES `inventory` WRITE;
 /*!40000 ALTER TABLE `inventory` DISABLE KEYS */;
+INSERT INTO `inventory` VALUES (1,'Cabbage',10,2.00,'2025-03-23 09:34:00','Karwan Bazar',1,2,12.00,213),(3,'Cauliflower',20,12.00,'2025-11-15 08:59:00','Chaal Daal YUM',0,11,32.12,123);
 /*!40000 ALTER TABLE `inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +212,7 @@ DROP TABLE IF EXISTS `menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `menu` (
-  `menu_id` int NOT NULL,
+  `menu_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
   `description` text COLLATE utf8mb4_general_ci,
   `price` decimal(10,2) NOT NULL,
@@ -223,7 +226,7 @@ CREATE TABLE `menu` (
   PRIMARY KEY (`menu_id`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `food_categories` (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,7 +235,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (1,'Margherita Pizza','Classic tomato, mozzarella, and fresh basil',12.99,1,'./imageM/margherita-pizza.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(2,'Pepperoni Pizza','Loaded with pepperoni and mozzarella',14.99,1,'./imageM/pizza2.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(3,'Grilled Salmon','Fresh Atlantic salmon with herbs',19.99,2,'./imageM/grilled-salmon.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(4,'Caesar Salad','Crisp romaine, croutons, and parmesan',9.99,3,'./imageM/caesar-salad.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(5,'Beef Burger','Juicy beef patty with cheese and lettuce',11.99,4,'./imageM/beef-burger.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(6,'Shrimp Pasta','Creamy garlic sauce with shrimp',16.99,5,'./imageM/pasta.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51');
+INSERT INTO `menu` VALUES (1,'Margherita Pizza','Classic tomato, mozzarella, and fresh basil',12.99,1,'1_about-restaurant.jpg',1,'Pizza dough, Tomato sauce (preferably San Marzano tomatoes), Fresh mozzarella cheese, Fresh basil leaves, Extra virgin olive oil, Salt, Black Pepper',30,'2025-11-13 13:31:51','2025-11-25 00:24:58'),(2,'Pepperoni Pizza','Loaded with pepperoni and mozzarella',14.99,1,'./imageM/pizza2.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(3,'Grilled Salmon','Fresh Atlantic salmon with herbs',19.99,2,'./imageM/grilled-salmon.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(4,'Caesar Salad','Crisp romaine, croutons, and parmesan',9.99,3,'./imageM/caesar-salad.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(5,'Beef Burger','Juicy beef patty with cheese and lettuce',11.99,4,'./imageM/beef-burger.jpg',1,NULL,NULL,'2025-11-13 13:31:51','2025-11-13 13:31:51'),(6,'Shrimp Pasta','Creamy garlic sauce with shrimp',16.99,5,'./imageM/pasta.jpg',1,'None',60,'2025-11-13 13:31:51','2025-11-23 19:41:43');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,7 +276,7 @@ DROP TABLE IF EXISTS `reservation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservation` (
-  `reservation_id` int NOT NULL,
+  `reservation_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
   `name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `phone_no` int DEFAULT NULL,
@@ -285,7 +288,7 @@ CREATE TABLE `reservation` (
   PRIMARY KEY (`reservation_id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `fk_customer_reserve` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -294,6 +297,7 @@ CREATE TABLE `reservation` (
 
 LOCK TABLES `reservation` WRITE;
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
+INSERT INTO `reservation` VALUES (4,6,'Clement Raka De Costa',1777338869,9,'I am a member, account.','2025-11-22 16:02:00',1,'clement1raka@gmail.com'),(5,NULL,'Donald Trump',999,5,'boo','2026-12-02 18:00:00',1,'donaldtrump@gmail.com');
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,8 +319,7 @@ CREATE TABLE `sale_transaction` (
   PRIMARY KEY (`sale_id`),
   KEY `employee_id` (`employee_id`),
   KEY `fk_customer_sale` (`customer_id`),
-  CONSTRAINT `fk_customer_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`),
-  CONSTRAINT `fk_customer_sale` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`)
+  CONSTRAINT `fk_customer_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -338,4 +341,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-18  1:44:06
+-- Dump completed on 2025-11-25  6:27:19
