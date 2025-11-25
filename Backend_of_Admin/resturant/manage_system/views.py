@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 import mysql.connector
 from datetime import datetime
-import os
 
 mydb = mysql.connector.connect(
     host = 'localhost',
@@ -29,14 +28,7 @@ def admin_menu(request):
         image = request.FILES.get('menu_item_img')
         image_url = ''
         if image:
-            upload_dir = 'manage_system/static'
-            os.makedirs(upload_dir, exist_ok=True)
-            file_name = f"{IDmenu}_{image.name}"
-            file_path = os.path.join(upload_dir, file_name)
-            with open(file_path, 'wb+') as destination:
-                for chunk in image.chunks():
-                    destination.write(chunk)
-            image_url = file_name
+            image_url = '../static/' + image.name
 
         sql = "INSERT INTO menu (menu_id, name, description, price, category_id, ingredients, preparation_time, image_url) values (%s, %s, %s, %s, %s, %s, %s, %s)"
         data = (IDmenu, menu_name, description, price, categoryID, ingredients, prep_time_int, image_url)
@@ -63,14 +55,7 @@ def admin_menu(request):
         # Handle image
         image = request.FILES.get('menu_item_img')
         if image:
-            upload_dir = 'manage_system/static'
-            os.makedirs(upload_dir, exist_ok=True)
-            file_name = f"{edit_id_int}_{image.name}"
-            file_path = os.path.join(upload_dir, file_name)
-            with open(file_path, 'wb+') as destination:
-                for chunk in image.chunks():
-                    destination.write(chunk)
-            image_url = file_name
+            image_url = '../static/' + image.name
         else:
             # Keep existing image_url
             select_existing = "SELECT image_url FROM menu WHERE menu_id = %s"
