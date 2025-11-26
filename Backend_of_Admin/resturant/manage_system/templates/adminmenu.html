@@ -79,7 +79,7 @@
                         <td>{{ x.4 }}</td>  
                         <td>{{ x.5 }}</td>  
                         <td>{{ x.6 }} Tk</td>
-                        <td>{% if x.7 %}<img src="{{ x.7 }}" alt="Menu Item Image" width="50px">{% else %}No Image{% endif %}</td>
+                        <td>{% if x.7 %}<img src="{% static x.7 %}" alt="Menu Item Image" width="50px">{% else %}No Image{% endif %}</td>
                         <td>
                             <button class="edit-btn">Edit</button>
                             <a href="{% url 'admin_menu' %}?delete_menu_id={{ x.0 }}" class="delete-btn" onclick="return confirm('Are you sure you want to delete menu item {{ x.1 }}?');">Delete</a>
