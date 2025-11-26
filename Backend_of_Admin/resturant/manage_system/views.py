@@ -26,7 +26,7 @@ def admin_menu(request):
         image = request.FILES.get('menu_item_img')
         image_url = ''
         if image:
-            image_url = '../static/' + image.name
+            image_url = image.name
 
         sql = "INSERT INTO menu (name, description, price, category_id, ingredients, preparation_time, image_url) values (%s, %s, %s, %s, %s, %s, %s)"
         data = (menu_name, description, price, categoryID, ingredients, prep_time_int, image_url)
@@ -55,13 +55,16 @@ def admin_menu(request):
         # Handle image
         image = request.FILES.get('menu_item_img')
         if image:
-            image_url = '../static/' + image.name
+            image_url = image.name
         else:
             # Keep existing image_url
             select_existing = "SELECT image_url FROM menu WHERE menu_id = %s"
             mycursor.execute(select_existing, (edit_id_int,))
             existing = mycursor.fetchone()
-            image_url = existing[0] if existing and existing[0] else ''
+            if existing and existing[0]:
+                image_url = existing[0]
+            else:
+                image_url = ''
 
         select_menu_items = "UPDATE menu SET name = %s, description = %s, price = %s, category_id = %s, ingredients = %s, preparation_time = %s, image_url = %s WHERE menu_id = %s"
         dt = (
@@ -166,7 +169,12 @@ def signup_signin(request):
     return render(request, 'auth.html', context)
 
 def home(request):
-    return render(request, 'home.html')
+    mycursor = mydb.cursor()
+    ndtk = "SELECT name, description, price, image_url FROM menu;"
+    mycursor.execute(ndtk)
+    name_description_price_img = mycursor.fetchall()
+
+    return render(request, 'home.html', {'home_menu' : name_description_price_img})
 def menu(request):
     return render(request, 'menu.html')
 

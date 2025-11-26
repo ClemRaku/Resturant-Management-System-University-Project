@@ -8,16 +8,6 @@ document.querySelectorAll('.order-btn').forEach(btn => {
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Load saved images
-    document.querySelectorAll(".preview").forEach(preview => {
-        const id = preview.dataset.id;
-        const savedImage = localStorage.getItem("home_image_" + id);
-        if (savedImage) {
-            preview.src = savedImage;
-            preview.style.display = "block";
-        }
-    });
-
     // Handle new uploads
     document.querySelectorAll(".imageInput").forEach(input => {
         input.addEventListener("change", function () {
@@ -37,6 +27,21 @@ document.addEventListener("DOMContentLoaded", function () {
             };
             reader.readAsDataURL(file);
         });
+    });
+
+    // Load saved images from localStorage
+    document.querySelectorAll('.preview').forEach(img => {
+        const id = img.dataset.id;
+        const saved = localStorage.getItem("home_image_" + id);
+
+        if (id === '1') {
+            // do not load saved for this id
+        } else {
+            if (saved) {
+                img.src = saved;
+                img.style.display = "block";
+            }
+        }
     });
 
 });
