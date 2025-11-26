@@ -1,8 +1,10 @@
-document.querySelectorAll('.order-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    window.location.href = '../menu/menu.html';
+if (!document.getElementById('customer-menu')) {
+  document.querySelectorAll('.order-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      window.location.href = '../menu/menu.html';
+    });
   });
-});
+}
 
 
 

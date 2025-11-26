@@ -45,16 +45,17 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
 // -------------------------------
 // ORDER BUTTON CLICKS
 // -------------------------------
-document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', e => {
     if (e.target.classList.contains('order-btn')) {
+      e.preventDefault();
       const card = e.target.closest('.card');
       const name = card.querySelector('input.h3').value.trim();
       const price = parseFloat(card.querySelector('input.price').value.trim()) || 0;
       const img = card.querySelector('img').src;
       const id = card.querySelector('input.h3').name.replace('menu_name', '') || Date.now();  // from name="menu_name1"
 
-      const item = { id, name, price, img };
+      const item = { id, name, price, image: img };
       addToCart(item);
     }
   });

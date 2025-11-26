@@ -79,25 +79,22 @@
 
 
 
-
-    <form action="{% url 'menu_home' %}" method = "GET">
     <div id="customer-menu" class="menu-grid">
       {% for item in ALLFOOD %}
       <div class="card" data-category="{% if item.4 == 1 %}Starter{% elif item.4 == 2 %}Main-Course{% elif item.4 == 3 %}Drinks{% elif item.4 == 4 %}Desserts{% else %}unknown{% endif %}">
         <input type="file" name="menu_image{{ forloop.counter }}" class="imageInput" data-id="{{ forloop.counter }}" accept="image/*" hidden>
         <img class="preview" data-id="{{ forloop.counter }}" alt="Image Preview" style="display:block; width:100%; margin-top:10px;" src="{% static item.3 %}">
 
-        <input type="text" class="h3" name="menu_name{{ forloop.counter }}" value="{{ item.0 }}"hidden>
-        <input type="text" class="p" name="menu_description{{ forloop.counter }}" value="{{ item.1 }}"hidden>
+        <input type="text" class="h3" name="menu_name{{ forloop.counter }}" value="{{ item.0 }}" readonly>
+        <input type="text" class="p" name="menu_description{{ forloop.counter }}" value="{{ item.1 }}" readonly>
 
         <div class="price-row">
           <input type="text" class="price" name="menu_price{{ forloop.counter }}" min="0" step="0.01" value="{{ item.2 }}" readonly>
-          <button class="btn btn-primary order-btn">Order Now</button>
+          <button type="button" class="btn btn-primary order-btn">Order Now</button>
         </div>
       </div>
       {% endfor %}
     </div>
-  </form>
   </section>
 
   <!--cart er sidebar -->
