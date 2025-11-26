@@ -4,9 +4,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
-  <script src="https://unpkg.com/lucide@latest"></script>  
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/x-icon">
   <title>Dhakaiya Bites</title>
@@ -58,7 +58,7 @@
     <!-- cart er button -->
     <button class="btn btn-primary" id="menu-cart-btn">
       <i data-lucide="shopping-cart"></i>
-      (<span>Cart <span id="cart-count">0</span></span>)
+      (<span>Cart <span id="cartCount">0</span></span>)
     </button>
 
     <!--search korar button -->
@@ -66,7 +66,7 @@
       <input type="text" id="search-input" placeholder="Search food...">
     </div>
 
-    <!-- catagoris filters -->
+    <!-- Category Filters -->
     <div class="category-filter">
       <button class="filter-btn active" data-category="all">All</button>
       <button class="filter-btn" data-category="Starter">Starter</button>
@@ -75,8 +75,55 @@
       <button class="filter-btn" data-category="Desserts">Desserts</button>
     </div>
 
-    <!-- menuu itemms er grid -->
-    <div class="menu-grid" id="menu-items"></div>
+
+
+
+
+    <section hidden >
+      <h2 class="admin-title">Admin Menu Editor</h2>
+      <div id="admin-menu" class="menu-grid">
+
+        <div class="card">
+          <input type="file" class="imageInput" data-id="1" accept="image/*">
+          <img class="preview" data-id="1" style="display:none; width:100%; margin-top:10px;">
+          <input type="text" class="menu_name" value="Spring Rolls">
+          <input type="text" class="menu_description" value="Crispy veggie spring rolls">
+          <input type="text" class="menu_price" value="156">
+          <input type="text" class="menu_category" value="Starter">
+        </div>
+
+        <div class="card">
+          <input type="file" class="imageInput" data-id="2" accept="image/*">
+          <img class="preview" data-id="2" style="display:none; width:100%; margin-top:10px;">
+          <input type="text" class="menu_name" value="Kacchi">
+          <input type="text" class="menu_description" value="Tender mutton and fragrant rice cooked in kacchi style">
+          <input type="text" class="menu_price" value="400">
+          <input type="text" class="menu_category" value="Main-Course">
+        </div>
+
+        <div class="card">
+          <input type="file" class="imageInput" data-id="3" accept="image/*">
+          <img class="preview" data-id="3" style="display:none; width:100%; margin-top:10px;">
+          <input type="text" class="menu_name" value="Shahi Tudka">
+          <input type="text" class="menu_description" value="Crispy fried bread soaked in rich milk & ghee">
+          <input type="text" class="menu_price" value="150">
+          <input type="text" class="menu_category" value="Desserts">
+        </div>
+
+        <div class="card">
+          <input type="file" class="imageInput" data-id="4" accept="image/*">
+          <img class="preview" data-id="4" style="display:none; width:100%; margin-top:10px;">
+          <input type="text" class="menu_name" value="Badam Sorbot">
+          <input type="text" class="menu_description" value="Refreshing creamy badam drink">
+          <input type="text" class="menu_price" value="160">
+          <input type="text" class="menu_category" value="Drinks">
+        </div>
+
+      </div>
+
+    </section>
+
+    <div id="customer-menu" class="menu-grid"></div>
 
   </section>
 
@@ -103,7 +150,7 @@
 
   </aside>
 
-  
+
 
   <!-- toast part -->
   <div id="toast-container"></div>
@@ -111,56 +158,56 @@
   <!-- footer er part-->
 
   <footer class="footer">
-  <div class="footer-top">  
-    <div class="footer-about">
-      <h2>Dhakaiya Bites</h2>
-      <p>Serving the best Bangladeshi cuisine with love and tradition.</p>
-      <div class="social-icons">
-        <a href="#"><i data-lucide="facebook"></i></a>
-        <a href="#"><i data-lucide="instagram"></i></a>
-        <a href="#"><i data-lucide="twitter"></i></a>
-        <a href="#"><i data-lucide="youtube"></i></a>
+    <div class="footer-top">
+      <div class="footer-about">
+        <h2>Dhakaiya Bites</h2>
+        <p>Serving the best Bangladeshi cuisine with love and tradition.</p>
+        <div class="social-icons">
+          <a href="#"><i data-lucide="facebook"></i></a>
+          <a href="#"><i data-lucide="instagram"></i></a>
+          <a href="#"><i data-lucide="twitter"></i></a>
+          <a href="#"><i data-lucide="youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- footer er link-->
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#menu-items">Menu</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- footer e contact -->
+      <div class="footer-contact">
+        <h3>Contact Us</h3>
+        <p>📍 123 Dhaka St, Bangladesh</p>
+        <p>📞 +880 123 456 789</p>
+        <p>✉️ DhakaiyaBites@gmail.com</p>
+      </div>
+
+      <!-- fooeter er email -->
+      <div class="footer-newsletter">
+        <h3>Subscribe</h3>
+        <p>Get latest updates & offers</p>
+        <form id="newsletter-form">
+          <input type="email" placeholder="Your email" required>
+          <button type="submit">Subscribe</button>
+        </form>
       </div>
     </div>
 
-    <!-- footer er link-->
-    <div class="footer-links">
-      <h3>Quick Links</h3>
-      <ul>
-        <li><a href="#menu-items">Menu</a></li>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#faq">FAQ</a></li>
-      </ul>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Your Restaurant. All rights reserved.</p>
     </div>
-
-    <!-- footer e contact -->
-    <div class="footer-contact">
-      <h3>Contact Us</h3>
-      <p>📍 123 Dhaka St, Bangladesh</p>
-      <p>📞 +880 123 456 789</p>
-      <p>✉️ DhakaiyaBites@gmail.com</p>
-    </div>
-
-    <!-- fooeter er email -->
-    <div class="footer-newsletter">
-      <h3>Subscribe</h3>
-      <p>Get latest updates & offers</p>
-      <form id="newsletter-form">
-        <input type="email" placeholder="Your email" required>
-        <button type="submit">Subscribe</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p>&copy; 2025 Your Restaurant. All rights reserved.</p>
-  </div>
-</footer>
+  </footer>
 
 
-  
-  <!-- js onso -->  
+
+  <!-- js onso -->
   <script src="{% static 'cart.js' %}"></script>
   <script src="{% static 'menu.js' %}"></script>
   <script src="{% static 'home.js' %}"></script>
