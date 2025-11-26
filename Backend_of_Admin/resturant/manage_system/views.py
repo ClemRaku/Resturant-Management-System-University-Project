@@ -176,6 +176,7 @@ def home(request):
 
     return render(request, 'home.html', {'home_menu' : name_description_price_img})
 def menu(request):
+    
     return render(request, 'menu.html')
 
 
