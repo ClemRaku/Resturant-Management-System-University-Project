@@ -177,11 +177,12 @@ def home(request):
     return render(request, 'home.html', {'home_menu' : name_description_price_img})
 def menu(request):
     mycursor = mydb.cursor()
-    selecting_all_menu_items = "SELECT name, description, price, image_url FROM menu;"
+    selecting_all_menu_items = "SELECT name, description, price, image_url, category_id FROM menu;"
     mycursor.execute(selecting_all_menu_items)
-    
-    
-    return render(request, 'menu.html')
+    allFOOD = mycursor.fetchall()
+    mycursor.close()
+
+    return render(request, 'menu.html', {'ALLFOOD' : allFOOD})
 
 
 def customer_reserver(request):

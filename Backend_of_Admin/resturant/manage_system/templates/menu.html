@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
   <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/x-icon">
   <title>Dhakaiya Bites</title>
@@ -23,7 +23,7 @@
 
         <!-- navbar er lgo -->
         <div class="logo-wrapper">
-          <img src="{% static 'image/LOGO.png' %}" alt="Dhakaiya-Bites" class="logo">
+          <img src="{% static 'LOGO.png' %}" alt="Dhakaiya-Bites" class="logo">
         </div>
 
         <!-- navbar er link -->
@@ -79,52 +79,25 @@
 
 
 
-    <section hidden >
-      <h2 class="admin-title">Admin Menu Editor</h2>
-      <div id="admin-menu" class="menu-grid">
 
-        <div class="card">
-          <input type="file" class="imageInput" data-id="1" accept="image/*">
-          <img class="preview" data-id="1" style="display:none; width:100%; margin-top:10px;">
-          <input type="text" class="menu_name" value="Spring Rolls">
-          <input type="text" class="menu_description" value="Crispy veggie spring rolls">
-          <input type="text" class="menu_price" value="156">
-          <input type="text" class="menu_category" value="Starter">
+    <form action="{% url 'menu_home' %}" method = "GET">
+    <div id="customer-menu" class="menu-grid">
+      {% for item in ALLFOOD %}
+      <div class="card" data-category="{% if item.4 == 1 %}Starter{% elif item.4 == 2 %}Main-Course{% elif item.4 == 3 %}Drinks{% elif item.4 == 4 %}Desserts{% else %}unknown{% endif %}">
+        <input type="file" name="menu_image{{ forloop.counter }}" class="imageInput" data-id="{{ forloop.counter }}" accept="image/*" hidden>
+        <img class="preview" data-id="{{ forloop.counter }}" alt="Image Preview" style="display:block; width:100%; margin-top:10px;" src="{% static item.3 %}">
+
+        <input type="text" class="h3" name="menu_name{{ forloop.counter }}" value="{{ item.0 }}"hidden>
+        <input type="text" class="p" name="menu_description{{ forloop.counter }}" value="{{ item.1 }}"hidden>
+
+        <div class="price-row">
+          <input type="text" class="price" name="menu_price{{ forloop.counter }}" min="0" step="0.01" value="{{ item.2 }}" readonly>
+          <button class="btn btn-primary order-btn">Order Now</button>
         </div>
-
-        <div class="card">
-          <input type="file" class="imageInput" data-id="2" accept="image/*">
-          <img class="preview" data-id="2" style="display:none; width:100%; margin-top:10px;">
-          <input type="text" class="menu_name" value="Kacchi">
-          <input type="text" class="menu_description" value="Tender mutton and fragrant rice cooked in kacchi style">
-          <input type="text" class="menu_price" value="400">
-          <input type="text" class="menu_category" value="Main-Course">
-        </div>
-
-        <div class="card">
-          <input type="file" class="imageInput" data-id="3" accept="image/*">
-          <img class="preview" data-id="3" style="display:none; width:100%; margin-top:10px;">
-          <input type="text" class="menu_name" value="Shahi Tudka">
-          <input type="text" class="menu_description" value="Crispy fried bread soaked in rich milk & ghee">
-          <input type="text" class="menu_price" value="150">
-          <input type="text" class="menu_category" value="Desserts">
-        </div>
-
-        <div class="card">
-          <input type="file" class="imageInput" data-id="4" accept="image/*">
-          <img class="preview" data-id="4" style="display:none; width:100%; margin-top:10px;">
-          <input type="text" class="menu_name" value="Badam Sorbot">
-          <input type="text" class="menu_description" value="Refreshing creamy badam drink">
-          <input type="text" class="menu_price" value="160">
-          <input type="text" class="menu_category" value="Drinks">
-        </div>
-
       </div>
-
-    </section>
-
-    <div id="customer-menu" class="menu-grid"></div>
-
+      {% endfor %}
+    </div>
+  </form>
   </section>
 
   <!--cart er sidebar -->

@@ -17,12 +17,23 @@ const closeCartBtn = document.getElementById("closeCart");
 const DELIVERY_FEE = 100;
 
 // -------------------------------
+// TOAST NOTIFICATION
+// -------------------------------
+function createToast(message, type) {
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.textContent = message;
+  document.getElementById('toast-container').appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// -------------------------------
 // FUNCTIONS
 // -------------------------------
 
 // Save cart to localStorage
 function saveCart() {
-  //localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
   updateCartUI();
 }
 
@@ -65,7 +76,10 @@ function addToCart(item) {
     cart.push({ ...item, quantity: 1 });
   }
   saveCart();
+  createToast(`${item.name} added to cart!`, 'success');
 }
+
+window.addToCart = addToCart;
 
 // Change item quantity
 function changeQuantity(id, delta) {
@@ -107,5 +121,6 @@ checkoutBtn.addEventListener("click", () => {
 
 // Initialize UI
 document.addEventListener("DOMContentLoaded", () => {
+  cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
   updateCartUI();
 });
