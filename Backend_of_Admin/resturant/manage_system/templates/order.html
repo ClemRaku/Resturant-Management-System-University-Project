@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Order Management</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h2>Dhakaiya Bites Admin</h2><a href="{% url 'home' %}" class="home"><i data-lucide="house"></i></a>
+        <ul class="navbar-links">
+            <li><a href="dashbord.html"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="{% url 'admin_menu' %}"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
+            <li><a href="sales.html"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
+            <li><a href="{% url 'staff' %}"><i data-lucide="users-round"></i>Saff</a></li>
+            <li><a href="{% url 'order' %}"><i data-lucide="shopping-cart"></i>Order</a></li>
+            <li><a href="{% url 'admin_reserve' %}"><i data-lucide="calendar"></i>Reservation</a></li>
+            <li><a href="{% url 'admin_inventory' %}"><i data-lucide="package"></i>Inventory</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1>Order Management</h1>
+        <p class="sub-title">Track and update customer orders</p>
+        <a href="#" class="btn menu-btn" id="openModal"> <i data-lucide="plus"></i> Add New Order</a>
+
+
+        <div class="order-card">
+
+            <div class="card">
+                <div class="header">
+                    <h4>Pending</h4>
+                </div>
+                <form action="order.html" method="get">
+                    <input type="number" name="pending" class="value" min="0" style="width:100%;" value="{{ pending_count }}">
+                </form>
+
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Preparing</h4>
+                </div>
+                <form action="order.html" method="get">
+                    <input type="number" name="preparing" class="value" min="0" style="width:100%;" value="{{ preparing_count }}">
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Ready</h4>
+                </div>
+                <form action="order.html">
+                    <input type="number" name="ready" class="value" min="0" style="width:100%;" value="{{ ready_count }}">
+                </form>
+
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Completed</h4>
+                </div>
+                <form action="order.html" method="get">
+                    <input type="number" name="completed" class="value" min="0" style="width:100%;" value="{{ completed_count }}">
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Cancelled</h4>
+                </div>
+                <form action="order.html" method="get">
+                    <input type="number" name="cancelled" class="value" min="0" style="width:100%;" value="{{ cancelled_count }}">
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <div class="card">
+            <h2>Current Orders</h2>
+
+            <label>Search Order:</label>
+            <input type="text" id="orderSearch" placeholder="Enter Order ID..."
+                style="padding: 10px; margin: 10px; border-radius: 10px;">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Phone Number</th>
+                        <th>Menu ID</th>
+                        <th>Order Time</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="orderTable">
+                {% for z in orders %}
+                    <tr>
+                        <td>{{ z.0 }}</td>
+                        <td>{{ z.1 }}</td>
+                        <td>{{ z.2 }}</td>
+                        <td>{{ z.3 }}</td>
+                        <td>{{ z.4 }}</td>
+                        <td>{{ z.5 }}</td>
+
+                        <td>
+                            <button class="edit-btn" data-order='{"order_id": "{{ z.0 }}", "customer_id": "{{ z.1 }}", "menu_id": "{{ z.2 }}", "order_time": "{{ z.3 }}", "price": "{{ z.4 }}", "status": "{{ z.5 }}"}'>
+                                <i data-lucide="pencil"></i>
+                            </button>
+
+                            <button class="delete-btn" data-id="{{ z.0 }}">
+                                <i data-lucide="trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <div id="addOrderModal" class="modal">
+
+        <div class="modal-content">
+            <span id="closeAddModal" class="close">&times;</span>
+            <h2>Add New Orders</h2>
+            <form action="{% url 'order' %}" method="get">
+                {% comment %} <label>Order ID</label> {% endcomment %}
+                <input type="text" name="add_order_id" id="add_order_id" hidden>
+
+                <label>Phone Number</label>
+                <input type="text" name="phone" id="add_order_cus_id">
+
+                <label>Menu ID</label>
+                <input type="text" name="add_order_menu_id" id="add_order_menu_id">
+
+                <label>Order Time</label>
+                <input type="datetime-local" name="add_order_time" id="add_order_time">
+
+                {% comment %} <label>Price</label> {% endcomment %}
+                <input type="text" name="add_order_price" id="add_order_price" hidden>
+
+                <label>Status</label>
+                <select name="add_order_status" id="add_order_status">
+                    <option value="pending">Pending</option>
+                    <option value="processing">Preparing</option>
+                    <option value="ready">Ready</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+
+                <button class="btn menu-btn" id="saveNewOrder">Add Item</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="editOrderModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditOrderModal" class="close">&times;</span>
+            <h2>Edit Order</h2>
+            <form action="{% url 'order' %}" method="get">
+                <label>Order ID</label>
+                <input type="text" name="order_id" id="edit_order_id" >
+
+                <label>Customer ID</label>
+                <input type="text" name="order_customer_id" id="edit_order_customer_id">
+
+                <label>Menu ID</label>
+                <input type="text" name="order_menu_id" id="edit_order_menu_id">
+
+                <label>Order Time</label>
+                <input type="datetime-local" name="order_time" id="edit_order_time">
+
+                <label>Total Price</label>
+                <input type="text" name="order-price" id="edit_order_price">
+
+                <label>Status</label>
+                <select name="edit_order_status" id="edit_order_status">
+                    <option value="pending">Pending</option>
+                    <option value="processing">Preparing</option>
+                    <option value="ready">Ready</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+
+                <button class="btn menu-btn" id="saveEditedOrder">Save Changes</button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script src="{% static 'order.js' %}"></script>
+    <script>lucide.createIcons();</script>
+
+</body>
+
+</html>

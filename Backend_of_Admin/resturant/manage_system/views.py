@@ -491,3 +491,103 @@ def inventory(request):
 
     # 5. The final render statement for the page
     return render(request, 'inventory.html', {'all_inventory_info' : all_info_inventory, 'search_query': search_term})
+
+def order(request):
+    mycursor = mydb.cursor()
+
+    # Fetch all orders
+    query = "SELECT order_id, phone_no, menu_id, order_time, price, status FROM food_order ORDER BY order_id ASC"
+    mycursor.execute(query)
+    orders_from_db = mycursor.fetchall()
+
+    # Count orders by status
+    status_counts = {'pending': 0, 'processing': 0, 'ready': 0, 'completed': 0, 'cancelled': 0}
+    for order in orders_from_db:
+        status = order[5]
+        if status in status_counts:
+            status_counts[status] += 1
+
+    context = {
+        'orders': orders_from_db,
+        'pending_count': status_counts['pending'],
+        'preparing_count': status_counts['processing'],  # Note: processing for preparing
+        'ready_count': status_counts['ready'],
+        'completed_count': status_counts['completed'],
+        'cancelled_count': status_counts['cancelled']
+    }
+
+    #adding order
+    if request.GET.get('add_order_menu_id'):
+
+        phone_no = int(request.GET.get('phone'))
+        IDmenu = int(request.GET.get('add_order_menu_id'))#this is a must for a order
+        OrderTIMEm = request.GET.get('add_order_time')
+        OrderTIME = datetime.strptime(OrderTIMEm, '%Y-%m-%dT%H:%M').date()
+        status = request.GET.get('add_order_status')
+
+        price_of_menu_item = "select price from menu where menu_id = %s"
+        mycursor.execute(price_of_menu_item, (IDmenu, ))
+        price_ = mycursor.fetchone()
+        price = price_[0] if price_ else 0
+
+        inserting_into_orderTABLE = "insert into food_order (menu_id, status, order_time, price, phone_no) values(%s, %s, %s, %s, %s)"
+        m = (IDmenu, status, OrderTIME, price, phone_no)
+        mycursor.execute(inserting_into_orderTABLE, m)
+        mydb.commit()
+
+        finding_all_customer_phones = "select phone_no from customer"
+        mycursor.execute(finding_all_customer_phones)
+        all_customer_phones = mycursor.fetchall()
+
+        phone_list = [p[0] for p in all_customer_phones]
+
+        if phone_no not in phone_list:
+            ss = "insert into customer (phone_no) values(%s)"
+            mycursor.execute(ss, (phone_no, ))
+            mydb.commit()
+            
+        increasing_visits = "select visit_no from customer where phone_no = %s"
+        mycursor.execute(increasing_visits, (phone_no, ))
+        visitsss = mycursor.fetchone()
+        visit = visitsss[0] if visitsss else None
+        if visit is not None:
+            visit = visit + 1
+        else:
+            visit = 1  #means first visit
+        back_to_table = "UPDATE customer SET visit_no = %s WHERE phone_no = %s;"
+        mycursor.execute(back_to_table, (visit, phone_no))
+        mydb.commit()
+        
+
+        return redirect('order')
+
+    #editing order
+    if request.GET.get('edit_order_status'):
+        order_id = int(request.GET.get('order_id'))
+        phone_no = int(request.GET.get('order_customer_id'))
+        menu_id = int(request.GET.get('order_menu_id'))
+        order_time_str = request.GET.get('order_time')
+        order_time = datetime.strptime(order_time_str, '%Y-%m-%dT%H:%M')
+        price = float(request.GET.get('order-price'))
+        status = request.GET.get('edit_order_status')
+
+        update_sql = "UPDATE food_order SET phone_no = %s, menu_id = %s, order_time = %s, price = %s, status = %s WHERE order_id = %s"
+        data = (phone_no, menu_id, order_time, price, status, order_id)
+        mycursor.execute(update_sql, data)
+        mydb.commit()
+
+        return redirect('order')
+
+    #deleting order
+    if request.GET.get('delete_order_id'):
+        delete_id = int(request.GET.get('delete_order_id'))
+
+        sql = "DELETE FROM food_order WHERE order_id = %s"
+        mycursor.execute(sql, (delete_id,))
+        mydb.commit()
+
+        return redirect('order')
+
+    mycursor.close()
+
+    return render(request, 'order.html', context)
