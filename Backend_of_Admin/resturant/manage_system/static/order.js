@@ -16,9 +16,32 @@ const saveEditedOrder = document.getElementById("saveEditedOrder");
 
 const searchInput = document.getElementById("orderSearch");
 
+// Dynamic menu items for add modal
+let addMoreBtn = null;
+let menuItemsContainer = null;
 
-
-openAdd.onclick = () => addModal.style.display = "block";
+openAdd.onclick = () => {
+    addModal.style.display = "block";
+    if (!addMoreBtn) {
+        addMoreBtn = document.getElementById('add-more');
+        menuItemsContainer = document.getElementById('menu-items');
+        addMoreBtn.onclick = () => {
+            const newItem = document.createElement('div');
+            newItem.className = 'menu-item';
+            newItem.innerHTML = `
+                <label>Menu ID</label>
+                <input type="text" name="add_order_menu_id" required>
+                <label>Quantity</label>
+                <input type="number" name="add_order_quantity" min="1" value="1" required>
+                <button type="button" class="remove-item">Remove</button>
+            `;
+            menuItemsContainer.appendChild(newItem);
+            newItem.querySelector('.remove-item').onclick = () => {
+                menuItemsContainer.removeChild(newItem);
+            };
+        };
+    }
+};
 closeAdd.onclick = () => addModal.style.display = "none";
 closeEdit.onclick = () => editModal.style.display = "none";
 
@@ -97,9 +120,7 @@ function updateCounters() {
 function openEditModal(order) {
     document.getElementById("edit_order_id").value = order.order_id;
     document.getElementById("edit_order_customer_id").value = order.customer_id;
-    document.getElementById("edit_order_menu_id").value = order.menu_id;
     document.getElementById("edit_order_time").value = order.order_time;
-    document.getElementById("edit_order_price").value = order.price;
     document.getElementById("edit_order_status").value = order.status;
 
     editModal.style.display = "block";

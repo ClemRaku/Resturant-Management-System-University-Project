@@ -64,7 +64,7 @@ CREATE TABLE `customer` (
   KEY `fk_email_customer` (`email`),
   KEY `fk_phone_account_customer` (`phone_no`),
   CONSTRAINT `fk_email_customer` FOREIGN KEY (`email`) REFERENCES `accounts` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (6,'Clement Raka De Costa',1777338869,2,NULL,NULL,'Banasree','clement1raka@gmail.com',1),(8,NULL,1324654127,NULL,NULL,NULL,NULL,NULL,NULL),(12,NULL,1423145781,1,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `customer` VALUES (6,'Clement Raka De Costa',1777338869,3,NULL,NULL,'Banasree','clement1raka@gmail.com',1),(8,NULL,1324654127,NULL,NULL,NULL,NULL,NULL,NULL),(12,NULL,1423145781,1,NULL,NULL,NULL,NULL,NULL),(13,NULL,177733869,1,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,15 +148,11 @@ DROP TABLE IF EXISTS `food_order`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `food_order` (
   `order_id` int NOT NULL AUTO_INCREMENT,
-  `menu_id` int DEFAULT NULL,
   `status` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `order_time` datetime DEFAULT NULL,
-  `price` decimal(10,2) DEFAULT NULL,
   `phone_no` int DEFAULT NULL,
-  PRIMARY KEY (`order_id`),
-  KEY `menu_id` (`menu_id`),
-  CONSTRAINT `fk_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +161,7 @@ CREATE TABLE `food_order` (
 
 LOCK TABLES `food_order` WRITE;
 /*!40000 ALTER TABLE `food_order` DISABLE KEYS */;
-INSERT INTO `food_order` VALUES (11,2,'pending','2025-11-27 00:00:00',400.00,1777338869),(12,1,'pending','2025-11-27 00:00:00',210.00,1777338869),(13,10,'completed','2025-11-27 00:00:00',490.00,1423145781);
+INSERT INTO `food_order` VALUES (11,'pending','2025-11-27 00:00:00',1777338869),(12,'pending','2025-11-27 00:00:00',1777338869),(13,'completed','2025-11-27 00:00:00',1423145781),(14,'ready','2025-11-28 00:00:00',177733869),(15,'cancelled','2025-11-28 00:00:00',1777338869);
 /*!40000 ALTER TABLE `food_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -233,6 +229,34 @@ LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
 INSERT INTO `menu` VALUES (1,'Momo','Steamed dumplings filled with tender meat',210.00,1,'momo.jpg',1,'All-purpose flour, water, minced meat (or vegetables), onion, ginger, garlic, coriander, spring onion, salt, pepper.',10,'2025-11-13 13:31:51','2025-11-26 18:38:25'),(2,'Beef Kacchi','Traditional slow-cooked kacchi, bursting with flavors',400.00,2,'../static/kacchi.jpg',1,'Beef, Basmati or Kalijeera rice, potato, yogurt, ghee, onion, ginger paste, garlic paste, cinnamon, cardamom (green and black), cloves, mace, nutmeg, bay leaves, dried plums (aloo bukhara), saffron (or food color), liquid milk, and salt.',45,'2025-11-13 13:31:51','2025-11-25 19:09:20'),(10,'Beef Kabab','Juicy kababs grilled to perfection',490.00,2,'../static/beef kabab.jpg',1,'Ground Beef (or cubed steak), onion, ginger paste, garlic paste, coriander powder, cumin powder, red chili powder, garam masala, salt, and black pepper',60,'2025-11-25 15:55:59','2025-11-25 19:10:40'),(14,'Roshmalai','a rich, creamy Bangladesh dessert made of soft, spongy cottage cheese (chhena) dumplings soaked in sweetened, thickened milk',120.15,3,'dessert5.jpg',1,'the cheese balls (chhena), the creamy milk mixture (rabri), and garnishes',30,'2025-11-26 20:55:33','2025-11-26 20:55:33');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `order_details`
+--
+
+DROP TABLE IF EXISTS `order_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_details` (
+  `order_id` int NOT NULL,
+  `menu_id` int NOT NULL,
+  `quantity` int DEFAULT '1',
+  `item_price` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`order_id`,`menu_id`),
+  KEY `fk_order_details_menu` (`menu_id`),
+  CONSTRAINT `fk_order_details_menu` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`menu_id`),
+  CONSTRAINT `fk_order_details_order` FOREIGN KEY (`order_id`) REFERENCES `food_order` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_details`
+--
+
+LOCK TABLES `order_details` WRITE;
+/*!40000 ALTER TABLE `order_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -340,4 +364,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-27 21:17:35
+-- Dump completed on 2025-11-28  1:01:33

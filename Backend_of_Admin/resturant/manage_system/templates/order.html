@@ -99,30 +99,32 @@
                     <tr>
                         <th>Order ID</th>
                         <th>Phone Number</th>
-                        <th>Menu ID</th>
                         <th>Order Time</th>
-                        <th>Price</th>
                         <th>Status</th>
+                        <th>Menu Items</th>
                         <th>Action</th>
                     </tr>
                 </thead>
 
                 <tbody id="orderTable">
-                {% for z in orders %}
+                {% for a in orders %}
                     <tr>
-                        <td>{{ z.0 }}</td>
-                        <td>{{ z.1 }}</td>
-                        <td>{{ z.2 }}</td>
-                        <td>{{ z.3 }}</td>
-                        <td>{{ z.4 }}</td>
-                        <td>{{ z.5 }}</td>
+                        <td>{{ a.order_id }}</td>
+                        <td>{{ a.phone_no }}</td>
+                        <td>{{ a.order_time }}</td>
+                        <td>{{ a.status }}</td>
+                        <td>
+                            {% for item in a.items %}
+                                {{ item.menu_id }} ({{ item.quantity }})<br>
+                            {% endfor %}
+                        </td>
 
                         <td>
-                            <button class="edit-btn" data-order='{"order_id": "{{ z.0 }}", "customer_id": "{{ z.1 }}", "menu_id": "{{ z.2 }}", "order_time": "{{ z.3 }}", "price": "{{ z.4 }}", "status": "{{ z.5 }}"}'>
+                            <button class="edit-btn" data-order='{"order_id": "{{ a.order_id }}", "customer_id": "{{ a.phone_no }}", "order_time": "{{ a.order_time }}", "status": "{{ a.status }}"}'>
                                 <i data-lucide="pencil"></i>
                             </button>
 
-                            <button class="delete-btn" data-id="{{ z.0 }}">
+                            <button class="delete-btn" data-id="{{ a.order_id }}">
                                 <i data-lucide="trash"></i>
                             </button>
                         </td>
@@ -139,25 +141,29 @@
 
         <div class="modal-content">
             <span id="closeAddModal" class="close">&times;</span>
-            <h2>Add New Orders</h2>
+            <h2>Add New Order</h2>
             <form action="{% url 'order' %}" method="get">
-                {% comment %} <label>Order ID</label> {% endcomment %}
-                <input type="text" name="add_order_id" id="add_order_id" hidden>
-
                 <label>Phone Number</label>
-                <input type="text" name="phone" id="add_order_cus_id">
-
-                <label>Menu ID</label>
-                <input type="text" name="add_order_menu_id" id="add_order_menu_id">
+                <input type="text" name="phone" required>
 
                 <label>Order Time</label>
-                <input type="datetime-local" name="add_order_time" id="add_order_time">
+                <input type="datetime-local" name="add_order_time" required>
 
-                {% comment %} <label>Price</label> {% endcomment %}
-                <input type="text" name="add_order_price" id="add_order_price" hidden>
+                <div id="menu-items">
+                    <div class="menu-item">
+                        <label>Menu ID</label>
+                        <input type="text" name="add_order_menu_id" required>
+
+                        <label>Quantity</label>
+                        <input type="number" name="add_order_quantity" min="1" value="1" required>
+
+                        <button type="button" class="remove-item" style="display:none;">Remove</button>
+                    </div>
+                </div>
+                <button type="button" id="add-more">Add Another Item</button>
 
                 <label>Status</label>
-                <select name="add_order_status" id="add_order_status">
+                <select name="add_order_status" required>
                     <option value="pending">Pending</option>
                     <option value="processing">Preparing</option>
                     <option value="ready">Ready</option>
@@ -165,7 +171,7 @@
                     <option value="cancelled">Cancelled</option>
                 </select>
 
-                <button class="btn menu-btn" id="saveNewOrder">Add Item</button>
+                <button class="btn menu-btn" id="saveNewOrder">Add Order</button>
             </form>
         </div>
     </div>
@@ -177,22 +183,16 @@
             <h2>Edit Order</h2>
             <form action="{% url 'order' %}" method="get">
                 <label>Order ID</label>
-                <input type="text" name="order_id" id="edit_order_id" >
+                <input type="text" name="order_id" id="edit_order_id" readonly>
 
-                <label>Customer ID</label>
-                <input type="text" name="order_customer_id" id="edit_order_customer_id">
-
-                <label>Menu ID</label>
-                <input type="text" name="order_menu_id" id="edit_order_menu_id">
+                <label>Phone Number</label>
+                <input type="text" name="order_customer_id" id="edit_order_customer_id" required>
 
                 <label>Order Time</label>
-                <input type="datetime-local" name="order_time" id="edit_order_time">
-
-                <label>Total Price</label>
-                <input type="text" name="order-price" id="edit_order_price">
+                <input type="datetime-local" name="order_time" id="edit_order_time" required>
 
                 <label>Status</label>
-                <select name="edit_order_status" id="edit_order_status">
+                <select name="edit_order_status" id="edit_order_status" required>
                     <option value="pending">Pending</option>
                     <option value="processing">Preparing</option>
                     <option value="ready">Ready</option>
