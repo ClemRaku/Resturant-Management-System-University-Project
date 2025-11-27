@@ -6,8 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin-Dhakaiya Bites</title>
-    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
-    
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">  
     <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/x-icon">
 
 
@@ -22,10 +21,10 @@
 
 
         <ul class="navbar-links" id="navbar-links">
-            <li><a href="dashbord.html"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="dashboard.html"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
             <li><a href="{% url 'admin_menu' %}"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
-            <li><a href="sales.html"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
-            <li><a href="{% url 'staff' %}"><i data-lucide="users-round"></i>Saff</a></li>
+            <li><a href="{% url 'sales' %}"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
+            <li><a href="{% url 'staff' %}"><i data-lucide="users-round"></i>Staff</a></li>
             <li><a href="{% url 'order' %}"><i data-lucide="shopping-cart"></i>Order</a></li>
             <li><a href="{% url 'admin_reserve' %}"><i data-lucide="calendar"></i>Reservation</a></li>
             <li><a href="{% url 'admin_inventory' %}"><i data-lucide="package"></i>Inventory</a></li>

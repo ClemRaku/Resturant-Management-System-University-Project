@@ -615,3 +615,9 @@ def order(request):
     mycursor.close()
 
     return render(request, 'order.html', context)
+
+
+def sales(request):
+    
+    
+    return render(request, 'sales.html')
