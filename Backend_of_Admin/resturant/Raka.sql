@@ -73,7 +73,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (6,'Clement Raka De Costa',1777338869,3,NULL,NULL,'Banasree','clement1raka@gmail.com',1),(8,NULL,1324654127,NULL,NULL,NULL,NULL,NULL,NULL),(12,NULL,1423145781,1,NULL,NULL,NULL,NULL,NULL),(13,NULL,177733869,1,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `customer` VALUES (6,'Clement Raka De Costa',1777338869,1,NULL,NULL,'Banasree','clement1raka@gmail.com',1),(8,NULL,1324654127,NULL,NULL,NULL,NULL,NULL,NULL),(12,NULL,1423145781,1,NULL,NULL,NULL,NULL,NULL),(13,NULL,177733869,1,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,8 +151,11 @@ CREATE TABLE `food_order` (
   `status` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `order_time` datetime DEFAULT NULL,
   `phone_no` int DEFAULT NULL,
-  PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `employee_id` int DEFAULT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `fk_employee_food` (`employee_id`),
+  CONSTRAINT `fk_employee_food` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +164,7 @@ CREATE TABLE `food_order` (
 
 LOCK TABLES `food_order` WRITE;
 /*!40000 ALTER TABLE `food_order` DISABLE KEYS */;
-INSERT INTO `food_order` VALUES (11,'pending','2025-11-27 00:00:00',1777338869),(12,'pending','2025-11-27 00:00:00',1777338869),(13,'completed','2025-11-27 00:00:00',1423145781),(14,'ready','2025-11-28 00:00:00',177733869),(15,'cancelled','2025-11-28 00:00:00',1777338869);
+INSERT INTO `food_order` VALUES (16,'pending','2025-11-28 01:19:00',1777338869,NULL);
 /*!40000 ALTER TABLE `food_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,6 +259,7 @@ CREATE TABLE `order_details` (
 
 LOCK TABLES `order_details` WRITE;
 /*!40000 ALTER TABLE `order_details` DISABLE KEYS */;
+INSERT INTO `order_details` VALUES (16,10,3,1470.00),(16,14,2,240.30);
 /*!40000 ALTER TABLE `order_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,4 +368,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-28  1:01:33
+-- Dump completed on 2025-11-28  3:26:56

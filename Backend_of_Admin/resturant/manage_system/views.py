@@ -496,14 +496,14 @@ def order(request):
     mycursor = mydb.cursor()
 
     # Fetch all orders
-    query = "SELECT order_id, phone_no, order_time, status FROM food_order ORDER BY order_id ASC"
+    query = "SELECT order_id, phone_no, order_time, status, employee_id FROM food_order ORDER BY order_id ASC"
     mycursor.execute(query)
     orders_from_db = mycursor.fetchall()
 
     # For each order, fetch details
     orders = []
     for x in orders_from_db:
-        order_id, phone_no, order_time, status = x
+        order_id, phone_no, order_time, status, employee_id = x
         # Fetch order details
         detail_query = "SELECT menu_id, quantity, item_price FROM order_details WHERE order_id = %s"
         mycursor.execute(detail_query, (order_id,))
@@ -514,7 +514,8 @@ def order(request):
             'phone_no': phone_no,
             'order_time': order_time,
             'status': status,
-            'items': items
+            'items': items,
+            'employee_id': employee_id
         })
 
     # Count orders by status
@@ -524,8 +525,18 @@ def order(request):
         if status in status_counts:
             status_counts[status] += 1
 
+    # Fetch employees for dropdowns
+    mycursor.execute("SELECT employee_id, name FROM employees ORDER BY employee_id ASC")
+    employees = mycursor.fetchall()
+
+    # Fetch menu items for dropdowns
+    mycursor.execute("SELECT menu_id, name FROM menu WHERE is_available = 1 ORDER BY menu_id ASC")
+    menu_items = mycursor.fetchall()
+
     context = {
         'orders': orders,
+        'employees': employees,
+        'menu_items': menu_items,
         'pending_count': status_counts['pending'],
         'preparing_count': status_counts['processing'],  # Note: processing for preparing
         'ready_count': status_counts['ready'],
@@ -541,10 +552,11 @@ def order(request):
         order_time_str = request.GET.get('add_order_time')
         order_time = datetime.strptime(order_time_str, '%Y-%m-%dT%H:%M')
         status = request.GET.get('add_order_status')
+        employee_id = int(request.GET.get('add_order_employee_id')) if request.GET.get('add_order_employee_id') else None
 
         # Insert into food_order
-        sql = "INSERT INTO food_order (status, order_time, phone_no) VALUES (%s, %s, %s)"
-        mycursor.execute(sql, (status, order_time, phone_no))
+        sql = "INSERT INTO food_order (status, order_time, phone_no, employee_id) VALUES (%s, %s, %s, %s)"
+        mycursor.execute(sql, (status, order_time, phone_no, employee_id))
         order_id = mycursor.lastrowid
 
         # Then for each menu_id, quantity
@@ -594,9 +606,10 @@ def order(request):
         order_time_str = request.GET.get('order_time')
         order_time = datetime.strptime(order_time_str, '%Y-%m-%dT%H:%M')
         status = request.GET.get('edit_order_status')
+        employee_id = int(request.GET.get('edit_order_employee_id')) if request.GET.get('edit_order_employee_id') else None
 
-        update_sql = "UPDATE food_order SET phone_no = %s, order_time = %s, status = %s WHERE order_id = %s"
-        data = (phone_no, order_time, status, order_id)
+        update_sql = "UPDATE food_order SET phone_no = %s, order_time = %s, status = %s, employee_id = %s WHERE order_id = %s"
+        data = (phone_no, order_time, status, employee_id, order_id)
         mycursor.execute(update_sql, data)
         mydb.commit()
 

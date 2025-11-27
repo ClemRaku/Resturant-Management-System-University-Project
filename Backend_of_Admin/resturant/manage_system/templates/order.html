@@ -101,6 +101,7 @@
                         <th>Phone Number</th>
                         <th>Order Time</th>
                         <th>Status</th>
+                        <th>Employee ID</th>
                         <th>Menu Items</th>
                         <th>Action</th>
                     </tr>
@@ -113,6 +114,7 @@
                         <td>{{ a.phone_no }}</td>
                         <td>{{ a.order_time }}</td>
                         <td>{{ a.status }}</td>
+                        <td>{{ a.employee_id }}</td>
                         <td>
                             {% for item in a.items %}
                                 {{ item.menu_id }} ({{ item.quantity }})<br>
@@ -120,7 +122,7 @@
                         </td>
 
                         <td>
-                            <button class="edit-btn" data-order='{"order_id": "{{ a.order_id }}", "customer_id": "{{ a.phone_no }}", "order_time": "{{ a.order_time }}", "status": "{{ a.status }}"}'>
+                            <button class="edit-btn" data-order='{"order_id": "{{ a.order_id }}", "customer_id": "{{ a.phone_no }}", "order_time": "{{ a.order_time }}", "status": "{{ a.status }}", "employee_id": "{{ a.employee_id }}"}'>
                                 <i data-lucide="pencil"></i>
                             </button>
 
@@ -150,17 +152,27 @@
                 <input type="datetime-local" name="add_order_time" required>
 
                 <div id="menu-items">
-                    <div class="menu-item">
-                        <label>Menu ID</label>
-                        <input type="text" name="add_order_menu_id" required>
+                    <div class="menu-item" style="display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <label>Menu Item</label><br>
+                            <select name="add_order_menu_id" required>
+                                <option value="">Select Menu Item</option>
+                                {% for item in menu_items %}
+                                    <option value="{{ item.0 }}">{{ item.0 }} - {{ item.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                        <label>Quantity</label>
-                        <input type="number" name="add_order_quantity" min="1" value="1" required>
+                        <div>
+                            <label>Quantity</label><br>
+                            <input type="number" name="add_order_quantity" min="1" value="1" required>
+                        </div>
 
                         <button type="button" class="remove-item" style="display:none;">Remove</button>
                     </div>
                 </div>
                 <button type="button" id="add-more">Add Another Item</button>
+                <br><br>
 
                 <label>Status</label>
                 <select name="add_order_status" required>
@@ -170,6 +182,16 @@
                     <option value="completed">Completed</option>
                     <option value="cancelled">Cancelled</option>
                 </select>
+
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label>Employee</label>
+                    <select name="add_order_employee_id" required>
+                        <option value="">Select Employee</option>
+                        {% for emp in employees %}
+                            <option value="{{ emp.0 }}">{{ emp.0 }} - {{ emp.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
                 <button class="btn menu-btn" id="saveNewOrder">Add Order</button>
             </form>
@@ -198,6 +220,14 @@
                     <option value="ready">Ready</option>
                     <option value="completed">Completed</option>
                     <option value="cancelled">Cancelled</option>
+                </select>
+
+                <label>Employee</label>
+                <select name="edit_order_employee_id" id="edit_order_employee_id" required>
+                    <option value="">Select Employee</option>
+                    {% for emp in employees %}
+                        <option value="{{ emp.0 }}">{{ emp.0 }} - {{ emp.1 }}</option>
+                    {% endfor %}
                 </select>
 
                 <button class="btn menu-btn" id="saveEditedOrder">Save Changes</button>
