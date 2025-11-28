@@ -764,3 +764,84 @@ def sales(request):
     }
 
     return render(request, 'sales.html', context)
+
+def dashbaord(request):
+    mycursor = mydb.cursor()
+
+    # First, check and populate sale_transaction table from food_order
+    # Fetch orders that don't have sales transactions yet
+    mycursor.execute("""
+        SELECT fo.order_id, fo.phone_no, fo.employee_id
+        FROM food_order fo
+        LEFT JOIN sale_transaction st ON fo.order_id = st.order_id
+        WHERE st.order_id IS NULL
+    """)
+    pending_orders = mycursor.fetchall()
+
+    for order in pending_orders:
+        order_id, phone_no, employee_id = order
+
+        # Get total amount from order_details
+        mycursor.execute("SELECT SUM(item_price) FROM order_details WHERE order_id = %s", (order_id,))
+        result = mycursor.fetchone()
+        total_amount = result[0] if result and result[0] is not None else 0
+
+        # Get customer_id from customer
+        mycursor.execute("SELECT customer_id FROM customer WHERE phone_no = %s", (phone_no,))
+        customer_result = mycursor.fetchone()
+        customer_id = customer_result[0] if customer_result else None
+
+        # Insert sale transaction
+        insert_query = """
+        INSERT INTO sale_transaction (customer_id, employee_id, Amount, order_id, status)
+        VALUES (%s, %s, %s, %s, 'Completed')
+        """
+        mycursor.execute(insert_query, (customer_id, employee_id, total_amount, order_id))
+        mydb.commit()
+
+    # Now fetch all sales transactions
+    query = """
+    SELECT st.sale_id, st.customer_id, st.employee_id, st.table_no, st.sale_time, st.Payment_Method, st.Amount, st.order_id, st.status
+    FROM sale_transaction st
+    ORDER BY st.sale_id ASC
+    """
+    mycursor.execute(query)
+    sales_data = mycursor.fetchall()
+
+    total_sales_amount = 0
+
+    for sale in sales_data:
+        sale_id, customer_id, employee_id, table_no, sale_time, payment_method, amount, order_id, status = sale
+
+        # Fetch items for this order
+        calculated_amount = 0
+        if order_id:
+            mycursor.execute("SELECT SUM(item_price) FROM order_details WHERE order_id = %s", (order_id,))
+            sum_result = mycursor.fetchone()
+            calculated_amount = sum_result[0] if sum_result and sum_result[0] else 0
+            if calculated_amount != amount:
+                mycursor.execute("UPDATE sale_transaction SET Amount = %s WHERE sale_id = %s", (calculated_amount, sale_id))
+                mydb.commit()
+        else:
+            calculated_amount = amount
+
+        if status == 'Completed':
+            total_sales_amount += calculated_amount or 0
+
+    mycursor.execute("SELECT COUNT(*) FROM food_order")
+    total_orders_result = mycursor.fetchone()
+    total_orders = total_orders_result[0] if total_orders_result else 0
+
+    # Get total customers
+    mycursor.execute("SELECT COUNT(*) FROM customer")
+    total_customers_result = mycursor.fetchone()
+    total_customers = total_customers_result[0] if total_customers_result else 0
+
+    # Get total staff
+    mycursor.execute("SELECT COUNT(*) FROM employees")
+    total_staff_result = mycursor.fetchone()
+    total_staff = total_staff_result[0] if total_staff_result else 0
+
+    mycursor.close()
+
+    return render(request, 'dashboard.html', {'total_sales': total_sales_amount, 'total_orders': total_orders, 'total_customers': total_customers, 'total_staff': total_staff})

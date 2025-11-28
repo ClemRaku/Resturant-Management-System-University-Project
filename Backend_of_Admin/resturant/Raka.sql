@@ -64,7 +64,7 @@ CREATE TABLE `customer` (
   KEY `fk_email_customer` (`email`),
   KEY `fk_phone_account_customer` (`phone_no`),
   CONSTRAINT `fk_email_customer` FOREIGN KEY (`email`) REFERENCES `accounts` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (6,'Clement Raka De Costa',1777338869,1,NULL,NULL,'Banasree','clement1raka@gmail.com',1),(8,NULL,1324654127,NULL,NULL,NULL,NULL,NULL,NULL),(12,NULL,1423145781,1,NULL,NULL,NULL,NULL,NULL),(13,NULL,177733869,1,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `customer` VALUES (6,'Clement Raka De Costa',1777338869,1,NULL,NULL,'Banasree','clement1raka@gmail.com',1),(8,NULL,1324654127,NULL,NULL,NULL,NULL,NULL,NULL),(12,NULL,1423145781,1,NULL,NULL,NULL,NULL,NULL),(13,NULL,177733869,1,NULL,NULL,NULL,NULL,NULL),(14,NULL,1231456324,1,NULL,NULL,NULL,NULL,NULL),(15,NULL,1234564123,1,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -155,7 +155,7 @@ CREATE TABLE `food_order` (
   PRIMARY KEY (`order_id`),
   KEY `fk_employee_food` (`employee_id`),
   CONSTRAINT `fk_employee_food` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +164,7 @@ CREATE TABLE `food_order` (
 
 LOCK TABLES `food_order` WRITE;
 /*!40000 ALTER TABLE `food_order` DISABLE KEYS */;
-INSERT INTO `food_order` VALUES (16,'pending','2025-11-28 03:30:00',1777338869,1);
+INSERT INTO `food_order` VALUES (16,'pending','2025-11-28 03:30:00',1777338869,1),(18,'processing','2025-11-28 06:04:00',1234564123,1);
 /*!40000 ALTER TABLE `food_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,7 +259,7 @@ CREATE TABLE `order_details` (
 
 LOCK TABLES `order_details` WRITE;
 /*!40000 ALTER TABLE `order_details` DISABLE KEYS */;
-INSERT INTO `order_details` VALUES (16,10,3,1470.00),(16,14,2,240.30);
+INSERT INTO `order_details` VALUES (16,10,3,1470.00),(16,14,2,240.30),(18,2,1,400.00),(18,14,2,240.30);
 /*!40000 ALTER TABLE `order_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -341,13 +341,14 @@ CREATE TABLE `sale_transaction` (
   `customer_id` int DEFAULT NULL,
   `sale_time` datetime DEFAULT NULL,
   `order_id` int DEFAULT NULL,
+  `status` varchar(20) COLLATE utf8mb4_general_ci DEFAULT 'Pending',
   PRIMARY KEY (`sale_id`),
   KEY `employee_id` (`employee_id`),
   KEY `fk_customer_sale` (`customer_id`),
   KEY `fk_orderID_SALES` (`order_id`),
   CONSTRAINT `fk_customer_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`),
   CONSTRAINT `fk_orderID_SALES` FOREIGN KEY (`order_id`) REFERENCES `food_order` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,6 +357,7 @@ CREATE TABLE `sale_transaction` (
 
 LOCK TABLES `sale_transaction` WRITE;
 /*!40000 ALTER TABLE `sale_transaction` DISABLE KEYS */;
+INSERT INTO `sale_transaction` VALUES (1,1710.30,'Mobile Banking',1,NULL,6,'2025-11-28 06:20:00',16,'Completed'),(3,640.30,'Card',1,NULL,15,'2025-11-28 06:14:09',18,'Refunded');
 /*!40000 ALTER TABLE `sale_transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -368,4 +370,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-28  4:25:00
+-- Dump completed on 2025-11-28 16:29:57

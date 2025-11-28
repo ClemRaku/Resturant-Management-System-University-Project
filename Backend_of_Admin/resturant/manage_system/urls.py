@@ -11,5 +11,6 @@ urlpatterns = [
     path('admin_reservation', views.admin_reserve, name = 'admin_reserve' ),
     path('inventory', views.inventory, name = 'admin_inventory'),
     path('order', views.order, name = 'order'),
-    path('sales', views.sales, name = 'sales')
+    path('sales', views.sales, name = 'sales'),
+    path('dashboard', views.dashbaord, name = 'dashboard')
 ]
