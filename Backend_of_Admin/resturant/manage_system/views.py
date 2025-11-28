@@ -170,11 +170,10 @@ def signup_signin(request):
 
 def home(request):
     mycursor = mydb.cursor()
-    ndtk = "SELECT name, description, price, image_url FROM menu;"
-    mycursor.execute(ndtk)
-    name_description_price_img = mycursor.fetchall()
-
-    return render(request, 'home.html', {'home_menu' : name_description_price_img})
+    mycursor.execute("SELECT menu_id, name, description, price, image_url FROM menu ORDER BY menu_id ASC LIMIT 3")
+    home_menu = mycursor.fetchall()
+    mycursor.close()
+    return render(request, 'home.html', {'home_menu' : home_menu})
 def menu(request):
     mycursor = mydb.cursor()
     selecting_all_menu_items = "SELECT name, description, price, image_url, category_id FROM menu;"
@@ -768,6 +767,26 @@ def sales(request):
 def dashbaord(request):
     mycursor = mydb.cursor()
 
+    # Editing upcoming dishes
+    for dish_num in range(1, 4):
+        if request.POST.get(f'food_name{dish_num}'):
+            menu_id = int(request.POST.get(f'menu_id{dish_num}'))
+            name = request.POST.get(f'food_name{dish_num}')
+            description = request.POST.get(f'food_description{dish_num}')
+            price = float(request.POST.get(f'h-f-price{dish_num}'))
+            image_file = request.FILES.get(f'home_image{dish_num}')
+            if image_file:
+                image_url = image_file.name
+            else:
+                mycursor.execute("SELECT image_url FROM menu WHERE menu_id = %s", (menu_id,))
+                existing = mycursor.fetchone()
+                image_url = existing[0] if existing and existing[0] else ''
+            update_sql = "UPDATE menu SET name = %s, description = %s, price = %s, image_url = %s WHERE menu_id = %s"
+            mycursor.execute(update_sql, (name, description, price, image_url, menu_id))
+            mydb.commit()
+
+            return redirect('dashboard')
+
     # First, check and populate sale_transaction table from food_order
     # Fetch orders that don't have sales transactions yet
     mycursor.execute("""
@@ -828,6 +847,10 @@ def dashbaord(request):
         if status == 'Completed':
             total_sales_amount += calculated_amount or 0
 
+    # Fetch upcoming dishes
+    mycursor.execute("SELECT menu_id, name, description, price, image_url FROM menu ORDER BY menu_id ASC LIMIT 3")
+    upcomming_dishes = mycursor.fetchall()
+
     mycursor.execute("SELECT COUNT(*) FROM food_order")
     total_orders_result = mycursor.fetchone()
     total_orders = total_orders_result[0] if total_orders_result else 0
@@ -842,6 +865,42 @@ def dashbaord(request):
     total_staff_result = mycursor.fetchone()
     total_staff = total_staff_result[0] if total_staff_result else 0
 
+    # Fetch recent orders
+    order_query = "SELECT order_id, phone_no, order_time, status FROM food_order ORDER BY order_id DESC LIMIT 5"
+    mycursor.execute(order_query)
+    recent_orders_db = mycursor.fetchall()
+
+    recent_orders = []
+    for order_id, phone_no, order_time, status in recent_orders_db:
+        # Get items string
+        items_query = """
+        SELECT m.name, od.quantity
+        FROM order_details od
+        JOIN menu m ON od.menu_id = m.menu_id
+        WHERE od.order_id = %s
+        """
+        mycursor.execute(items_query, (order_id,))
+        item_details = mycursor.fetchall()
+        item_strings = []
+        for name, qty in item_details:
+            item_strings.append(f"{name} ({qty})")
+        items_str = ", ".join(item_strings)
+
+        # Get total price
+        price_query = "SELECT SUM(item_price) FROM order_details WHERE order_id = %s"
+        mycursor.execute(price_query, (order_id,))
+        price_result = mycursor.fetchone()
+        total_price = price_result[0] if price_result and price_result[0] else 0
+
+        recent_orders.append({
+            'order_id': order_id,
+            'phone_no': phone_no,
+            'items': items_str,
+            'order_time': order_time,
+            'total_price': total_price,
+            'status': status
+        })
+
     mycursor.close()
 
-    return render(request, 'dashboard.html', {'total_sales': total_sales_amount, 'total_orders': total_orders, 'total_customers': total_customers, 'total_staff': total_staff})
+    return render(request, 'dashboard.html', {'total_sales': total_sales_amount, 'total_orders': total_orders, 'total_customers': total_customers, 'total_staff': total_staff, 'recent_orders': recent_orders, 'upcomming_dishes': upcomming_dishes})
