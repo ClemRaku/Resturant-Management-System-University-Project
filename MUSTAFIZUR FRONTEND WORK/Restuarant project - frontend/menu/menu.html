@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="shortcut icon" href="../image/favicon.png" type="image/x-icon">
+  <title>Dhakaiya Bites</title>
+  <link rel="stylesheet" href="menu.css">
+  <link rel="stylesheet" href="../Home/home.css">
+
+</head>
+
+<body class="auth-page">
+
+  <!--navbar er part-->
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+
+        <!-- navbar er lgo -->
+        <div class="logo-wrapper">
+          <img src="../image/LOGO.png" alt="Dhakaiya-Bites" class="logo">
+        </div>
+
+        <!-- navbar er link -->
+        <ul class="navbar-links" id="navbar-links">
+          <li><a href="../Home/home.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="../reservation/reserve.html">Reservation</a></li>
+          <li><a href="../services/service.html">Services</a></li>
+          <li><a href="../About/about.html">About</a></li>
+        </ul>
+
+        <!-- sihn in er button -->
+        <a href="sign in.html" class="btn btn-primary">Sign In</a>
+
+        <!-- phn er button -->
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+          <i data-lucide="menu"></i>
+        </button>
+
+      </div>
+    </nav>
+  </header>
+
+  <!--menu er onso -->
+  <section class="menu-section">
+
+    <!-- meu tittrle er part -->
+    <div class="container">
+      <h1 class="menu-title">Our Menu</h1>
+    </div>
+
+    <!-- cart er button -->
+    <button class="btn btn-primary" id="menu-cart-btn">
+      <i data-lucide="shopping-cart"></i>
+      (<span>Cart <span id="cartCount">0</span></span>)
+    </button>
+
+    <!--search korar button -->
+    <div class="menu-search">
+      <input type="text" id="search-input" placeholder="Search food...">
+    </div>
+
+    <!-- Category Filters -->
+    <div class="category-filter">
+      <button class="filter-btn active" data-category="all">All</button>
+      <button class="filter-btn" data-category="Starter">Starter</button>
+      <button class="filter-btn" data-category="Main-Course">Main Course</button>
+      <button class="filter-btn" data-category="Drinks">Drinks</button>
+      <button class="filter-btn" data-category="Desserts">Desserts</button>
+    </div>
+
+
+
+
+
+    <section  >
+      <h2 class="admin-title">Admin Menu Editor</h2>
+      <div id="admin-menu" class="menu-grid">
+
+        <div class="card">
+          <input type="file" class="imageInput" data-id="1" accept="image/*">
+          <img class="preview" data-id="1" style="display:none; width:100%; margin-top:10px;">
+          <input type="text" class="menu_name" value="Spring Rolls">
+          <input type="text" class="menu_description" value="Crispy veggie spring rolls">
+          <input type="text" class="menu_price" value="156">
+          <input type="text" class="menu_category" value="Starter">
+        </div>
+
+        <div class="card">
+          <input type="file" class="imageInput" data-id="2" accept="image/*">
+          <img class="preview" data-id="2" style="display:none; width:100%; margin-top:10px;">
+          <input type="text" class="menu_name" value="Kacchi">
+          <input type="text" class="menu_description" value="Tender mutton and fragrant rice cooked in kacchi style">
+          <input type="text" class="menu_price" value="400">
+          <input type="text" class="menu_category" value="Main-Course">
+        </div>
+
+        <div class="card">
+          <input type="file" class="imageInput" data-id="3" accept="image/*">
+          <img class="preview" data-id="3" style="display:none; width:100%; margin-top:10px;">
+          <input type="text" class="menu_name" value="Shahi Tudka">
+          <input type="text" class="menu_description" value="Crispy fried bread soaked in rich milk & ghee">
+          <input type="text" class="menu_price" value="150">
+          <input type="text" class="menu_category" value="Desserts">
+        </div>
+
+        <div class="card">
+          <input type="file" class="imageInput" data-id="4" accept="image/*">
+          <img class="preview" data-id="4" style="display:none; width:100%; margin-top:10px;">
+          <input type="text" class="menu_name" value="Badam Sorbot">
+          <input type="text" class="menu_description" value="Refreshing creamy badam drink">
+          <input type="text" class="menu_price" value="160">
+          <input type="text" class="menu_category" value="Drinks">
+        </div>
+
+      </div>
+
+    </section>
+
+    <div id="customer-menu" class="menu-grid"></div>
+
+  </section>
+
+  <!--cart er sidebar -->
+  <aside id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+      <h3>Shopping Cart (<span id="cartCount">0</span> items)</h3>
+      <button id="closeCart">&times;</button>
+    </div>
+
+    <div id="cartItems" class="cart-items">
+      <p class="empty-cart">
+        Your cart is empty<br>
+        <small>Add items from the menu to get started</small>
+      </p>
+    </div>
+
+    <div class="cart-summary">
+      <div class="summary-row"><span>Subtotal</span><span id="subtotal">0.00tk</span></div>
+      <div class="summary-row"><span>Delivery Fee</span><span id="deliveryFee">100tk</span></div>
+      <div class="summary-row total"><span>Total</span><span id="total">0.00tk</span></div>
+      <button id="checkoutBtn" class="checkout-btn">Proceed to Checkout</button>
+    </div>
+
+  </aside>
+
+
+
+  <!-- toast part -->
+  <div id="toast-container"></div>
+
+  <!-- footer er part-->
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-about">
+        <h2>Dhakaiya Bites</h2>
+        <p>Serving the best Bangladeshi cuisine with love and tradition.</p>
+        <div class="social-icons">
+          <a href="#"><i data-lucide="facebook"></i></a>
+          <a href="#"><i data-lucide="instagram"></i></a>
+          <a href="#"><i data-lucide="twitter"></i></a>
+          <a href="#"><i data-lucide="youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- footer er link-->
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#menu-items">Menu</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- footer e contact -->
+      <div class="footer-contact">
+        <h3>Contact Us</h3>
+        <p>📍 123 Dhaka St, Bangladesh</p>
+        <p>📞 +880 123 456 789</p>
+        <p>✉️ DhakaiyaBites@gmail.com</p>
+      </div>
+
+      <!-- fooeter er email -->
+      <div class="footer-newsletter">
+        <h3>Subscribe</h3>
+        <p>Get latest updates & offers</p>
+        <form id="newsletter-form">
+          <input type="email" placeholder="Your email" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Your Restaurant. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+
+  <!-- js onso -->
+  <script src="cart.js"></script>
+  <script src="menu.js"></script>
+  <script src="../Home/home.js"></script>
+  <script src="../reservation/reserve.js"></script>
+  <script src="../About/about.js"></script>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+
+</html>
