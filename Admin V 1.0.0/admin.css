@@ -28,7 +28,8 @@
     margin-bottom: 30px;
     color: #f79d20;
 }
-.navbar .home svg{
+
+.navbar .home svg {
     width: 30px;
     height: auto;
     color: #f79d20;
@@ -103,7 +104,7 @@
     margin-top: 20px;
 }
 
-.gap{
+.gap {
     margin-top: 20px;
 }
 
@@ -135,7 +136,7 @@
     margin-bottom: 10px;
 }
 
-.card input[type="text"]{
+.card input[type="text"] {
     border-radius: 10px;
     padding: 10px;
     margin: 10px;
@@ -151,7 +152,7 @@
     border: none;
 }
 
-.red-btn{
+.red-btn {
     padding: 20px;
     color: #eee;
     background-color: #f8260b;
@@ -279,10 +280,10 @@ table select {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.5);
-    overflow-y: auto; 
-    padding: 20px; 
-    
+    background: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    padding: 20px;
+
 }
 
 
@@ -290,8 +291,8 @@ table select {
 .modal-content {
     background: white;
     width: 450px;
-    max-height: 90vh; 
-    overflow-y: auto; 
+    max-height: 90vh;
+    overflow-y: auto;
     margin: auto;
     padding: 25px;
     border-radius: 10px;
@@ -317,34 +318,75 @@ table select {
 
 
 @keyframes fadeIn {
-    from {opacity: 0; transform: scale(0.95);}
-    to {opacity: 1; transform: scale(1);}
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /*popup styling ends and also menu part*/
 
-.order-card{
+.order-card {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 25px; 
+    gap: 25px;
     width: 100%;
 }
 
-.sales-card{
+.sales-card {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px; 
+    gap: 25px;
     width: 100%;
 
 }
 
 
-.upcomming-card{
+.upcomming-card {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px; 
+    gap: 25px;
     width: 100%;
 
+}
+
+.table-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+    border: 1px solid #eee;
+    width: 100%;
+    overflow-x: auto;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    min-width: 1000px;
+    /* keeps table layout intact on mobile */
+}
+
+thead th {
+    text-align: left;
+    padding: 14px 12px;
+    font-size: 15px;
+    color: #555;
+    background: #f0f2f5;
+}
+
+tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    font-size: 15px;
 }
 
 
@@ -393,7 +435,7 @@ table select {
         padding: 18px !important;
     }
 
-    .popular-item,
+
     .recent-order-item {
         flex-direction: column !important;
         align-items: flex-start !important;
@@ -401,43 +443,27 @@ table select {
         padding: 14px !important;
     }
 
-    .recent-left {
-        width: 100% !important;
-        gap: 4px !important;
+
+    .table-card {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
-    .popular-s1,
-    .popular-s2,
-    .recent-s1,
-    .recent-s2,
-    .recent-s3,
-    .recent-s4 {
-        width: 100% !important;
-        text-align: left !important;
-        font-size: 16px !important;
-    }
-    .popular-s2 input,
-    .recent-s1 input,
-    .recent-s2 input,
-    .recent-s3 input,
-    .recent-s4 input,
-    .popular-s1 input {
-        width: 100% !important;
-        padding: 8px 10px !important;
-        border: 1px solid #ccc !important;
-        border-radius: 8px !important;
-        background: #fff !important;
-        font-size: 15px !important;
-        box-sizing: border-box !important;
+    table {
+        min-width: 1100px;
+        /* Force scroll */
     }
 
-    .recent-s4 {
-        width: 100% !important;
-        padding: 10px !important;
+    th,
+    td {
+        font-size: 12px;
+        padding: 6px;
     }
+
+
 
     .modal-content {
-    width: 95%;
-    max-height: 90vh;
-  }
+        width: 95%;
+        max-height: 90vh;
+    }
 }
