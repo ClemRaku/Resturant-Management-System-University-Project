@@ -20,6 +20,10 @@ const searchInput = document.getElementById("orderSearch");
 let addMoreBtn = null;
 let menuItemsContainer = null;
 
+// Dynamic menu items for edit modal
+let editMoreBtn = null;
+let editMenuItemsContainer = null;
+
 openAdd.onclick = () => {
     addModal.style.display = "block";
     if (!addMoreBtn) {
@@ -28,13 +32,43 @@ openAdd.onclick = () => {
         addMoreBtn.onclick = () => {
             const newItem = document.createElement('div');
             newItem.className = 'menu-item';
-            newItem.innerHTML = `
-                <label>Menu ID</label>
-                <input type="text" name="add_order_menu_id" required>
-                <label>Quantity</label>
-                <input type="number" name="add_order_quantity" min="1" value="1" required>
-                <button type="button" class="remove-item">Remove</button>
-            `;
+            newItem.style.display = 'flex';
+            newItem.style.flexDirection = 'column';
+            newItem.style.gap = '10px';
+
+            const menuDiv = document.createElement('div');
+            const menuLabel = document.createElement('label');
+            menuLabel.textContent = 'Menu Item';
+            menuDiv.appendChild(menuLabel);
+            menuDiv.appendChild(document.createElement('br'));
+            const firstSelect = document.querySelector('select[name="add_order_menu_id"]');
+            if (firstSelect) {
+                const clonedSelect = firstSelect.cloneNode(true);
+                menuDiv.appendChild(clonedSelect);
+            }
+
+            const qtyDiv = document.createElement('div');
+            const qtyLabel = document.createElement('label');
+            qtyLabel.textContent = 'Quantity';
+            qtyDiv.appendChild(qtyLabel);
+            qtyDiv.appendChild(document.createElement('br'));
+            const qtyInput = document.createElement('input');
+            qtyInput.type = 'number';
+            qtyInput.name = 'add_order_quantity';
+            qtyInput.min = '1';
+            qtyInput.value = '1';
+            qtyInput.required = true;
+            qtyDiv.appendChild(qtyInput);
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'remove-item';
+            removeBtn.textContent = 'Remove';
+
+            newItem.appendChild(menuDiv);
+            newItem.appendChild(qtyDiv);
+            newItem.appendChild(removeBtn);
+
             menuItemsContainer.appendChild(newItem);
             newItem.querySelector('.remove-item').onclick = () => {
                 menuItemsContainer.removeChild(newItem);
@@ -122,8 +156,59 @@ function openEditModal(order) {
     document.getElementById("edit_order_customer_id").value = order.customer_id;
     document.getElementById("edit_order_time").value = order.order_time;
     document.getElementById("edit_order_status").value = order.status;
+    document.getElementById("edit_order_employee_id").value = order.employee_id;
 
     editModal.style.display = "block";
+
+    if (!editMoreBtn) {
+        editMoreBtn = document.getElementById('edit-add-more');
+        editMenuItemsContainer = document.getElementById('edit-menu-items');
+        editMoreBtn.onclick = () => {
+            const newItem = document.createElement('div');
+            newItem.className = 'menu-item';
+            newItem.style.display = 'flex';
+            newItem.style.flexDirection = 'column';
+            newItem.style.gap = '10px';
+
+            const menuDiv = document.createElement('div');
+            const menuLabel = document.createElement('label');
+            menuLabel.textContent = 'Menu Item';
+            menuDiv.appendChild(menuLabel);
+            menuDiv.appendChild(document.createElement('br'));
+            const firstSelect = document.querySelector('select[name="edit_order_menu_id"]');
+            if (firstSelect) {
+                const clonedSelect = firstSelect.cloneNode(true);
+                menuDiv.appendChild(clonedSelect);
+            }
+
+            const qtyDiv = document.createElement('div');
+            const qtyLabel = document.createElement('label');
+            qtyLabel.textContent = 'Quantity';
+            qtyDiv.appendChild(qtyLabel);
+            qtyDiv.appendChild(document.createElement('br'));
+            const qtyInput = document.createElement('input');
+            qtyInput.type = 'number';
+            qtyInput.name = 'edit_order_quantity';
+            qtyInput.min = '1';
+            qtyInput.value = '1';
+            qtyInput.required = true;
+            qtyDiv.appendChild(qtyInput);
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'remove-item';
+            removeBtn.textContent = 'Remove';
+
+            newItem.appendChild(menuDiv);
+            newItem.appendChild(qtyDiv);
+            newItem.appendChild(removeBtn);
+
+            editMenuItemsContainer.appendChild(newItem);
+            newItem.querySelector('.remove-item').onclick = () => {
+                editMenuItemsContainer.removeChild(newItem);
+            };
+        };
+    }
 }
 
 // saveEditedOrder lets the form submit normally for Django view

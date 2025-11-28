@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 import mysql.connector
 from datetime import datetime
 
-mydb = mysql.connector.connect(
-    host = 'localhost',
-    user = 'root',
-    passwd = 'raka',
-    database = 'resturant'
-)
-
+def get_db_connection():
+    return mysql.connector.connect(
+        host='localhost',
+        user='root',
+        passwd='raka',
+        database='resturant'
+    )
+mydb = get_db_connection()
 
 def admin_menu(request):
     mycursor = mydb.cursor()
@@ -108,10 +109,9 @@ def admin_menu(request):
     items_from_menu = mycursor.fetchall()
 
     context = {'menu_items' : items_from_menu, 'search_query' : search_term}
-    
+
     mycursor.close()
 
-    
     return render (request, 'adminmenu.html', context)
 
 
@@ -321,12 +321,6 @@ def staff_view(request):
 
 
 def admin_reserve(request):
-    mydb = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        passwd='raka',
-        database='resturant'
-    )
     mycursor = mydb.cursor()
     select_reservation_info = "SELECT reservation_id, customer_id, name, phone_no, reserve_date, no_of_customer, email, special_resquests, status FROM reservation"
     mycursor.execute(select_reservation_info)
@@ -631,6 +625,142 @@ def order(request):
 
 
 def sales(request):
-    
-    
-    return render(request, 'sales.html')
+    mycursor = mydb.cursor()
+
+    # First, check and populate sale_transaction table from food_order
+    # Fetch orders that don't have sales transactions yet
+    mycursor.execute("""
+        SELECT fo.order_id, fo.phone_no, fo.employee_id
+        FROM food_order fo
+        LEFT JOIN sale_transaction st ON fo.order_id = st.order_id
+        WHERE st.order_id IS NULL
+    """)
+    pending_orders = mycursor.fetchall()
+
+    for order in pending_orders:
+        order_id, phone_no, employee_id = order
+
+        # Get total amount from order_details
+        mycursor.execute("SELECT SUM(item_price) FROM order_details WHERE order_id = %s", (order_id,))
+        result = mycursor.fetchone()
+        total_amount = result[0] if result and result[0] is not None else 0
+
+        # Get customer_id from customer
+        mycursor.execute("SELECT customer_id FROM customer WHERE phone_no = %s", (phone_no,))
+        customer_result = mycursor.fetchone()
+        customer_id = customer_result[0] if customer_result else None
+
+        # Insert sale transaction
+        insert_query = """
+        INSERT INTO sale_transaction (customer_id, employee_id, Amount, order_id, status)
+        VALUES (%s, %s, %s, %s, 'Completed')
+        """
+        mycursor.execute(insert_query, (customer_id, employee_id, total_amount, order_id))
+        mydb.commit()
+
+    # Now fetch all sales transactions
+    query = """
+    SELECT st.sale_id, st.customer_id, st.employee_id, st.table_no, st.sale_time, st.Payment_Method, st.Amount, st.order_id, st.status
+    FROM sale_transaction st
+    ORDER BY st.sale_id ASC
+    """
+    mycursor.execute(query)
+    sales_data = mycursor.fetchall()
+
+    sales_list = []
+    total_sales_amount = 0
+    total_transactions = 0
+    pending_amount = 0
+
+    for sale in sales_data:
+        sale_id, customer_id, employee_id, table_no, sale_time, payment_method, amount, order_id, status = sale
+
+        # Fetch items for this order
+        calculated_amount = 0
+        if order_id:
+            items_query = """
+            SELECT od.menu_id, od.quantity, m.name
+            FROM order_details od
+            JOIN menu m ON od.menu_id = m.menu_id
+            WHERE od.order_id = %s
+            """
+            mycursor.execute(items_query, (order_id,))
+            order_items = mycursor.fetchall()
+            items = [{'menu_id': item[0], 'quantity': item[1], 'name': item[2]} for item in order_items]
+            mycursor.execute("SELECT SUM(item_price) FROM order_details WHERE order_id = %s", (order_id,))
+            sum_result = mycursor.fetchone()
+            calculated_amount = sum_result[0] if sum_result and sum_result[0] else 0
+            if calculated_amount != amount:
+                mycursor.execute("UPDATE sale_transaction SET Amount = %s WHERE sale_id = %s", (calculated_amount, sale_id))
+                mydb.commit()
+        else:
+            items = []
+            calculated_amount = amount
+
+        # Format items for display
+        items_display = ", ".join([f"{item['name']} ({item['quantity']})" for item in items])
+
+        if status == 'Completed':
+            total_sales_amount += calculated_amount or 0
+        if status == 'Pending':
+            pending_amount += calculated_amount or 0
+        if status != 'Pending':
+            total_transactions += 1
+
+        sales_list.append({
+            'sale_id': sale_id,
+            'customer_id': customer_id,
+            'employee_id': employee_id,
+            'table_no': table_no,
+            'items': items_display,
+            'sale_time': sale_time,
+            'payment_method': payment_method,
+            'amount': calculated_amount,
+            'status': status
+        })
+
+    # Handle edit sales
+    if request.GET.get('edit_sale_status'):
+        sale_id = int(request.GET.get('edit_sale_id'))
+        new_status = request.GET.get('edit_sale_status')
+        payment_method = request.GET.get('edit_pay_method')
+
+        # Get current sale_time
+        mycursor.execute("SELECT sale_time FROM sale_transaction WHERE sale_id = %s", (sale_id,))
+        current = mycursor.fetchone()
+        current_sale_time = current[0] if current else None
+
+        # Handle sal_time input
+        sal_time_val = request.GET.get('sal_time')
+        sale_time = None
+        if new_status == 'Pending':
+            sale_time = None
+        else:
+            if sal_time_val:
+                sale_time = datetime.strptime(sal_time_val, '%Y-%m-%dT%H:%M')
+            else:
+                if new_status in ['Completed', 'Refunded'] and not current_sale_time:
+                    sale_time = datetime.now()
+                else:
+                    sale_time = current_sale_time
+
+        update_query = """
+        UPDATE sale_transaction
+        SET Payment_Method = %s, sale_time = %s, status = %s
+        WHERE sale_id = %s
+        """
+        mycursor.execute(update_query, (payment_method, sale_time, new_status, sale_id))
+        mydb.commit()
+
+        return redirect('sales')
+
+    mycursor.close()
+
+    context = {
+        'sales': sales_list,
+        'total_sales': total_sales_amount,
+        'total_transactions': total_transactions,
+        'pending_amount': pending_amount
+    }
+
+    return render(request, 'sales.html', context)

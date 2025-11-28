@@ -35,11 +35,9 @@
 
             <div class="card">
                 <div class="header">
-                    <h4>Total Salse</h4>
+                    <h4>Total Sales</h4>
                 </div>
-                <form action="{% url 'sales' %}" method="get">
-                    <input type="text" name="total_sales" class="value" step="0.01" min="0" style="width:75%;">
-                </form>
+                <div class="value" style="padding: 10px;">{{ total_sales }}</div>
 
             </div>
 
@@ -47,18 +45,14 @@
                 <div class="header">
                     <h4>Total Transactions</h4>
                 </div>
-                <form action="{% url 'sales' %}" method="get">
-                    <input type="text" name="total_transactions" class="value" min="0" style="width:75%;">
-                </form>
+                <div class="value" style="padding: 10px;">{{ total_transactions }}</div>
             </div>
 
             <div class="card">
                 <div class="header">
                     <h4>Pending Amount</h4>
                 </div>
-                <form action="{% url 'order' %}">
-                    <input type="text" name="pending_amount" class="value" min="0" step="0.01" style="width:75%;">
-                </form>
+                <div class="value" style="padding: 10px;">{{ pending_amount }}</div>
 
             </div>
 
@@ -66,9 +60,9 @@
 
 
         <div class="card">
-            <h2>Inventory Items</h2>
+            <h2>Sales Transactions</h2>
 
-            <label>Search Reservation:</label>
+            <label>Search Sales:</label>
             <input type="text" id="searchSales" placeholder="Enter ID ..."
                 style="padding: 10px; margin: 10px; border-radius: 10px;">
 
@@ -78,7 +72,6 @@
                         <th>Sales ID</th>
                         <th>Customer ID</th>
                         <th>Employee ID</th>
-                        <th>Table No.</th>
                         <th>Items</th>
                         <th>Sale Time</th>
                         <th>Payment Method</th>
@@ -89,7 +82,23 @@
                 </thead>
 
                 <tbody>
-
+                {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.sale_id }}</td>
+                        <td>{{ sale.customer_id }}</td>
+                        <td>{{ sale.employee_id }}</td>
+                        <td>{{ sale.items }}</td>
+                        <td>{{ sale.sale_time }}</td>
+                        <td>{{ sale.payment_method }}</td>
+                        <td>{{ sale.amount }}</td>
+                        <td>{{ sale.status }}</td>
+                        <td>
+                            <button class="edit-btn" onclick="openEditModal({{ sale.sale_id }}, '{{ sale.customer_id }}', '{{ sale.employee_id }}', '{{ sale.table_no }}', '{{ sale.items }}', '{{ sale.sale_time }}', '{{ sale.payment_method }}', '{{ sale.amount }}', '{{ sale.status }}')">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
 
@@ -101,41 +110,31 @@
     <div id="editSalesModal" class="modal">
         <div class="modal-content">
             <span id="closeEditIntModal" class="close">&times;</span>
-            <h2>Edit Inventory Items</h2>
+            <h2>Edit Sales Transaction</h2>
 
-            <label>Sales ID</label>
-            <input type="text" name="sales_id" id="edit_sales_id" readonly>
+            <form method="get" action="{% url 'sales' %}">
+                <input type="hidden" name="edit_sale_id" id="edit_sales_id">
 
-            <label>Customer ID</label>
-            <input type="text" name="sal_cus_item_name" id="edit_int_item_name" readonly>
+                <label>Sales Time</label>
+                <input type="datetime-local" name="sal_time" id="edit_sal_time">
 
-            <label>Employee ID</label>
-            <input type="text" name="sal_emp_id" id="edit_sal_emp_id">
+                <label>Payment Method</label>
+                <select name="edit_pay_method" id="edit_pay_method">
+                    <option value="">Select</option>
+                    <option value="Mobile Banking">Mobile Banking</option>
+                    <option value="Card">Card</option>
+                    <option value="Cash">Cash</option>
+                </select>
 
-            <label>Table No.</label>
-            <input type="text" name="sal_table_no" id="edit_sal_table_no">
+                <label>Status</label>
+                <select name="edit_sale_status" id="edit_sale_status">
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Refunded">Refunded</option>
+                </select>
 
-            <label>Items</label>
-            <input type="text" name="sal_items" id="edit_sal_items">
-
-            <label>Sales Time</label>
-            <input type="datetime-local" name="sal_time" id="edit_sal_time">
-
-            <label>Payment Method</label>
-            <input type="text" name="sal_pay_method" id="edit_pay_method">
-
-            <label>Amount</label>
-            <input type="text" name="sal_amount" id="edit_sal_amount">
-
-            <label>Status</label>
-            <select name="sal_status" id="edit_sal_status">
-                <option value="Pending">Pending</option>
-                <option value="Completed">Completed</option>
-                <option value="Refunded">Refunded</option>
-
-            </select>
-
-            <button class="btn menu-btn" id="saveEditedsales">Save Changes</button>
+                <button type="submit" class="btn menu-btn" id="saveEditedsales">Save Changes</button>
+            </form>
         </div>
     </div>
 

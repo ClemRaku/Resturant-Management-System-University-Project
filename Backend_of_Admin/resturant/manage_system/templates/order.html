@@ -230,6 +230,29 @@
                     {% endfor %}
                 </select>
 
+                <div id="edit-menu-items">
+                    <div class="menu-item" style="display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <label>Menu Item</label><br>
+                            <select name="edit_order_menu_id" required>
+                                <option value="">Select Menu Item</option>
+                                {% for item in menu_items %}
+                                    <option value="{{ item.0 }}">{{ item.0 }} - {{ item.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Quantity</label><br>
+                            <input type="number" name="edit_order_quantity" min="1" value="1" required>
+                        </div>
+
+                        <button type="button" class="remove-item" style="display:none;">Remove</button>
+                    </div>
+                </div>
+                <button type="button" id="edit-add-more">Add Another Item</button>
+                <br><br>
+
                 <button class="btn menu-btn" id="saveEditedOrder">Save Changes</button>
 
             </form>
