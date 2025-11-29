@@ -53,7 +53,7 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
       const name = card.querySelector('input.h3').value.trim();
       const price = parseFloat(card.querySelector('input.price').value.trim()) || 0;
       const img = card.querySelector('img').src;
-      const id = card.querySelector('input.h3').name.replace('menu_name', '') || Date.now();  // from name="menu_name1"
+      const id = card.getAttribute('data-menu-id');
 
       const item = { id, name, price, image: img };
       addToCart(item);

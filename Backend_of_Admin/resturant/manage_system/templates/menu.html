@@ -31,7 +31,7 @@
           <li><a href="{% url 'home' %}">Home</a></li>
           <li><a href="{% url 'menu_home' %}">Menu</a></li>
           <li><a href="{% url 'customer_reserve' %}">Reservation</a></li>
-          <li><a href="../services/service.html">Services</a></li>
+          <li><a href="{% url 'service' %}">Services</a></li>
           <li><a href="../About/about.html">About</a></li>
         </ul>
 
@@ -81,15 +81,15 @@
 
     <div id="customer-menu" class="menu-grid">
       {% for item in ALLFOOD %}
-      <div class="card" data-category="{% if item.4 == 1 %}Starter{% elif item.4 == 2 %}Main-Course{% elif item.4 == 3 %}Drinks{% elif item.4 == 4 %}Desserts{% else %}unknown{% endif %}">
+      <div class="card" data-category="{% if item.5 == 1 %}Starter{% elif item.5 == 2 %}Main-Course{% elif item.5 == 3 %}Drinks{% elif item.5 == 4 %}Desserts{% else %}unknown{% endif %}" data-menu-id="{{ item.0 }}">
         <input type="file" name="menu_image{{ forloop.counter }}" class="imageInput" data-id="{{ forloop.counter }}" accept="image/*" hidden>
-        <img class="preview" data-id="{{ forloop.counter }}" alt="Image Preview" style="display:block; width:100%; margin-top:10px;" src="{% static item.3 %}">
+        <img class="preview" data-id="{{ forloop.counter }}" alt="Image Preview" style="display:block; width:100%; margin-top:10px;" src="{% static item.4 %}">
 
-        <input type="text" class="h3" name="menu_name{{ forloop.counter }}" value="{{ item.0 }}" readonly>
-        <input type="text" class="p" name="menu_description{{ forloop.counter }}" value="{{ item.1 }}" readonly>
+        <input type="text" class="h3" name="menu_name{{ forloop.counter }}" value="{{ item.1 }}" readonly>
+        <input type="text" class="p" name="menu_description{{ forloop.counter }}" value="{{ item.2 }}" readonly>
 
         <div class="price-row">
-          <input type="text" class="price" name="menu_price{{ forloop.counter }}" min="0" step="0.01" value="{{ item.2 }}" readonly>
+          <input type="text" class="price" name="menu_price{{ forloop.counter }}" min="0" step="0.01" value="{{ item.3 }}" readonly>
           <button type="button" class="btn btn-primary order-btn">Order Now</button>
         </div>
       </div>
@@ -176,6 +176,10 @@
   </footer>
 
 
+
+  <script>
+    const customer_checkout_url = "{% url 'customer_checkout' %}";
+  </script>
 
   <!-- js onso -->
   <script src="{% static 'cart.js' %}"></script>

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponseBadRequest
 import mysql.connector
 from datetime import datetime
 
@@ -176,7 +177,7 @@ def home(request):
     return render(request, 'home.html', {'home_menu' : home_menu})
 def menu(request):
     mycursor = mydb.cursor()
-    selecting_all_menu_items = "SELECT name, description, price, image_url, category_id FROM menu;"
+    selecting_all_menu_items = "SELECT menu_id, name, description, price, image_url, category_id FROM menu;"
     mycursor.execute(selecting_all_menu_items)
     allFOOD = mycursor.fetchall()
     mycursor.close()
@@ -489,14 +490,14 @@ def order(request):
     mycursor = mydb.cursor()
 
     # Fetch all orders
-    query = "SELECT order_id, phone_no, order_time, status, employee_id FROM food_order ORDER BY order_id ASC"
+    query = "SELECT order_id, phone_no, order_time, status, employee_id, name FROM food_order ORDER BY order_id ASC"
     mycursor.execute(query)
     orders_from_db = mycursor.fetchall()
 
     # For each order, fetch details
     orders = []
     for x in orders_from_db:
-        order_id, phone_no, order_time, status, employee_id = x
+        order_id, phone_no, order_time, status, employee_id, name = x
         # Fetch order details
         detail_query = "SELECT menu_id, quantity, item_price FROM order_details WHERE order_id = %s"
         mycursor.execute(detail_query, (order_id,))
@@ -508,7 +509,8 @@ def order(request):
             'order_time': order_time,
             'status': status,
             'items': items,
-            'employee_id': employee_id
+            'employee_id': employee_id,
+            'name': name
         })
 
     # Count orders by status
@@ -542,14 +544,15 @@ def order(request):
         menu_ids = request.GET.getlist('add_order_menu_id')
         quantities = request.GET.getlist('add_order_quantity')
         phone_no = int(request.GET.get('phone'))
+        customer_name = request.GET.get('customer_name')
         order_time_str = request.GET.get('add_order_time')
         order_time = datetime.strptime(order_time_str, '%Y-%m-%dT%H:%M')
         status = request.GET.get('add_order_status')
         employee_id = int(request.GET.get('add_order_employee_id')) if request.GET.get('add_order_employee_id') else None
 
         # Insert into food_order
-        sql = "INSERT INTO food_order (status, order_time, phone_no, employee_id) VALUES (%s, %s, %s, %s)"
-        mycursor.execute(sql, (status, order_time, phone_no, employee_id))
+        sql = "INSERT INTO food_order (status, order_time, phone_no, employee_id, name) VALUES (%s, %s, %s, %s, %s)"
+        mycursor.execute(sql, (status, order_time, phone_no, employee_id, customer_name))
         order_id = mycursor.lastrowid
 
         # Then for each menu_id, quantity
@@ -573,10 +576,14 @@ def order(request):
         phone_list = [p[0] for p in all_customer_phones]
 
         if phone_no not in phone_list:
-            ss = "insert into customer (phone_no) values(%s)"
-            mycursor.execute(ss, (phone_no, ))
+            ss = "insert into customer (phone_no, name) values(%s, %s)"
+            mycursor.execute(ss, (phone_no, customer_name))
             mydb.commit()
-            
+        else:
+            update_customer = "UPDATE customer SET name = %s WHERE phone_no = %s"
+            mycursor.execute(update_customer, (customer_name, phone_no))
+            mydb.commit()
+
         increasing_visits = "select visit_no from customer where phone_no = %s"
         mycursor.execute(increasing_visits, (phone_no, ))
         visitsss = mycursor.fetchone()
@@ -588,7 +595,7 @@ def order(request):
         back_to_table = "UPDATE customer SET visit_no = %s WHERE phone_no = %s;"
         mycursor.execute(back_to_table, (visit, phone_no))
         mydb.commit()
-        
+
 
         return redirect('order')
 
@@ -596,15 +603,26 @@ def order(request):
     if request.GET.get('edit_order_status'):
         order_id = int(request.GET.get('order_id'))
         phone_no = int(request.GET.get('order_customer_id'))
+        customer_name = request.GET.get('edit_customer_name')
         order_time_str = request.GET.get('order_time')
         order_time = datetime.strptime(order_time_str, '%Y-%m-%dT%H:%M')
         status = request.GET.get('edit_order_status')
         employee_id = int(request.GET.get('edit_order_employee_id')) if request.GET.get('edit_order_employee_id') else None
 
-        update_sql = "UPDATE food_order SET phone_no = %s, order_time = %s, status = %s, employee_id = %s WHERE order_id = %s"
-        data = (phone_no, order_time, status, employee_id, order_id)
+        update_sql = "UPDATE food_order SET phone_no = %s, order_time = %s, status = %s, employee_id = %s, name = %s WHERE order_id = %s"
+        data = (phone_no, order_time, status, employee_id, customer_name, order_id)
         mycursor.execute(update_sql, data)
         mydb.commit()
+
+        existing_query = "SELECT phone_no FROM customer WHERE phone_no = %s"
+        mycursor.execute(existing_query, (phone_no,))
+        existing = mycursor.fetchone()
+        if existing:
+            mycursor.execute("UPDATE customer SET name = %s WHERE phone_no = %s", (customer_name, phone_no))
+            mydb.commit()
+        else:
+            mycursor.execute("INSERT INTO customer (phone_no, name) VALUES (%s, %s)", (phone_no, customer_name))
+            mydb.commit()
 
         return redirect('order')
 
@@ -617,6 +635,62 @@ def order(request):
         mydb.commit()
 
         return redirect('order')
+
+    # Checkout from menu page
+    if request.GET.get('checkout_submit'):
+        customer_name = request.GET.get('customer_name')
+        customer_address = request.GET.get('customer_address')
+        phone_no = int(request.GET.get('phone'))
+        menu_ids = request.GET.getlist('add_order_menu_id[]')
+        quantities = request.GET.getlist('add_order_quantity[]')
+        payment_method = request.GET.get('payment_method')
+        order_time = datetime.now()
+        status = 'pending'
+        employee_id = None
+
+        # Insert into food_order
+        sql = "INSERT INTO food_order (status, order_time, phone_no, employee_id, name) VALUES (%s, %s, %s, %s, %s)"
+        mycursor.execute(sql, (status, order_time, phone_no, employee_id, customer_name))
+        order_id = mycursor.lastrowid
+
+        # Insert order details
+        for menu_id, qty in zip(menu_ids, quantities):
+            menu_id = int(menu_id)
+            qty = int(qty)
+            mycursor.execute("SELECT price FROM menu WHERE menu_id = %s", (menu_id,))
+            price = mycursor.fetchone()[0]
+            item_price = price * qty
+            sql_detail = "INSERT INTO order_details (order_id, menu_id, quantity, item_price) VALUES (%s, %s, %s, %s)"
+            mycursor.execute(sql_detail, (order_id, menu_id, qty, item_price))
+
+        mydb.commit()
+
+        # Handle customer data
+        finding_all_customer_phones = "select phone_no from customer"
+        mycursor.execute(finding_all_customer_phones)
+        all_customer_phones = mycursor.fetchall()
+        phone_list = [p[0] for p in all_customer_phones]
+
+        if phone_no not in phone_list:
+            ss = "insert into customer (phone_no, name, address) values(%s, %s, %s)"
+            mycursor.execute(ss, (phone_no, customer_name, customer_address))
+        else:
+            update_customer = "UPDATE customer SET name = %s, address = %s WHERE phone_no = %s"
+            mycursor.execute(update_customer, (customer_name, customer_address, phone_no))
+
+        mydb.commit()
+
+        # Update visit count
+        increasing_visits = "select visit_no from customer where phone_no = %s"
+        mycursor.execute(increasing_visits, (phone_no,))
+        visitsss = mycursor.fetchone()
+        visit = visitsss[0] if visitsss and visitsss[0] else 0
+        visit = visit + 1
+        back_to_table = "UPDATE customer SET visit_no = %s WHERE phone_no = %s;"
+        mycursor.execute(back_to_table, (visit, phone_no))
+        mydb.commit()
+
+        return redirect('menu_home')
 
     mycursor.close()
 
@@ -904,3 +978,144 @@ def dashbaord(request):
     mycursor.close()
 
     return render(request, 'dashboard.html', {'total_sales': total_sales_amount, 'total_orders': total_orders, 'total_customers': total_customers, 'total_staff': total_staff, 'recent_orders': recent_orders, 'upcomming_dishes': upcomming_dishes})
+
+def customer_checkout(request):
+    if request.GET.get('checkout_submit'):
+        customer_name = request.GET.get('customer_name')
+        customer_address = request.GET.get('customer_address')
+        phone_str = request.GET.get('phone')
+        menu_ids = request.GET.getlist('add_order_menu_id[]')
+        quantities = request.GET.getlist('add_order_quantity[]')
+        payment_method = request.GET.get('payment_method')
+        if not payment_method:
+            payment_method = 'cash'
+
+        if not all([customer_name, customer_address, phone_str, payment_method]):
+            return HttpResponseBadRequest("Missing required fields")
+
+        phone_no = int(phone_str)
+
+        mycursor = mydb.cursor()
+        order_time = datetime.now()
+        status = 'pending'
+        employee_id = None
+
+        # Insert into food_order
+        sql = "INSERT INTO food_order (status, order_time, phone_no, employee_id, name) VALUES (%s, %s, %s, %s, %s)"
+        mycursor.execute(sql, (status, order_time, phone_no, employee_id, customer_name))
+        order_id = mycursor.lastrowid
+
+        # Insert order details
+        for menu_id_str, qty_str in zip(menu_ids, quantities):
+            menu_id = int(menu_id_str)
+            qty = int(qty_str)
+            if qty <= 0:
+                continue
+            mycursor.execute("SELECT price FROM menu WHERE menu_id = %s", (menu_id,))
+            price_result = mycursor.fetchone()
+            if not price_result:
+                continue
+            price = price_result[0]
+            item_price = price * qty
+            sql_detail = "INSERT INTO order_details (order_id, menu_id, quantity, item_price) VALUES (%s, %s, %s, %s)"
+            mycursor.execute(sql_detail, (order_id, menu_id, qty, item_price))
+
+        mydb.commit()
+
+        # Handle customer data
+        finding_all_customer_phones = "select phone_no from customer"
+        mycursor.execute(finding_all_customer_phones)
+        all_customer_phones = mycursor.fetchall()
+        phone_list = [p[0] for p in all_customer_phones]
+
+        if phone_no not in phone_list:
+            ss = "insert into customer (phone_no, name, address) values(%s, %s, %s)"
+            mycursor.execute(ss, (phone_no, customer_name, customer_address))
+        else:
+            update_customer = "UPDATE customer SET name = %s, address = %s WHERE phone_no = %s"
+            mycursor.execute(update_customer, (customer_name, customer_address, phone_no))
+
+        mydb.commit()
+
+        # Update visit count
+        increasing_visits = "select visit_no from customer where phone_no = %s"
+        mycursor.execute(increasing_visits, (phone_no,))
+        visitsss = mycursor.fetchone()
+        visit = visitsss[0] if visitsss and visitsss[0] else 0
+        visit = visit + 1
+        back_to_table = "UPDATE customer SET visit_no = %s WHERE phone_no = %s;"
+        mycursor.execute(back_to_table, (visit, phone_no))
+        mydb.commit()
+
+        # Get customer_id
+        mycursor.execute("SELECT customer_id FROM customer WHERE phone_no = %s", (phone_no,))
+        customer_result = mycursor.fetchone()
+        customer_id = customer_result[0] if customer_result else None
+
+        # Calculate total amount
+        mycursor.execute("SELECT SUM(item_price) FROM order_details WHERE order_id = %s", (order_id,))
+        amount_result = mycursor.fetchone()
+        total_amount = amount_result[0] if amount_result and amount_result[0] else 0
+
+        # Insert into sale_transaction
+        if customer_id and total_amount > 0:
+            insert_sale = """
+                INSERT INTO sale_transaction (Amount, Payment_Method, employee_id, table_no, customer_id, sale_time, order_id, status)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, 'Completed')
+                """
+            mycursor.execute(insert_sale, (total_amount, payment_method, employee_id, None, customer_id, order_time, order_id))
+            mydb.commit()
+
+        mycursor.close()
+        return redirect('menu_home')
+    return redirect('menu_home')
+
+def service(request):
+    return render(request, 'service.html')
+
+def customer(request):
+    mycursor = mydb.cursor()
+
+    # Edit customer
+    if request.GET.get('edit_customer_id'):
+        edit_id = int(request.GET.get('edit_customer_id'))
+        status = request.GET.get('edit_cus_status')
+        has_account = 1 if status == 'Active' else 0
+
+        update_sql = "UPDATE customer SET has_account = %s WHERE customer_id = %s"
+        mycursor.execute(update_sql, (has_account, edit_id))
+        mydb.commit()
+
+        return redirect('admin_customer')
+
+    # Delete customer
+    if request.GET.get('delete_customer_id'):
+        delete_id = int(request.GET.get('delete_customer_id'))
+        delete_sql = "DELETE FROM customer WHERE customer_id = %s"
+        mycursor.execute(delete_sql, (delete_id,))
+        mydb.commit()
+
+        return redirect('admin_customer')
+
+    search_term = request.GET.get('search_query', '').strip()
+
+    query = "SELECT customer_id, name, phone_no, visit_no, preferred_dish_id, address, email, has_account FROM customer"
+    params = []
+
+    if search_term:
+        try:
+            # Try to search by exact ID
+            id_search = int(search_term)
+            query += " WHERE customer_id = %s"
+            params.append(id_search)
+        except ValueError:
+            # If not an integer, search in name
+            query += " WHERE name LIKE %s"
+            params.append('%' + search_term + '%')
+
+    mycursor.execute(query, params)
+    all_customer_info = mycursor.fetchall()
+
+    mycursor.close()
+
+    return render(request, 'admin-customer.html', {'all_customer_info': all_customer_info, 'search_query': search_term})

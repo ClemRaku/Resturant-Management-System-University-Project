@@ -152,6 +152,7 @@ CREATE TABLE `food_order` (
   `order_time` datetime DEFAULT NULL,
   `phone_no` int DEFAULT NULL,
   `employee_id` int DEFAULT NULL,
+  `name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   KEY `fk_employee_food` (`employee_id`),
   CONSTRAINT `fk_employee_food` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`)
@@ -164,7 +165,7 @@ CREATE TABLE `food_order` (
 
 LOCK TABLES `food_order` WRITE;
 /*!40000 ALTER TABLE `food_order` DISABLE KEYS */;
-INSERT INTO `food_order` VALUES (16,'pending','2025-11-28 03:30:00',1777338869,1),(18,'processing','2025-11-28 06:04:00',1234564123,1);
+INSERT INTO `food_order` VALUES (16,'pending','2025-11-28 03:30:00',1777338869,1,NULL),(18,'processing','2025-11-28 06:04:00',1234564123,1,NULL);
 /*!40000 ALTER TABLE `food_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -230,7 +231,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (1,'Momo','Steamed dumplings filled with tender meat',210.00,1,'momo.jpg',1,'All-purpose flour, water, minced meat (or vegetables), onion, ginger, garlic, coriander, spring onion, salt, pepper.',10,'2025-11-13 13:31:51','2025-11-26 18:38:25'),(2,'Beef Kacchi','Traditional slow-cooked kacchi, bursting with flavors',400.00,2,'../static/kacchi.jpg',1,'Beef, Basmati or Kalijeera rice, potato, yogurt, ghee, onion, ginger paste, garlic paste, cinnamon, cardamom (green and black), cloves, mace, nutmeg, bay leaves, dried plums (aloo bukhara), saffron (or food color), liquid milk, and salt.',45,'2025-11-13 13:31:51','2025-11-25 19:09:20'),(10,'Beef Kabab','Juicy kababs grilled to perfection',490.00,2,'../static/beef kabab.jpg',1,'Ground Beef (or cubed steak), onion, ginger paste, garlic paste, coriander powder, cumin powder, red chili powder, garam masala, salt, and black pepper',60,'2025-11-25 15:55:59','2025-11-25 19:10:40'),(14,'Roshmalai','a rich, creamy Bangladesh dessert made of soft, spongy cottage cheese (chhena) dumplings soaked in sweetened, thickened milk',120.15,3,'dessert5.jpg',1,'the cheese balls (chhena), the creamy milk mixture (rabri), and garnishes',30,'2025-11-26 20:55:33','2025-11-26 20:55:33');
+INSERT INTO `menu` VALUES (1,'GumGum','Moja',170.00,1,'starter1.png',1,'All-purpose flour, water, minced meat (or vegetables), onion, ginger, garlic, coriander, spring onion, salt, pepper.',10,'2025-11-13 13:31:51','2025-11-28 11:59:24'),(2,'Beef Kacchi','Traditional slow-cooked kacchi, bursting with flavors',400.00,2,'main1.png',1,'Beef, Basmati or Kalijeera rice, potato, yogurt, ghee, onion, ginger paste, garlic paste, cinnamon, cardamom (green and black), cloves, mace, nutmeg, bay leaves, dried plums (aloo bukhara), saffron (or food color), liquid milk, and salt.',45,'2025-11-13 13:31:51','2025-11-28 11:59:53'),(10,'Beef Kabab','Juicy kababs grilled to perfection',490.00,2,'../static/beef kabab.jpg',1,'Ground Beef (or cubed steak), onion, ginger paste, garlic paste, coriander powder, cumin powder, red chili powder, garam masala, salt, and black pepper',60,'2025-11-25 15:55:59','2025-11-25 19:10:40'),(14,'Roshmalai','a rich, creamy Bangladesh dessert made of soft, spongy cottage cheese (chhena) dumplings soaked in sweetened, thickened milk',120.15,3,'dessert5.jpg',1,'the cheese balls (chhena), the creamy milk mixture (rabri), and garnishes',30,'2025-11-26 20:55:33','2025-11-26 20:55:33');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,4 +371,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-28 16:29:57
+-- Dump completed on 2025-11-28 20:54:26

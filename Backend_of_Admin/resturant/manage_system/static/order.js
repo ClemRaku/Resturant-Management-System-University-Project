@@ -154,6 +154,7 @@ function updateCounters() {
 function openEditModal(order) {
     document.getElementById("edit_order_id").value = order.order_id;
     document.getElementById("edit_order_customer_id").value = order.customer_id;
+    document.getElementById("edit_customer_name").value = order.name;
     document.getElementById("edit_order_time").value = order.order_time;
     document.getElementById("edit_order_status").value = order.status;
     document.getElementById("edit_order_employee_id").value = order.employee_id;
