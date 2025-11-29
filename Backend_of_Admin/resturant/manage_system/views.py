@@ -1119,3 +1119,6 @@ def customer(request):
     mycursor.close()
 
     return render(request, 'admin-customer.html', {'all_customer_info': all_customer_info, 'search_query': search_term})
+
+def about(request):
+    return render(request, 'about.html')

@@ -28,8 +28,8 @@
                     <li><a href="{% url 'home' %}" class="active">Home</a></li>
                     <li><a href="{% url 'menu_home' %}">Menu</a></li>
                     <li><a href="{% url 'customer_reserve' %}">Reservation</a></li>
-                    <li><a href="../services/service.html">Services</a></li>
-                    <li><a href="../About/about.html">About</a></li>
+                    <li><a href="{% url 'service' %}">Services</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
                 </ul>
 
                 <a href="{% url 'authentication' %}" class="btn btn-primary">Sign In</a>

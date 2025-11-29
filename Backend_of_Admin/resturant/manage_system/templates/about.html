@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  
+  <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/x-icon">
+  <title>Dhakaiya Bites</title>  
+  <link rel="stylesheet" href="{% static 'home.css' %}">
+  <link rel="stylesheet" href="{% static 'about.css' %}">
+
+</head>
+<body>
+
+  <!--navbar er part-->
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+
+        <!-- navbar er lgo -->
+        <div class="logo-wrapper">
+        <img src="{% static 'LOGO.png' %}" alt="Dhakaiya-Bites" class="logo">
+        </div>
+
+        <!-- navbar er link -->
+        <ul class="navbar-links" id="navbar-links">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'menu_home' %}">Menu</a></li>
+          <li><a href="{% url 'customer_reserve' %}">Reservation</a></li>
+          <li><a href="{% url 'service' %}">Services</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+        </ul>
+
+        <!-- sihn in er button -->
+        <a href="{% url 'authentication' %}" class="btn btn-primary">Sign In</a>
+
+        <!-- phn er button -->
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+          <i data-lucide="menu"></i>
+        </button>
+
+      </div>
+    </nav>
+  </header>
+
+  <!-- ABOUT SECTION -->
+<section class="about-section">
+  <div class="about-container">
+
+<!-- Story / History -->
+<div class="about-wrapper">
+  
+  <div class="about-story">
+    <h2>About Dhakaiya Bites</h2>
+    <p>
+      Founded in 2020, Dhakaiya Bites brings the authentic street flavors of Dhaka to your plate.
+      From traditional family recipes to modern twists, we serve meals with love and passion.
+      <br>
+      <br>
+      Our mission is to delight every guest with fresh, flavorful dishes and impeccable service,
+      making every visit a memorable culinary experience.
+    </p>
+  </div>
+
+  <div class="about-card">
+    <img src="{% static 'about-restaurant.jpg' %}" alt="Dhakaiya Bites" class="about-img">
+  </div>
+
+</div>
+
+  
+<!-- Why Choose Us / USPs -->
+<h3 class="about-title">Why Choose Us??</h3>
+
+<ul class="about-usps">
+  <li>
+    <i data-lucide="salad"></i>
+    <span>Fresh & Quality Ingredients</span>
+  </li>
+
+  <li>
+    <i data-lucide="sparkles"></i>
+    <span>Hygienic & Cozy Environment</span>
+  </li>
+
+  <li>
+    <i data-lucide="users"></i>
+    <span>Friendly & Professional Staff</span>
+  </li>
+
+  <li>
+    <i data-lucide="truck"></i>
+    <span>Quick Delivery</span>
+  </li>
+</ul>
+
+
+
+
+
+<!-- Chefs Section -->
+<section class="chefs-section">
+  <!-- Heading -->
+  <h3 class="chefs-heading">Meet Our Chefs</h3>
+
+  <!-- Chefs Grid -->
+  <div class="about-chefs">
+    <div class="chef-card">
+      <img src="../image/chef1.jpg" alt="Chef Arif Rahman">
+      <h4>Chef Arif Rahman</h4>
+      <p>Head Chef</p>
+    </div>
+    <div class="chef-card">
+      <img src="../image/chef2.jpg" alt="Chef Fatema Akter">
+      <h4>Chef Fatema Akter</h4>
+      <p>Pâtissier</p>
+    </div>
+    <div class="chef-card">
+      <img src="../image/chef3.jpg" alt="Chef Kamal Hossain">
+      <h4>Chef Kamal Hossain</h4>
+      <p>Grill Specialist</p>
+    </div>
+    <div class="chef-card">
+      <img src="{% static 'chef4.jpg' %}" alt="Chef Mustafiz Roy">
+      <h4>Chef Mustafiz Roy</h4>
+      <p>Seafood Expert</p>
+    </div>
+  </div>
+</section>
+
+ 
+    <!-- Customer Reviews -->
+<section class="customer-reviews-section">
+  <h3 class="reviews-heading">What Our Customers Say!!</h3>
+
+  <div class="customer-reviews">
+    <div class="review-card">
+      <i data-lucide="quote"></i>
+      <p>“Best Dhakaiya flavors outside Dhaka!”</p>
+      <div class="customer-info">
+        <img src="../image/customer1.jpg" alt="Customer 1">
+        <span class="customer-name">Afsara Hossin</span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <i data-lucide="quote"></i>
+      <p>“Loved the cozy ambiance and quick service.”</p>
+      <div class="customer-info">
+        <img src="../image/customer2.jpg" alt="Customer 2">
+        <span class="customer-name">Anonno Adib</span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <i data-lucide="quote"></i>
+      <p>“Amazing food and friendly staff!”</p>
+      <div class="customer-info">
+        <img src="../image/customer3.jpg" alt="Customer 3">
+        <span class="customer-name">Mim Bushra</span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <i data-lucide="quote"></i>
+      <p>“Dhakaiya Bites is my favorite place for authentic street food.”</p>
+      <div class="customer-info">
+        <img src="../image/customer4.jpg" alt="Customer 4">
+        <span class="customer-name">Arif Rahman</span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <i data-lucide="quote"></i>
+      <p>“Quick delivery, tasty dishes, highly recommended!”</p>
+      <div class="customer-info">
+        <img src="../image/customer5.jpg" alt="Customer 5">
+        <span class="customer-name">Fatema Akter </span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <i data-lucide="quote"></i>
+      <p>“Beautiful interior and delicious meals every time.”</p>
+      <div class="customer-info">
+        <img src="{% static 'customer6.jpg' %}" alt="Customer 6">
+        <span class="customer-name">Adnan Hauqe</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+    <!-- Call to Action -->
+    <p class="about-cta">Come and taste the magic of Dhaka at Dhakaiya Bites today!</p>
+  </div>
+</section>
+
+
+ 
+
+
+  <!-- footer er part-->
+
+  <footer class="footer">
+  <div class="footer-top">  
+    <div class="footer-about">
+      <h2>Dhakaiya Bites</h2>
+      <p>Serving the best Bangladeshi cuisine with love and tradition.</p>
+      <div class="social-icons">
+        <a href="#"><i data-lucide="facebook"></i></a>
+        <a href="#"><i data-lucide="instagram"></i></a>
+        <a href="#"><i data-lucide="twitter"></i></a>
+        <a href="#"><i data-lucide="youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- footer er link-->
+    <div class="footer-links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#menu-items">Menu</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <!-- footer e contact -->
+    <div class="footer-contact">
+      <h3>Contact Us</h3>
+      <p>📍 123 Dhaka St, Bangladesh</p>
+      <p>📞 +880 123 456 789</p>
+      <p>✉️ DhakaiyaBites@gmail.com</p>
+    </div>
+
+    <!-- fooeter er email -->
+    <div class="footer-newsletter">
+      <h3>Subscribe</h3>
+      <p>Get latest updates & offers</p>
+      <form id="newsletter-form">
+        <input type="email" placeholder="Your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Your Restaurant. All rights reserved.</p>
+  </div>
+</footer>
+
+
+  
+  <!-- js onso -->  
+  <script src="{% static 'cart.js' %}"></script>
+  <script src="{% static 'menu.js' %}"></script>
+  <script src="{% static 'home.js' %}"></script>
+  <script src="{% static 'reserve.js' %}"></script>
+  <script src="{% static 'service.js' %}"></script>
+  <script src="{% static 'about.js' %}"></script>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+
+</html>
