@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservation - Dhakaiya Bites</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    
+    <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'reserve.css' %}">
+    
+</head>
+<body>
+    
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <div class="logo-wrapper">
+                    <img src="../image/LOGO.png" alt="Dhakaiya-Bites" class="logo">
+                </div>
+
+                <ul class="navbar-links" id="navbar-links">
+                    <li><a href="{% url 'home' %}" class="active">Home</a></li>
+                    <li><a href="{% url 'menu_home' %}">Menu</a></li>
+                    <li><a href="{% url 'customer_reserve' %}">Reservation</a></li>
+                    <li><a href="{% url 'service' %}">Services</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                </ul>
+
+                <a href="{% url 'authentication' %}" class="btn btn-primary">Sign In</a>
+
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container reservation-container">
+    <div class="text-center mb-8">
+      <h1 class="gradient-text">Reserve Your Table</h1>
+      <p class="subtitle">Book your dining experience with us</p>
+    </div>
+
+    <div class="card">
+
+{% comment %} shuru {% endcomment %}
+      <form id="reservation-form" action = "{% url 'customer_reserve' %}">
+
+
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" name = "full_name" id="name" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email *</label>
+          <input type="email" name = "email" id="email" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number *</label>
+          <input type="tel" name = "phone" id="phone" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Date *</label>
+          <input type="date" name = "date" id="date" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Time *</label>
+          <select id="time" name = "time" class="form-select" required>
+            <option value="">Select time</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="11:30">11:30 AM</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="12:30">12:30 PM</option>
+            <option value="13:00">1:00 PM</option>
+            <option value="13:30">1:30 PM</option>
+            <option value="18:00">6:00 PM</option>
+            <option value="18:30">6:30 PM</option>
+            <option value="19:00">7:00 PM</option>
+            <option value="19:30">7:30 PM</option>
+            <option value="20:00">8:00 PM</option>
+            <option value="20:30">8:30 PM</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Number of Guests *</label>
+          <select id="guests" name = "no_of_guest" class="form-select" required>
+            <option value="">Select guests</option>
+            <option value="1">1 Guest</option>
+            <option value="2">2 Guests</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4 Guests</option>
+            <option value="5">5 Guests</option>
+            <option value="6">6 Guests</option>
+            <option value="7">7 Guests</option>
+            <option value="8">8 Guests</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Special Requests</label>
+          <textarea id="requests" name = "special_req" class="form-textarea" rows="4" placeholder="Any dietary restrictions or special occasions..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submit-btn">
+          Reserve Table
+        </button>
+      </form>
+
+
+
+    </div>
+  </div>
+  <script src="{% static 'home.js' %}"></script>
+  <script src="{% static 'menu.js' %}"></script>
+  <script src="{% static '.auth.js' %}"></script>
+  <script src="{% static 'reserve.js' %}"></script>
+  <script src="../About/about.js"></script>
+  <script>lucide.createIcons();</script>
+ 
+
+    
+</body>
+</html>

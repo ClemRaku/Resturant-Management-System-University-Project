@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin-Dhakaiya Bites</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+
+<body>
+    <div class="navbar">
+
+        <h2>Dhakaiya Bites Admin</h2><a href="{% url 'home' %}" class="home"><i
+                data-lucide="house"></i></a>
+
+
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="{% url 'dashboard' %}"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="{% url 'admin_menu' %}"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
+            <li><a href="{% url 'sales' %}"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
+            <li><a href="{% url 'staff' %}"><i data-lucide="users-round"></i>Staff</a></li>
+            <li><a href="{% url 'order' %}"><i data-lucide="shopping-cart"></i>Order</a></li>
+            <li><a href="{% url 'admin_reserve' %}"><i data-lucide="calendar"></i>Reservation</a></li>
+            <li><a href="{% url 'admin_inventory' %}"><i data-lucide="package"></i>Inventory</a></li>
+            <li><a href="{% url 'admin_customer' %}" class="active"><i data-lucide="user-round-pen"></i>Customer</a></li>
+
+        </ul>
+
+    </div>
+
+    <div class="main-content">
+
+        <h1>Customer Management</h1>
+        <p class="sub-title">Manage your customer information</p>
+
+
+
+        <div class="table-card">
+            <h2>Customer Information</h2>
+            <form method="get" action="{% url 'admin_customer' %}">
+                <label for="searchMenu">Search Customers:</label>
+                <input type="text" name="search_query" id="searchMenu" placeholder="Enter ID or Name..." value="{{ search_query|default:'' }}">
+                <button type="submit" class="btn">Search</button>
+                {% if search_query %}
+                    <a href="{% url 'admin_customer' %}" class="btn" style="background-color: #888;">Clear Search</a>
+                {% endif %}
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Phone No</th>
+                        <th>Visit No</th>
+                        <th>Preferred Dish</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+                <!--ar akhne value add hbe-->
+                <tbody>
+                    {% for customer in all_customer_info %}
+                    <tr>
+                        <td>{{ customer.0 }}</td>
+                        <td>{{ customer.1 }}</td>
+                        <td>{{ customer.2 }}</td>
+                        <td>{{ customer.3 }}</td>
+                        <td>{{ customer.4 }}</td>
+                        <td>{{ customer.5 }}</td>
+                        <td>{{ customer.6 }}</td>
+                        <td>{% if customer.7 %}Active{% else %}Inactive{% endif %}</td>
+                        <td>
+                            <button class="edit-btn" data-customer-id="{{ customer.0 }}">
+                                <i data-lucide="pencil"></i>
+                            </button>
+
+                            <button class="delete-btn" data-customer-id="{{ customer.0 }}">
+                                <i data-lucide="trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+
+
+        <!--exiting information edit ar jonno-->
+
+        <div id="editCustomerModal" class="modal">
+            <div class="modal-content">
+                <span id="closeEditModal" class="close">&times;</span>
+                <h2>Edit Customer Information</h2>
+
+                <form action="{% url 'admin_customer' %}" method="get">
+
+                    <label>Customer ID</label>
+                    <input type="text" name="edit_customer_id" id="edit_customer_id" readonly>
+
+                    <label>Status</label>
+                    <select name="edit_cus_status" id="edit_cus_status">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Banned">Banned</option>
+                        <option value="Deleted">Deleted</option>
+                    </select>
+
+                    <button id="saveEdit" class="btn menu-btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+        <script src="{% static 'customer.js' %}"></script>
+        <script>lucide.createIcons();</script>
+</body>
+
+</html>

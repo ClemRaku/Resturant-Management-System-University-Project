@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Inventory Management</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h2>Dhakaiya Bites Admin</h2><a href="{% url 'home' %}" class="home"><i data-lucide="house"></i></a>
+        <ul class="navbar-links">
+            <li><a href="{% url 'dashboard' %}"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="{% url 'admin_menu' %}"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
+            <li><a href="{% url 'sales' %}"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
+            <li><a href="{% url 'staff' %}"><i data-lucide="users-round"></i>Staff</a></li>
+            <li><a href="{% url 'order' %}"><i data-lucide="shopping-cart"></i>Order</a></li>
+            <li><a href="{% url 'admin_reserve' %}"><i data-lucide="calendar"></i>Reservation</a></li>
+            <li><a href="{% url 'admin_inventory' %}" class="active" ><i data-lucide="package"></i>Inventory</a></li>
+            <li><a href="{% url 'admin_customer' %}"><i data-lucide="user-round-pen"></i>Customer</a></li>
+
+        </ul>
+    </div>
+
+    <div class="main-content">
+
+        <h1>Inventory Management</h1>
+        <p class="sub-title">Track and manage your restaurant supplies</p>
+        
+            <a href="#" class="btn menu-btn" id="openModal"> <i data-lucide="plus"></i> Add Inventory Items</a>
+              
+        <div class="card" style="clear: both;">
+            <h2>Inventory Items</h2>
+
+            <div class="search-container" style="margin-bottom: 20px;">
+                <form method="get" action="{% url 'admin_inventory' %}">
+                    <label>Search Inventory:</label>
+                    <input type="text" name="search_query" id="searchInventory" placeholder="Enter ID"
+                        style="padding: 10px; margin: 10px; border-radius: 10px;"
+                        value="{{ request.GET.search_query|default:'' }}">
+                    
+                    <button type="submit" class="btn">Search</button>
+                    
+                    {% if request.GET.search_query %}
+                        <a href="." class="btn" style="background-color: #888;">Clear Search</a>
+                    {% endif %}
+                </form>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Inventory ID</th>
+                        <th>Items Name</th>
+                        <th>Quantity</th>
+                        <th>Minimum Stock</th>
+                        <th>Last Restocked</th>
+                        <th>Supplier ID</th>
+                        <th>Supplier Name</th>
+                        <th>Supplier Contact</th>
+                        <th>Price</th>
+                        <th>Avilability</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for q in all_inventory_info %}
+                    <tr>
+                        <td>{{ q.0 }}</td>
+                        <td>{{ q.1 }}</td>
+                        <td>{{ q.2 }}</td>
+                        <td>{{ q.3 }}</td>
+                        <td>{{ q.4|date:"Y-m-d H:i" }}</td>
+                        <td>{{ q.5 }}</td>
+                        <td>{{ q.6 }}</td>
+                        <td>{{ q.7 }}</td>
+                        <td>${{ q.8|floatformat:2 }}</td>
+                        <td>
+                            {% if q.9 == 1 %}
+                                Stocked
+                            {% elif q.9 == 0 %}
+                                Low Stock
+                            {% else %}
+                                Out of Stock
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="action-btn edit-btn" data-inventory-id="{{ q.0 }}" data-item-name="{{ q.1 }}" 
+                                data-quantity="{{ q.2 }}" data-min-stock="{{ q.3 }}" 
+                                data-restocked="{{ q.4|date:"Y-m-d\TH:i" }}" data-supplier-id="{{ q.5 }}" 
+                                data-supplier-name="{{ q.6 }}" data-supplier-contact="{{ q.7 }}" 
+                                data-price="{{ q.8|floatformat:2 }}" data-status="{{ q.9 }}">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                            <button class="action-btn delete-btn" data-inventory-id="{{ q.0 }}"><i data-lucide="trash-2"></i></button>
+                        </td>                    
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="11" style="text-align: center;">No inventory items found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>            
+            </table>
+
+        </div>
+    </div>
+
+    <div id="addInventoryModal" class="modal">
+
+        <div class="modal-content">
+            <span id="closeAddModal" class="close">&times;</span>
+            <h2>Add New Inventory Item</h2>
+            <form action="{% url 'admin_inventory' %}" method="get">
+                
+                <input type="hidden" name="action_type" value="add_new_item">
+
+                <label>Item Name</label>
+                <input type="text" name="add_item_name" id="add_item_name" required>
+
+                <label>Quantity</label>
+                <input type="number" name="add_int_quantity" id="add_quantity" required>
+
+                <label>Minimum Stock</label>
+                <input type="number" name="add_int_min_stock" id="add_min_stock" required>
+
+                <label>Last Restocked</label>
+                <input type="datetime-local" name="edit_int_restock" id="add_restock">
+
+                <label>Supplier ID</label>
+                <input type="number" name="add_sup_id" id="add_sup_id">
+
+                <label>Supplier Name</label>
+                <input type="text" name="add_sup_name" id="add_sup_name">
+
+                <label>Supplier Contact</label>
+                <input type="tel" name="add_sup_contact" id="add_sup_contact">
+
+                <label>Price</label>
+                <input type="number" name="addPRICE" id="add_int_price" step="0.01" required>
+
+                <label>Status</label>
+                <select name="int_new_status" id="add_status">
+                    <option value="Stocked">Stocked</option>
+                    <option value="Low Stock">Low Stock</option>
+                    <option value="Out_of_stock">Out of Stock</option>
+                </select>
+
+                <button type="submit" class="btn menu-btn" id="saveNewItem">Add Item</button>
+            </form>
+
+        </div>
+    </div>
+
+
+    <div id="editInventoryModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditIntModal" class="close">&times;</span>
+            <h2>Edit Inventory Items</h2>
+            <form action="{% url 'admin_inventory' %}" method="get">
+                <label>Inventory ID</label>
+                <input type="text" name="inventory_id" id="edit_int_id" readonly>
+
+                <label>Items Name</label>
+                <input type="text" name="int_item_name" id="edit_int_item_name" readonly>
+
+                <label>Quantity</label>
+                <input type="text" name="int_quantity" id="edit_int_quantity">
+
+                <label>Minimum Stock</label>
+                <input type="text" name="int_mini_stock" id="edit_int_mini_stock">
+
+                <label>Last Restocked</label>
+                <input type="datetime-local"name = 'edit_int_restock' id="edit_int_restock">
+
+                <label>Supplier ID</label>
+                <input type="text" name="int_sup_id" id="edit_sup_id">
+
+                <label>Supplier Name</label>
+                <input type="text" name="int_sup_name" id="edit_sup_name">
+
+                <label>Supplier Contect</label>
+                <input type="tel" name="int_sup_contact" id="edit_sup_contact">
+
+                <label >Price</label>
+                <input type="text" name="edit_int_price" id="edit_int_price">
+
+                <label>Status</label>
+                <select name="int_status" id="edit_int_status">
+                    <option value="Stocked">Stocked</option>
+                    <option value="Low Stock">Low Stock</option>
+                    <option value="Out_of_stock">Out of Stock</option>
+
+                </select>
+
+                <button class="btn menu-btn" id="saveEditedInventory">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static 'inventory.js' %}"></script>
+    <script>lucide.createIcons();</script>
+
+</body>
+
+</html>

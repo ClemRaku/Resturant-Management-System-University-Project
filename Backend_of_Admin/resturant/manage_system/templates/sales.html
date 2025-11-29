@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Reservation Management</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h2>Dhakaiya Bites Admin</h2><a href="../Restuarant project - frontend/Home/home.html" class="home"><i data-lucide="house"></i></a>
+        <ul class="navbar-links">
+            <li><a href="{% url 'dashboard' %}"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="{% url 'admin_menu' %}"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
+            <li><a href="{% url 'sales' %}" class="active"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
+            <li><a href="{% url 'staff' %}" ><i data-lucide="users-round"></i>Staff</a></li>
+            <li><a href="{% url 'order' %}"><i data-lucide="shopping-cart"></i>Order</a></li>
+            <li><a href="{% url 'admin_reserve' %}"><i data-lucide="calendar"></i>Reservation</a></li>
+            <li><a href="{% url 'admin_inventory' %}"><i data-lucide="package"></i>Inventory</a></li>
+            <li><a href="{% url 'admin_customer' %}"><i data-lucide="user-round-pen"></i>Customer</a></li>
+
+        </ul>
+    </div>
+
+    <div class="main-content">
+
+        <h1>Sales Transactions</h1>
+        <p class="sub-title">Track and manage all sales transactions</p>
+
+        <div class="sales-card">
+
+            <div class="card">
+                <div class="header">
+                    <h4>Total Sales</h4>
+                </div>
+                <div class="value" style="padding: 10px;">{{ total_sales }}</div>
+
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Total Transactions</h4>
+                </div>
+                <div class="value" style="padding: 10px;">{{ total_transactions }}</div>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Pending Amount</h4>
+                </div>
+                <div class="value" style="padding: 10px;">{{ pending_amount }}</div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+            <h2>Sales Transactions</h2>
+
+            <label>Search Sales:</label>
+            <input type="text" id="searchSales" placeholder="Enter ID ..."
+                style="padding: 10px; margin: 10px; border-radius: 10px;">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sales ID</th>
+                        <th>Customer ID</th>
+                        <th>Employee ID</th>
+                        <th>Items</th>
+                        <th>Sale Time</th>
+                        <th>Payment Method</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.sale_id }}</td>
+                        <td>{{ sale.customer_id }}</td>
+                        <td>{{ sale.employee_id }}</td>
+                        <td>{{ sale.items }}</td>
+                        <td>{{ sale.sale_time }}</td>
+                        <td>{{ sale.payment_method }}</td>
+                        <td>{{ sale.amount }}</td>
+                        <td>{{ sale.status }}</td>
+                        <td>
+                            <button class="edit-btn" onclick="openEditModal({{ sale.sale_id }}, '{{ sale.customer_id }}', '{{ sale.employee_id }}', '{{ sale.table_no }}', '{{ sale.items }}', '{{ sale.sale_time }}', '{{ sale.payment_method }}', '{{ sale.amount }}', '{{ sale.status }}')">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    
+
+    <div id="editSalesModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditIntModal" class="close">&times;</span>
+            <h2>Edit Sales Transaction</h2>
+
+            <form method="get" action="{% url 'sales' %}">
+                <input type="hidden" name="edit_sale_id" id="edit_sales_id">
+
+                <label>Sales Time</label>
+                <input type="datetime-local" name="sal_time" id="edit_sal_time">
+
+                <label>Payment Method</label>
+                <select name="edit_pay_method" id="edit_pay_method">
+                    <option value="">Select</option>
+                    <option value="Mobile Banking">Mobile Banking</option>
+                    <option value="Card">Card</option>
+                    <option value="Cash">Cash</option>
+                </select>
+
+                <label>Status</label>
+                <select name="edit_sale_status" id="edit_sale_status">
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Refunded">Refunded</option>
+                </select>
+
+                <button type="submit" class="btn menu-btn" id="saveEditedsales">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static 'sales.js' %}"></script>
+    <script>lucide.createIcons();</script>
+
+</body>
+
+</html>

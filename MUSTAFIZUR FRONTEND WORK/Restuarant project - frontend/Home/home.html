@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="shortcut icon" href="../image/favicon2.png" type="image/x-icon">
+  <title>Dhakaiya Bites</title>
+  <link rel="stylesheet" href="../menu/menu.css">
+  <link rel="stylesheet" href="../Auth/auth.css">
+  <link rel="stylesheet" href="../reservation/reserve.css">
+  <link rel="stylesheet" href="../services/service.css">
+  <link rel="stylesheet" href="home.css">
+
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <div class="logo-wrapper">
+          <img src="../image/LOGO.png" alt="Dhakaiya-Bites" class="logo">
+        </div>
+
+        <ul class="navbar-links" id="navbar-links">
+          <li><a href="home.html" class="active">Home</a></li>
+          <li><a href="../menu/menu.html">Menu</a></li>
+          <li><a href="../reservation/reserve.html">Reservation</a></li>
+          <li><a href="../services/service.html">Services</a></li>
+          <li><a href="../About/about.html">About</a></li>
+        </ul>
+
+        <a href="../Auth/auth.html" class="btn btn-primary">Sign In</a>
+
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <img src="../image/hero.png" alt="Dhakaiya Bites" class="hero-img">
+    <div class="hero-text">
+      <h1>Bite into</h1>
+      <h1>Dhakaiya Magic!</h1>
+      <p>From rickshaw stalls to your doorstep – taste the city’s best bites.</p>
+      <a href="../menu/menu.html" class="btn-primary">Explore Menu</a>
+    </div>
+  </section>
+
+  <!-- HIGHLIGHT SECTION -->
+  <section class="highlight-section">
+
+    <!-- Top: main image + description -->
+    <div class="highlight-top">
+      <div class="highlight-left">
+        <img src="../image/food.png" alt="Special Dish" class="highlight-food">
+      </div>
+      <div class="highlight-right">
+        <h2>Discover Real Dhakaiya Flavor</h2>
+        <p>Traditional taste with a modern twist — crafted fresh, cooked slow, served hot. Feel the warmth of authentic
+          local meals.</p>
+        <a href="../About/about.html" class="btn-explore">Explore More</a>
+      </div>
+    </div>
+
+    <!-- Bottom: Popular Dishes Title + Cards -->
+    <div class="highlight-bottom">
+      <h2 class="popular-title">Upcoming Dishes!</h2>
+      <div id="highlight-featured-dishes" class="highlight-featured-dishes">
+
+        <div class="card">
+          <input type="file" name="home_image1" class="imageInput" data-id="1" accept="image/*">
+          <img class="preview" data-id="1" alt="Image Preview" style="display:none; width:100%; margin-top:10px;">
+
+          <input type="text" class="h3" name="food_name1" value="Beef Kabab">
+          <input type="text" class="p" name="food_description1" value="Juicy kababs grilled to perfection">
+
+          <div class="price-row">
+            <input type="text" class="price" name="h-f-price1" min="0" step="0.01" value="490.00tk">
+            <button class="btn btn-primary order-btn">Order Now</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <input type="file" name="home_image2" class="imageInput" data-id="2" accept="image/*" hidden>
+          <img class="preview" data-id="2" alt="Image Preview" style="display:none; width:100%; margin-top:10px;">
+
+          <input type="text" class="h3" name="food_name2" value="Momo">
+          <input type="text" class="p" name="food_description2" value="Steamed dumplings filled with tender meat">
+
+          <div class="price-row">
+            <input type="text" class="price" name="h-f-price2" min="0" step="0.01" value="210.00tk">
+            <button class="btn btn-primary order-btn">Order Now</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <input type="file" name="home_image3" class="imageInput" data-id="3" accept="image/*" hidden>
+          <img class="preview" data-id="3" alt="Image Preview" style="display:none; width:100%; margin-top:10px;">
+
+          <input type="text" class="h3" name="food_name3" value="Beef Kacchi">
+          <input type="text" class="p" name="food_description3"
+            value="Traditional slow-cooked kacchi, bursting with flavors">
+
+          <div class="price-row">
+            <input type="text" class="price" name="h-f-price3" min="0" step="0.01" value="400.00tk">
+            <button class="btn btn-primary order-btn">Order Now</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- DINE IN CTA -->
+  <section class="dine-fixed-section py-20">
+    <i data-lucide="calendar" class="feature-icon"></i>
+    <h2 class="section-title">Dine In With Us</h2>
+    <p>Reserve a table for an unforgettable dining experience at Dhakaiya Bites. Enjoy our carefully crafted dishes in a
+      warm, inviting atmosphere.</p>
+    <a href="../reservation/reserve.html" class="btn btn-primary">Reserve Table</a>
+  </section>
+
+  <!-- CTA SIGNUP -->
+  <section class="cta-fixed-section py-20">
+    <div class="cta-content">
+      <h2>Ready to Order?</h2>
+      <p>Create an account and get started today. Enjoy your favorite Dhakaiya dishes at your doorstep!</p>
+      <a href="../Auth/auth.html" class="btn-light">Sign Up Now</a>
+    </div>
+    <img src="../image/cta-food.png" alt="Delicious Dhakaiya Food">
+  </section>
+
+
+  <!-- footer er part-->
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-about">
+        <h2>Dhakaiya Bites</h2>
+        <p>Serving the best Bangladeshi cuisine with love and tradition.</p>
+        <div class="social-icons">
+          <a href="#"><i data-lucide="facebook"></i></a>
+          <a href="#"><i data-lucide="instagram"></i></a>
+          <a href="#"><i data-lucide="twitter"></i></a>
+          <a href="#"><i data-lucide="youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- footer er link-->
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="../menu/menu.html">Menu</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- footer e contact -->
+      <div class="footer-contact">
+        <h3>Contact Us</h3>
+        <p>📍 123 Dhaka St, Bangladesh</p>
+        <p>📞 +880 123 456 789</p>
+        <p>✉️ DhakaiyaBites@gmail.com</p>
+      </div>
+
+      <!-- fooeter er email -->
+      <div class="footer-newsletter">
+        <h3>Subscribe</h3>
+        <p>Get latest updates & offers</p>
+        <form id="newsletter-form">
+          <input type="email" placeholder="Your email" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Your Restaurant. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="home.js"></script>
+  <script src="../menu/menu.js"></script>
+  <script src="../Auth/auth.js"></script>
+  <script src="../reservation/reserve.js"></script>
+  <script src="../services/service.js"></script>
+  <script src="../Auth/auth.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+
+</html>

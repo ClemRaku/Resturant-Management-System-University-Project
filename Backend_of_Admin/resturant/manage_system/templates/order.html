@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Order Management</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h2>Dhakaiya Bites Admin</h2><a href="{% url 'home' %}" class="home"><i data-lucide="house"></i></a>
+        <ul class="navbar-links">
+            <li><a href="{% url 'dashboard' %}"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="{% url 'admin_menu' %}"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
+            <li><a href="{% url 'sales' %}"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
+            <li><a href="{% url 'staff' %}"><i data-lucide="users-round"></i>Staff</a></li>
+            <li><a href="{% url 'order' %}" class="active"<i data-lucide="shopping-cart"></i>Order</a></li>
+            <li><a href="{% url 'admin_reserve' %}"><i data-lucide="calendar"></i>Reservation</a></li>
+            <li><a href="{% url 'admin_inventory' %}"><i data-lucide="package"></i>Inventory</a></li>
+            <li><a href="{% url 'admin_customer' %}"><i data-lucide="user-round-pen"></i>Customer</a></li>
+
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1>Order Management</h1>
+        <p class="sub-title">Track and update customer orders</p>
+        <a href="#" class="btn menu-btn" id="openModal"> <i data-lucide="plus"></i> Add New Order</a>
+
+
+        <div class="order-card">
+
+            <div class="card">
+                <div class="header">
+                    <h4>Pending</h4>
+                </div>
+                <form action="order.html" method="get">
+                    <input type="number" name="pending" class="value" min="0" style="width:100%;" value="{{ pending_count }}">
+                </form>
+
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Preparing</h4>
+                </div>
+                <form action="order.html" method="get">
+                    <input type="number" name="preparing" class="value" min="0" style="width:100%;" value="{{ preparing_count }}">
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Ready</h4>
+                </div>
+                <form action="order.html">
+                    <input type="number" name="ready" class="value" min="0" style="width:100%;" value="{{ ready_count }}">
+                </form>
+
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Completed</h4>
+                </div>
+                <form action="order.html" method="get">
+                    <input type="number" name="completed" class="value" min="0" style="width:100%;" value="{{ completed_count }}">
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Cancelled</h4>
+                </div>
+                <form action="order.html" method="get">
+                    <input type="number" name="cancelled" class="value" min="0" style="width:100%;" value="{{ cancelled_count }}">
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <div class="card">
+            <h2>Current Orders</h2>
+
+            <label>Search Order:</label>
+            <input type="text" id="orderSearch" placeholder="Enter Order ID..."
+                style="padding: 10px; margin: 10px; border-radius: 10px;">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Phone Number</th>
+                        <th>Customer Name</th>
+                        <th>Order Time</th>
+                        <th>Status</th>
+                        <th>Employee ID</th>
+                        <th>Menu Items</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="orderTable">
+                {% for a in orders %}
+                    <tr>
+                        <td>{{ a.order_id }}</td>
+                        <td>{{ a.phone_no }}</td>
+                        <td>{{ a.name }}</td>
+                        <td>{{ a.order_time }}</td>
+                        <td>{{ a.status }}</td>
+                        <td>{{ a.employee_id }}</td>
+                        <td>
+                            {% for item in a.items %}
+                                {{ item.menu_id }} ({{ item.quantity }})<br>
+                            {% endfor %}
+                        </td>
+
+                        <td>
+                            <button class="edit-btn" data-order='{"order_id": "{{ a.order_id }}", "customer_id": "{{ a.phone_no }}", "order_time": "{{ a.order_time }}", "status": "{{ a.status }}", "employee_id": "{{ a.employee_id }}", "name": "{{ a.name }}"}'>
+                                <i data-lucide="pencil"></i>
+                            </button>
+
+                            <button class="delete-btn" data-id="{{ a.order_id }}">
+                                <i data-lucide="trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <div id="addOrderModal" class="modal">
+
+        <div class="modal-content">
+            <span id="closeAddModal" class="close">&times;</span>
+            <h2>Add New Order</h2>
+            <form action="{% url 'order' %}" method="get">
+                <label>Phone Number</label>
+                <input type="text" name="phone" required>
+
+                <label>Customer Name</label>
+                <input type="text" name="customer_name" required>
+
+                <label>Order Time</label>
+                <input type="datetime-local" name="add_order_time" required>
+
+                <div id="menu-items">
+                    <div class="menu-item" style="display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <label>Menu Item</label><br>
+                            <select name="add_order_menu_id" required>
+                                <option value="">Select Menu Item</option>
+                                {% for item in menu_items %}
+                                    <option value="{{ item.0 }}">{{ item.0 }} - {{ item.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Quantity</label><br>
+                            <input type="number" name="add_order_quantity" min="1" value="1" required>
+                        </div>
+
+                        <button type="button" class="remove-item" style="display:none;">Remove</button>
+                    </div>
+                </div>
+                <button type="button" id="add-more">Add Another Item</button>
+                <br><br>
+
+                <label>Status</label>
+                <select name="add_order_status" required>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Preparing</option>
+                    <option value="ready">Ready</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label>Employee</label>
+                    <select name="add_order_employee_id" required>
+                        <option value="">Select Employee</option>
+                        {% for emp in employees %}
+                            <option value="{{ emp.0 }}">{{ emp.0 }} - {{ emp.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button class="btn menu-btn" id="saveNewOrder">Add Order</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="editOrderModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditOrderModal" class="close">&times;</span>
+            <h2>Edit Order</h2>
+            <form action="{% url 'order' %}" method="get">
+                <label>Order ID</label>
+                <input type="text" name="order_id" id="edit_order_id" readonly>
+
+                <label>Phone Number</label>
+                <input type="text" name="order_customer_id" id="edit_order_customer_id" required>
+
+                <label>Customer Name</label>
+                <input type="text" name="edit_customer_name" id="edit_customer_name" required>
+
+                <label>Order Time</label>
+                <input type="datetime-local" name="order_time" id="edit_order_time" required>
+
+                <label>Status</label>
+                <select name="edit_order_status" id="edit_order_status" required>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Preparing</option>
+                    <option value="ready">Ready</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+
+                <label>Employee</label>
+                <select name="edit_order_employee_id" id="edit_order_employee_id" required>
+                    <option value="">Select Employee</option>
+                    {% for emp in employees %}
+                        <option value="{{ emp.0 }}">{{ emp.0 }} - {{ emp.1 }}</option>
+                    {% endfor %}
+                </select>
+
+                <div id="edit-menu-items">
+                    <div class="menu-item" style="display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <label>Menu Item</label><br>
+                            <select name="edit_order_menu_id" required>
+                                <option value="">Select Menu Item</option>
+                                {% for item in menu_items %}
+                                    <option value="{{ item.0 }}">{{ item.0 }} - {{ item.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Quantity</label><br>
+                            <input type="number" name="edit_order_quantity" min="1" value="1" required>
+                        </div>
+
+                        <button type="button" class="remove-item" style="display:none;">Remove</button>
+                    </div>
+                </div>
+                <button type="button" id="edit-add-more">Add Another Item</button>
+                <br><br>
+
+                <button class="btn menu-btn" id="saveEditedOrder">Save Changes</button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script src="{% static 'order.js' %}"></script>
+    <script>lucide.createIcons();</script>
+
+</body>
+
+</html>

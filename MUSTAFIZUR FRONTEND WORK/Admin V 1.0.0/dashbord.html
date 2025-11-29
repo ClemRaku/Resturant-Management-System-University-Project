@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin-Dhakaiya Bites</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <div class="navbar">
+
+        <h2>Dhakaiya Bites Admin</h2><a href="../Restuarant project - frontend/Home/home.html" class="home"><i
+                data-lucide="house"></i></a>
+
+
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="dashbord.html" class="active"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="adminmenu.html"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
+            <li><a href="sales.html"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
+            <li><a href="staff.html"><i data-lucide="users-round"></i>Staff</a></li>
+            <li><a href="order.html"><i data-lucide="shopping-cart"></i>Order</a></li>
+            <li><a href="adminreservation.html"><i data-lucide="calendar"></i>Reservation</a></li>
+            <li><a href="inventory.html"><i data-lucide="package"></i>Inventory</a></li>
+
+        </ul>
+
+    </div>
+
+    <!--This value will auto update from DBT-->
+
+    <div class="main-content">
+
+        <h1>Dashboard</h1>
+        <p class="sub-title">welcome to Dhakaiya Bites management system</p>
+
+        <div class="dashboard-card">
+
+            <div class="card">
+                <div class="header">
+                    <h4>Total Revenue</h4>
+                    <i data-lucide="dollar-sign"></i>
+                </div>
+                <form action="dashbord.html" method="Get">
+                    <input type="number" name="revenue" class="value" style="width: 100px;" value=""><span
+                        style="font-size: 32px; font-weight: 700;"> .Tk</span>
+
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Total Orders</h4>
+                    <i data-lucide="shopping-cart"></i>
+                </div>
+                <form action="dashbord.html" method="Get">
+                    <input type="number" name="revenue" class="value" min="0" style="width: 100px;" value="">
+
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Customers</h4>
+                    <i data-lucide="users"></i>
+                </div>
+                <form action="dashbord.html" method="Get">
+                    <input type="number" name="revenue" class="value" min="0" style="width: 100px;" value="">
+                </form>
+
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4>Total Revenue</h4>
+                    <i data-lucide="trending-up"></i>
+                </div>
+                <form action="dashbord.html" method="Get">
+                    <input type="number" name="revenue" class="value" style="width: 100px;" value=""><span
+                        style="font-size: 32px; font-weight: 700;"> .Tk</span>
+                </form>
+            </div>
+
+
+            <!--Raka this values will come from database order table and automatic change accroding to DBT-->
+
+
+
+
+
+        </div>
+
+        <div class="recent">
+            <div class="card">
+                <h2>Recent Orders</h2>
+                <div class="recent-order-item">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer Name</th>
+                                <th>Items</th>
+                                <th>Order Time</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="margin-bottom:10px ;">Upcomming Dishes</h2>
+
+                <div class="upcomming-card">
+
+                    <form action="dashbord.html" method="get">
+                        <div class="card">
+                            <input type="file" name="home_image1" class="imageInput" data-id="1" accept="image/*">
+                            <img class="preview" data-id="1" alt="Image Preview"
+                                style="display:none; width:100%; margin-top:10px;">
+
+                            <input type="text" class="h3" name="food_name1" value="Beef Kabab">
+                            <input type="text" class="p" name="food_description1"
+                                value="Juicy kababs grilled to perfection">
+
+                            <div class="price-row">
+                                <input type="text" class="price" name="h-f-price1" min="0" step="0.01" value="490.00tk">
+                                <button class="btn btn-primary ">Update Now</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <form action="dashbord.html" method="get">
+                        <div class="card">
+                            <input type="file" name="home_image2" class="imageInput" data-id="2" accept="image/*">
+                            <img class="preview" data-id="2" alt="Image Preview"
+                                style="display:none; width:100%; margin-top:10px;">
+
+                            <input type="text" class="h3" name="food_name2" value="Momo">
+                            <input type="text" class="p" name="food_description2"
+                                value="Steamed dumplings filled with tender meat">
+
+                            <div class="price-row">
+                                <input type="text" class="price" name="h-f-price2" min="0" step="0.01" value="210.00tk">
+                                <button class="btn btn-primary order-btn">Update Now</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                    <form action="dashbord.html" method="get">
+
+                        <div class="card">
+                            <input type="file" name="home_image3" class="imageInput" data-id="3" accept="image/*">
+                            <img class="preview" data-id="3" alt="Image Preview"
+                                style="display:none; width:100%; margin-top:10px;">
+
+                            <input type="text" class="h3" name="food_name3" value="Beef Kacchi">
+                            <input type="text" class="p" name="food_description3"
+                                value="Traditional slow-cooked kacchi, bursting with flavors">
+
+                            <div class="price-row">
+                                <input type="text" class="price" name="h-f-price3" min="0" step="0.01" value="400.00tk">
+                                <button class="btn btn-primary order-btn">Update Now</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+
+    <script src="dashboard.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

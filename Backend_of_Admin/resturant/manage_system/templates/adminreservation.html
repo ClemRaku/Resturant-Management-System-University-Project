@@ -1,0 +1,161 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Reservation Management</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h2>Dhakaiya Bites Admin</h2><a href="{% url 'home' %}" class="home"><i data-lucide="house"></i></a>
+        <ul class="navbar-links">
+            <li><a href="{% url 'dashboard' %}"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="{% url 'admin_menu' %}"><i data-lucide="fork-knife-crossed"></i>Menu</a></li>
+            <li><a href="{% url 'sales' %}"><i data-lucide="dollar-sign"></i>Sales Transactions</a></li>
+            <li><a href="{% url 'staff' %}"><i data-lucide="users-round"></i>Staff</a></li>
+            <li><a href="{% url 'order' %}"><i data-lucide="shopping-cart"></i>Order</a></li>
+            <li><a href="{% url 'admin_reserve' %}" class="active"<i data-lucide="calendar"></i>Reservation</a></li>
+            <li><a href="{% url 'admin_inventory' %}"><i data-lucide="package"></i>Inventory</a></li>
+            <li><a href="{% url 'admin_customer' %}"><i data-lucide="user-round-pen"></i>Customer</a></li>
+
+        </ul>
+    </div>
+
+    <div class="main-content">
+
+        <h1>Reservation Management</h1>
+        <p class="sub-title">Manage table reservations</p>
+
+        <div class="card">
+            <h2>All Reservations</h2>
+
+            <form action="{% url 'admin_reserve' %}" method="get" style="display: flex; align-items: center; margin-bottom: 20px;">
+                <label for="searchReservation" style="margin-right: 10px;">Search Reservation:</label>
+                <input type="text" name="search_query" id="searchReservation" placeholder="Enter ID, Name, or Phone..." 
+                       style="padding: 10px; margin-right: 10px; border-radius: 10px;" 
+                       value="{{ search_query_value|default:'' }}">
+                
+                <button type="submit" class="btn" style="padding: 10px 15px;">Search</button>
+
+                {% if search_query_value %}
+                <a href="{% url 'admin_reserve' %}" class="btn" 
+                   style="margin-left: 10px; padding: 10px 15px; background-color: #6c757d; color: white; border-radius: 10px; text-decoration: none;">Clear Search</a>
+                {% endif %}
+            </form>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Reservation ID</th>
+                        <th>Customer ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Date - Time</th>
+                        <th>Guests</th>              
+                        <th>Email</th>
+                        <th>Special Request</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    {% for z in reserve_info %}
+                    <tr>
+                        <td>{{ z.0|default:'-' }}</td> 
+                        <td>{{ z.1|default:'-' }}</td> 
+                        <td>{{ z.2|default:'Unknown' }}</td>
+                        <td>{{ z.3|default:'N/A' }}</td> 
+                        <td>{{ z.4|date:"M. j, Y, P"|default:'N/A' }}</td> 
+                        <td>{{ z.5|default:'0' }}</td> <td>{{ z.6|default:'N/A' }}</td> 
+                        <td>{{ z.7|default:'None' }}</td> 
+                        <td>
+                                        {% if z.8 == 1 %}Pending
+                                        {% elif z.8 == 2 %}Confirmed
+                                        {% elif z.8 == 3 %}Completed
+                                        {% elif z.8 == 0 %}Cancelled
+                                        {% else %}Unknown
+                                        {% endif %}
+                        </td>
+
+                        
+                            <td>
+                                <button class="btn edit-btn" onclick="openEditModal({{ z.0 }}, '{{ z.1|default:"-" }}', '{{ z.2|default:"Unknown" }}', '{{ z.3|default:"N/A" }}', '{{ z.6|default:"N/A" }}','{{ z.4|date:"Y-m-d\TH:i" }}',  {{ z.5|default:0 }}, '{{ z.7|default:"None" }}','{{ z.8 }}')">
+                                    <i data-lucide="edit-2" style="width: 16px; height: 16px;"></i>
+                                </button>
+                                
+                                <a href="{% url 'admin_reserve' %}?delete_res_id={{ z.0 }}" 
+                                    class="btn delete-btn" 
+                                    style="background-color: #dc3545; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                                    <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                                </a>
+                                                     
+                            </td>                   
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    
+    <div id="editReservationModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditResModal" class="close">&times;</span>
+            <h2>Edit Reservation</h2>
+
+            <form action="{% url 'admin_reserve' %}" method="get">
+                <label>Reservation ID</label>
+                <input type="text" name="edit_res_id" id="edit_res_id" readonly>
+
+                <label>Customer ID</label>
+                <input type="text" name="edit_customer_id" id="edit_customer_id" readonly>
+
+                <label>Name</label>
+                <input type="text" name="edit_res_name" id="edit_res_name">
+
+                <label>Phone</label>
+                <input type="text" name="edit_res_phone" id="edit_res_phone">
+
+                <label>Email</label>
+                <input type="email" name="edit_res_email" id="edit_res_email">
+
+                <label>Date & Time</label>
+                <input type="datetime-local" name="edit_res_datetime" id="edit_res_datetime">
+
+                <label>Guests</label>
+                <input type="number" name="edit_res_guests" id="edit_res_guests">
+
+                <label>Special Request</label>
+                <input type="text" name="edit_res_request" id="edit_res_request">
+
+                <label>Status</label>
+                <select name="edit_res_status" id="edit_res_status">
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+
+                <button type="submit" class="btn menu-btn">Save Changes</button>
+            </form>
+            </div>
+    </div>
+
+
+    <script src="{% static 'reservation.js' %}"></script>
+    <script>lucide.createIcons();</script>
+
+</body>
+
+</html>
