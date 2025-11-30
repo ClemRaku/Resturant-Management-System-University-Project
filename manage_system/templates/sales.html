@@ -72,6 +72,7 @@
                 <thead>
                     <tr>
                         <th>Sales ID</th>
+                        <th>Order ID</th>
                         <th>Customer ID</th>
                         <th>Employee ID</th>
                         <th>Items</th>
@@ -87,6 +88,7 @@
                 {% for sale in sales %}
                     <tr>
                         <td>{{ sale.sale_id }}</td>
+                        <td>{{ sale.order_id }}</td>
                         <td>{{ sale.customer_id }}</td>
                         <td>{{ sale.employee_id }}</td>
                         <td>{{ sale.items }}</td>
@@ -98,6 +100,9 @@
                             <button class="edit-btn" onclick="openEditModal({{ sale.sale_id }}, '{{ sale.customer_id }}', '{{ sale.employee_id }}', '{{ sale.table_no }}', '{{ sale.items }}', '{{ sale.sale_time }}', '{{ sale.payment_method }}', '{{ sale.amount }}', '{{ sale.status }}')">
                                 <i data-lucide="pencil"></i>
                             </button>
+                            <a href="?delete_sale_id={{ sale.sale_id }}" class="delete-btn">
+                                <i data-lucide="trash-2"></i>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}
