@@ -39,7 +39,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES ('bigboss@gmail.com','147258369',1325467814),('clement1raka@gmail.com','123456789',1777338869),('markroxy18@gmail.com','markcosta18',1533402158),('solidsnake@gmail.com','258147369',1325467815);
+INSERT INTO `accounts` VALUES ('bigboss@gmail.com','147258369',1325467814),('clement1raka@gmail.com','123456789',1777338869),('markroxy18@gmail.com','markcosta18',1533402158),('raphael@gmail.com','987654321',1122334),('solidsnake@gmail.com','258147369',1325467815);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,9 +62,8 @@ CREATE TABLE `customer` (
   `has_account` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`customer_id`),
   KEY `fk_email_customer` (`email`),
-  KEY `fk_phone_account_customer` (`phone_no`),
-  CONSTRAINT `fk_email_customer` FOREIGN KEY (`email`) REFERENCES `accounts` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `fk_phone_account_customer` (`phone_no`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +72,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (6,'Clement Raka De Costa',1777338869,1,NULL,NULL,'Banasree','clement1raka@gmail.com',1),(8,NULL,1324654127,NULL,NULL,NULL,NULL,NULL,NULL),(12,NULL,1423145781,1,NULL,NULL,NULL,NULL,NULL),(13,NULL,177733869,1,NULL,NULL,NULL,NULL,NULL),(14,NULL,1231456324,1,NULL,NULL,NULL,NULL,NULL),(15,NULL,1234564123,1,NULL,NULL,NULL,NULL,NULL),(16,'Debuu',1235412684,1,NULL,NULL,NULL,NULL,NULL),(17,'TestAdmin',1111111111,1,NULL,NULL,NULL,NULL,NULL),(18,'rr',3,8,NULL,NULL,'ee',NULL,NULL),(19,'ww',123,8,NULL,NULL,'qq',NULL,NULL),(25,'mark',1533402158,NULL,NULL,NULL,'sadgasdg','markroxy18@gmail.com',1);
+INSERT INTO `customer` VALUES (6,'Clement Raka De Costa',1777338869,2,NULL,NULL,'Banasree','clement1raka@gmail.com',1),(36,'shrestah',11144,NULL,NULL,NULL,'bdbd',NULL,0);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,7 +99,7 @@ CREATE TABLE `employees` (
   KEY `fk_employee_phone_no_acc` (`phone_no`),
   CONSTRAINT `fk_employee_email_acc` FOREIGN KEY (`email`) REFERENCES `accounts` (`email`),
   CONSTRAINT `fk_employee_phone_no_acc` FOREIGN KEY (`phone_no`) REFERENCES `accounts` (`phone_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +108,7 @@ CREATE TABLE `employees` (
 
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-INSERT INTO `employees` VALUES (1,'Big Boss',1325467814,4,'Uttara','Admin','2021-01-12','bigboss@gmail.com',1),(2,'Solid Snake',1325467815,2,'Banasree','Waiter','2023-04-01','solidsnake@gmail.com',0);
+INSERT INTO `employees` VALUES (1,'Big Boss',1325467814,4,'Uttara','Admin','2021-01-12','bigboss@gmail.com',1),(2,'Solid Snake',1325467815,2,'Banasree','Waiter','2023-04-01','solidsnake@gmail.com',0),(11,'Raphael',1122334,0,'Bashundhora','Employee','2025-12-01','raphael@gmail.com',1);
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +155,7 @@ CREATE TABLE `food_order` (
   PRIMARY KEY (`order_id`),
   KEY `fk_employee_food` (`employee_id`),
   CONSTRAINT `fk_employee_food` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +164,6 @@ CREATE TABLE `food_order` (
 
 LOCK TABLES `food_order` WRITE;
 /*!40000 ALTER TABLE `food_order` DISABLE KEYS */;
-INSERT INTO `food_order` VALUES (16,'pending','2025-11-28 03:30:00',1777338869,1,NULL),(18,'processing','2025-11-28 06:04:00',1234564123,1,NULL),(19,'pending','2025-11-01 22:59:00',1235412684,1,'Debuu');
 /*!40000 ALTER TABLE `food_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,7 +229,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (1,'GumGum','Moja',170.00,1,'starter1.png',1,'All-purpose flour, water, minced meat (or vegetables), onion, ginger, garlic, coriander, spring onion, salt, pepper.',10,'2025-11-13 13:31:51','2025-11-28 11:59:24'),(2,'Beef Kacchi','Traditional slow-cooked kacchi, bursting with flavors',400.00,2,'main1.png',1,'Beef, Basmati or Kalijeera rice, potato, yogurt, ghee, onion, ginger paste, garlic paste, cinnamon, cardamom (green and black), cloves, mace, nutmeg, bay leaves, dried plums (aloo bukhara), saffron (or food color), liquid milk, and salt.',45,'2025-11-13 13:31:51','2025-11-28 11:59:53'),(10,'Beef Kabab','Juicy kababs grilled to perfection',490.00,2,'../static/beef kabab.jpg',1,'Ground Beef (or cubed steak), onion, ginger paste, garlic paste, coriander powder, cumin powder, red chili powder, garam masala, salt, and black pepper',60,'2025-11-25 15:55:59','2025-11-25 19:10:40'),(14,'Roshmalai','a rich, creamy Bangladesh dessert made of soft, spongy cottage cheese (chhena) dumplings soaked in sweetened, thickened milk',120.15,3,'dessert5.jpg',1,'the cheese balls (chhena), the creamy milk mixture (rabri), and garnishes',30,'2025-11-26 20:55:33','2025-11-26 20:55:33');
+INSERT INTO `menu` VALUES (1,'Fuchka','One of the most Traditnal Foods of Bangladesh',40.00,1,'starter2.png',1,'All-purpose flour, water, minced meat (or vegetables), onion, ginger, garlic, coriander, spring onion, salt, pepper.',10,'2025-11-13 13:31:51','2025-11-30 11:55:00'),(2,'Beef Kacchi','Traditional slow-cooked kacchi, bursting with flavors',400.00,2,'main1.png',1,'Beef, Basmati or Kalijeera rice, potato, yogurt, ghee, onion, ginger paste, garlic paste, cinnamon, cardamom (green and black), cloves, mace, nutmeg, bay leaves, dried plums (aloo bukhara), saffron (or food color), liquid milk, and salt.',45,'2025-11-13 13:31:51','2025-11-28 11:59:53'),(10,'Beef Kabab','Juicy kababs grilled to perfection',490.00,2,'../static/beef kabab.jpg',1,'Ground Beef (or cubed steak), onion, ginger paste, garlic paste, coriander powder, cumin powder, red chili powder, garam masala, salt, and black pepper',60,'2025-11-25 15:55:59','2025-11-25 19:10:40'),(14,'Roshmalai','a rich, creamy Bangladesh dessert made of soft, spongy cottage cheese (chhena) dumplings soaked in sweetened, thickened milk',120.15,4,'dessert5.jpg',1,'the cheese balls (chhena), the creamy milk mixture (rabri), and garnishes',30,'2025-11-26 20:55:33','2025-11-30 12:11:39');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -260,7 +258,6 @@ CREATE TABLE `order_details` (
 
 LOCK TABLES `order_details` WRITE;
 /*!40000 ALTER TABLE `order_details` DISABLE KEYS */;
-INSERT INTO `order_details` VALUES (16,10,3,1470.00),(16,14,2,240.30),(18,2,1,400.00),(18,14,2,240.30),(19,1,2,340.00),(19,14,3,360.45);
 /*!40000 ALTER TABLE `order_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -313,7 +310,7 @@ CREATE TABLE `reservation` (
   PRIMARY KEY (`reservation_id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `fk_customer_reserve` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +319,7 @@ CREATE TABLE `reservation` (
 
 LOCK TABLES `reservation` WRITE;
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
-INSERT INTO `reservation` VALUES (4,6,'Clement Raka De Costa',1777338869,9,'I am a member, account.','2025-11-22 16:02:00',1,'clement1raka@gmail.com'),(5,NULL,'Donald Trump',999,5,'boo','2026-12-02 18:00:00',1,'donaldtrump@gmail.com');
+INSERT INTO `reservation` VALUES (4,6,'Clement Raka De Costa',1777338869,9,'I am a member, account.','2025-11-22 16:02:00',1,'clement1raka@gmail.com'),(17,NULL,'shrestah',11144,2,'jkjk','0001-01-01 18:00:00',1,'srestha@gmail.com'),(18,NULL,'shrestah',11144,2,'jkjk','0001-01-01 18:00:00',1,'srestha@gmail.com'),(19,NULL,'huhu',1122,6,'ss','0001-01-01 20:00:00',1,'huhu@gamhuhu');
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -349,7 +346,7 @@ CREATE TABLE `sale_transaction` (
   KEY `fk_orderID_SALES` (`order_id`),
   CONSTRAINT `fk_customer_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`),
   CONSTRAINT `fk_orderID_SALES` FOREIGN KEY (`order_id`) REFERENCES `food_order` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -358,7 +355,6 @@ CREATE TABLE `sale_transaction` (
 
 LOCK TABLES `sale_transaction` WRITE;
 /*!40000 ALTER TABLE `sale_transaction` DISABLE KEYS */;
-INSERT INTO `sale_transaction` VALUES (1,1710.30,'Mobile Banking',1,NULL,6,'2025-11-28 06:20:00',16,'Completed'),(3,640.30,'Card',1,NULL,15,'2025-11-28 06:14:09',18,'Refunded'),(4,700.45,NULL,1,NULL,16,NULL,19,'Completed');
 /*!40000 ALTER TABLE `sale_transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -371,4 +367,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-30  2:16:10
+-- Dump completed on 2025-12-01  5:02:28
