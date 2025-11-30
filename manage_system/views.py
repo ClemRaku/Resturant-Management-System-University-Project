@@ -193,10 +193,11 @@ def menu(request):
 def customer_reserver(request):
     mycursor = mydb.cursor()
     if(request.GET.get('full_name')):
-        
+
         name = request.GET.get('full_name')
         email = request.GET.get('email')
         phone_no = int(request.GET.get('phone'))
+        address = request.GET.get('address')
         date = request.GET.get('date')
         time = request.GET.get('time')
         no_of_guest = int(request.GET.get('no_of_guest'))
@@ -238,16 +239,22 @@ def customer_reserver(request):
             mycursor.execute("SELECT email FROM accounts WHERE email = %s", (email,))
             has_acc = mycursor.fetchone() is not None
             has_account_val = 1 if has_acc else 0
-            insert_customer = "INSERT INTO customer (name, phone_no, email, has_account) VALUES (%s, %s, %s, %s)"
-            mycursor.execute(insert_customer, (name, phone_no, email, has_account_val))
+            email_to_insert = email if has_acc else None
+            insert_customer = "INSERT INTO customer (name, phone_no, email, has_account, address) VALUES (%s, %s, %s, %s, %s)"
+            mycursor.execute(insert_customer, (name, phone_no, email_to_insert, has_account_val, address))
             mydb.commit()
         else:
             # Update existing
             mycursor.execute("SELECT email FROM accounts WHERE email = %s", (email,))
             has_acc = mycursor.fetchone() is not None
             has_account_val = 1 if has_acc else 0
-            update_customer = "UPDATE customer SET name = %s, email = %s, has_account = %s WHERE phone_no = %s"
-            mycursor.execute(update_customer, (name, email, has_account_val, phone_no))
+            if has_acc:
+                update_customer = "UPDATE customer SET name = %s, email = %s, has_account = %s, address = %s WHERE phone_no = %s"
+                update_data = (name, email, has_account_val, address, phone_no)
+            else:
+                update_customer = "UPDATE customer SET name = %s, has_account = %s, address = %s WHERE phone_no = %s"
+                update_data = (name, has_account_val, address, phone_no)
+            mycursor.execute(update_customer, update_data)
             mydb.commit()
 
     #check with email for customer id.
