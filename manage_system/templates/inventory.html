@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="{% static 'admin.css' %}">
+    <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/x-icon">
 </head>
 
 <body>
@@ -92,14 +93,14 @@
                             {% endif %}
                         </td>
                         <td>
-                            <button class="action-btn edit-btn" data-inventory-id="{{ q.0 }}" data-item-name="{{ q.1 }}" 
+                            <button class="action-btn btn edit-btn" data-inventory-id="{{ q.0 }}" data-item-name="{{ q.1 }}" 
                                 data-quantity="{{ q.2 }}" data-min-stock="{{ q.3 }}" 
                                 data-restocked="{{ q.4|date:"Y-m-d\TH:i" }}" data-supplier-id="{{ q.5 }}" 
                                 data-supplier-name="{{ q.6 }}" data-supplier-contact="{{ q.7 }}" 
                                 data-price="{{ q.8|floatformat:2 }}" data-status="{{ q.9 }}">
                                 <i data-lucide="pencil"></i>
                             </button>
-                            <button class="action-btn delete-btn" data-inventory-id="{{ q.0 }}"><i data-lucide="trash-2"></i></button>
+                            <button class="action-btn red-btn delete-btn" data-inventory-id="{{ q.0 }}"><i data-lucide="trash-2"></i></button>
                         </td>                    
                     </tr>
                     {% empty %}

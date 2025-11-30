@@ -46,7 +46,7 @@
             <h2>Menu Items</h2>
             <form method="get" action="{% url 'admin_menu' %}">
                 <label for="searchMenu">Search Menu:</label>
-                <input type="text" name="search_query" id="searchMenu" placeholder="Enter ID or Name..." value="{{ search_query|default:'' }}">
+                <input type="text" name="search_query" id="searchMenu"  style="padding: 10px; margin: 10px; border-radius: 10px;" placeholder="Enter ID or Name..." value="{{ search_query|default:'' }}">
                 <button type="submit" class="btn">Search</button>
                 {% if search_query %}
                     <a href="{% url 'admin_menu' %}" class="btn" style="background-color: #888;">Clear Search</a>
@@ -82,8 +82,8 @@
                         <td>{{ x.6 }} Tk</td>
                         <td>{% if x.7 %}<img src="{% static x.7 %}" alt="Menu Item Image" width="50px">{% else %}No Image{% endif %}</td>
                         <td>
-                            <button class="edit-btn">Edit</button>
-                            <a href="{% url 'admin_menu' %}?delete_menu_id={{ x.0 }}" class="delete-btn" onclick="return confirm('Are you sure you want to delete menu item {{ x.1 }}?');">Delete</a>
+                            <button class="btn edit-btn">Edit</button>
+                            <a href="{% url 'admin_menu' %}?delete_menu_id={{ x.0 }}" class="red-btn delete-btn" onclick="return confirm('Are you sure you want to delete menu item {{ x.1 }}?');">Delete</a>
                         </td> </tr>
                 {% endfor %}
 
