@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://unpkg.com/lucide@latest/font/lucide.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="{% static 'admin.css' %}">
+    <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/x-icon">
 </head>
 <body>
     
@@ -73,7 +74,7 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                        <button class="edit-btn"
+                                        <button class="btn edit-btn"
                                             data-id="{{ a.0 }}"
                                             data-name="{{ a.1 }}"
                                             data-tenure="{{ a.2 }}"
@@ -88,7 +89,7 @@
                                         <form action="{% url 'staff' %}" method="get" style="display: inline;">
                                             <input type="hidden" name="delete_staff_id" value="{{ a.0 }}">
                                             
-                                            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete staff ID {{ a.0 }}?')">
+                                            <button type="submit" class=" red-btn delete-btn" onclick="return confirm('Are you sure you want to delete staff ID {{ a.0 }}?')">
                                                 <i data-lucide="trash"></i>
                                             </button>
                                         </form>
