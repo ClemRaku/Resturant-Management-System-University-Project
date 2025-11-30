@@ -123,7 +123,7 @@ def signup_signin(request):
     #sign UP part
     if request.GET.get('signup_email'):
         name = request.GET.get('Full_name')
-        email = request.GET.get('signup_email') 
+        email = request.GET.get('signup_email')
         p1 = request.GET.get('signup_password')
         p2 = request.GET.get('confrim_password')
         phone_no = int(request.GET.get('phone_number'))
@@ -192,6 +192,7 @@ def menu(request):
 
 def customer_reserver(request):
     mycursor = mydb.cursor()
+    context = {}
     if(request.GET.get('full_name')):
 
         name = request.GET.get('full_name')
@@ -205,29 +206,29 @@ def customer_reserver(request):
         statuss = 1
         datetime_string = f"{date} {time}"
         reserve_datetime = datetime.strptime(datetime_string, '%Y-%m-%d %H:%M')
-        
-    
+
+
 
         old_customer = "select customer_id from customer where email = %s"
         mycursor.execute(old_customer, (email,))
         old_customer_id_ = mycursor.fetchone()
-    
+
         if old_customer_id_:
             customer_id = old_customer_id_[0]
             sql_insert = "INSERT into reservation (name, phone_no, no_of_customer, special_resquests, reserve_date, status, email, customer_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
             vv = (name, phone_no, no_of_guest, special_request, reserve_datetime, statuss, email, customer_id)
             mycursor.execute(sql_insert, vv)
             mydb.commit()
-            
+
         else:
             sql_insert = "INSERT into reservation (name, phone_no, no_of_customer, special_resquests, reserve_date, status, email) VALUES(%s, %s, %s, %s, %s, %s, %s)"
             vv = (name, phone_no, no_of_guest, special_request, reserve_datetime, statuss, email)
             mycursor.execute(sql_insert, vv)
             mydb.commit()
-            
-     
-    
-    
+
+
+
+
         # Handle customer data based on phone_no
         finding_all_customer_phones = "select phone_no from customer"
         mycursor.execute(finding_all_customer_phones)
@@ -355,7 +356,11 @@ def staff_view(request):
 
 def admin_reserve(request):
     mycursor = mydb.cursor()
-    select_reservation_info = "SELECT reservation_id, customer_id, name, phone_no, reserve_date, no_of_customer, email, special_resquests, status FROM reservation"
+    select_reservation_info = """
+    SELECT r.reservation_id, c.customer_id, c.name, r.phone_no, r.reserve_date, r.no_of_customer, r.email, r.special_resquests, r.status
+    FROM reservation r
+    LEFT JOIN customer c ON r.phone_no = c.phone_no
+    """
     mycursor.execute(select_reservation_info)
     all_reservation_info = mycursor.fetchall()
     
@@ -390,21 +395,25 @@ def admin_reserve(request):
         return redirect('admin_reserve')
     
     search_indicator = request.GET.get('search_query')
-    
+
     if search_indicator:
         sspp = []
-        filtered_sql = "SELECT reservation_id, customer_id, name, phone_no, reserve_date, no_of_customer, email, special_resquests, status FROM reservation"
-        
+        filtered_sql = """
+        SELECT r.reservation_id, c.customer_id, c.name, r.phone_no, r.reserve_date, r.no_of_customer, r.email, r.special_resquests, r.status
+        FROM reservation r
+        LEFT JOIN customer c ON r.phone_no = c.phone_no
+        """
+
         search_term = '%' + search_indicator + '%'
-        filtered_sql += " WHERE name LIKE %s OR phone_no LIKE %s"
+        filtered_sql += " WHERE c.name LIKE %s OR r.phone_no LIKE %s"
         sspp.append(search_term)
         sspp.append(search_term)
         try:
             search_id = int(search_indicator)
-            filtered_sql += " OR reservation_id = %s"
+            filtered_sql += " OR r.reservation_id = %s"
             sspp.append(search_id)
         except ValueError:
-            pass     
+            pass
         mycursor.execute(filtered_sql, tuple(sspp, ))
         all_reservation_info = mycursor.fetchall()
     mycursor.close()
