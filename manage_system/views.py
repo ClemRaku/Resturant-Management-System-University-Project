@@ -227,8 +227,29 @@ def customer_reserver(request):
      
     
     
-    
-    
+        # Handle customer data based on phone_no
+        finding_all_customer_phones = "select phone_no from customer"
+        mycursor.execute(finding_all_customer_phones)
+        all_customer_phones = mycursor.fetchall()
+        phone_list = [p[0] for p in all_customer_phones]
+
+        if phone_no not in phone_list:
+            # Check if has account
+            mycursor.execute("SELECT email FROM accounts WHERE email = %s", (email,))
+            has_acc = mycursor.fetchone() is not None
+            has_account_val = 1 if has_acc else 0
+            insert_customer = "INSERT INTO customer (name, phone_no, email, has_account) VALUES (%s, %s, %s, %s)"
+            mycursor.execute(insert_customer, (name, phone_no, email, has_account_val))
+            mydb.commit()
+        else:
+            # Update existing
+            mycursor.execute("SELECT email FROM accounts WHERE email = %s", (email,))
+            has_acc = mycursor.fetchone() is not None
+            has_account_val = 1 if has_acc else 0
+            update_customer = "UPDATE customer SET name = %s, email = %s, has_account = %s WHERE phone_no = %s"
+            mycursor.execute(update_customer, (name, email, has_account_val, phone_no))
+            mydb.commit()
+
     #check with email for customer id.
     return render(request, 'reserve.html')
 
@@ -495,14 +516,19 @@ def order(request):
     mycursor = mydb.cursor()
 
     # Fetch all orders
-    query = "SELECT order_id, phone_no, order_time, status, employee_id, name FROM food_order ORDER BY order_id ASC"
+    query = """
+    SELECT o.order_id, o.phone_no, o.order_time, o.status, o.employee_id, COALESCE(c.name, o.name) AS name, c.customer_id
+    FROM food_order o
+    LEFT JOIN customer c ON o.phone_no = c.phone_no
+    ORDER BY o.order_id ASC
+    """
     mycursor.execute(query)
     orders_from_db = mycursor.fetchall()
 
     # For each order, fetch details
     orders = []
     for x in orders_from_db:
-        order_id, phone_no, order_time, status, employee_id, name = x
+        order_id, phone_no, order_time, status, employee_id, name, customer_id = x
         # Fetch order details
         detail_query = "SELECT menu_id, quantity, item_price FROM order_details WHERE order_id = %s"
         mycursor.execute(detail_query, (order_id,))
@@ -515,7 +541,8 @@ def order(request):
             'status': status,
             'items': items,
             'employee_id': employee_id,
-            'name': name
+            'name': name,
+            'customer_id': customer_id
         })
 
     # Count orders by status
@@ -533,6 +560,11 @@ def order(request):
     mycursor.execute("SELECT menu_id, name FROM menu WHERE is_available = 1 ORDER BY menu_id ASC")
     menu_items = mycursor.fetchall()
 
+    # Fetch customer data for auto-fill
+    query_cust = "SELECT customer_id, name, phone_no FROM customer WHERE name IS NOT NULL"
+    mycursor.execute(query_cust)
+    all_customer_info = mycursor.fetchall()
+
     context = {
         'orders': orders,
         'employees': employees,
@@ -541,7 +573,8 @@ def order(request):
         'preparing_count': status_counts['processing'],  # Note: processing for preparing
         'ready_count': status_counts['ready'],
         'completed_count': status_counts['completed'],
-        'cancelled_count': status_counts['cancelled']
+        'cancelled_count': status_counts['cancelled'],
+        'all_customer_info': all_customer_info
     }
 
     #adding order
@@ -549,7 +582,7 @@ def order(request):
         menu_ids = request.GET.getlist('add_order_menu_id')
         quantities = request.GET.getlist('add_order_quantity')
         phone_no = int(request.GET.get('phone'))
-        customer_name = request.GET.get('customer_name')
+        customer_name = request.GET.get('customer_name') or None
         order_time_str = request.GET.get('add_order_time')
         order_time = datetime.strptime(order_time_str, '%Y-%m-%dT%H:%M')
         status = request.GET.get('add_order_status')
@@ -574,32 +607,33 @@ def order(request):
 
         mydb.commit()
 
-        finding_all_customer_phones = "select phone_no from customer"
-        mycursor.execute(finding_all_customer_phones)
-        all_customer_phones = mycursor.fetchall()
+        if customer_name:
+            finding_all_customer_phones = "select phone_no from customer"
+            mycursor.execute(finding_all_customer_phones)
+            all_customer_phones = mycursor.fetchall()
 
-        phone_list = [p[0] for p in all_customer_phones]
+            phone_list = [p[0] for p in all_customer_phones]
 
-        if phone_no not in phone_list:
-            ss = "insert into customer (phone_no, name) values(%s, %s)"
-            mycursor.execute(ss, (phone_no, customer_name))
+            if phone_no not in phone_list:
+                ss = "insert into customer (phone_no, name) values(%s, %s)"
+                mycursor.execute(ss, (phone_no, customer_name))
+                mydb.commit()
+            else:
+                update_customer = "UPDATE customer SET name = %s WHERE phone_no = %s"
+                mycursor.execute(update_customer, (customer_name, phone_no))
+                mydb.commit()
+
+            increasing_visits = "select visit_no from customer where phone_no = %s"
+            mycursor.execute(increasing_visits, (phone_no, ))
+            visitsss = mycursor.fetchone()
+            visit = visitsss[0] if visitsss else None
+            if visit is not None:
+                visit = visit + 1
+            else:
+                visit = 1  #means first visit
+            back_to_table = "UPDATE customer SET visit_no = %s WHERE phone_no = %s;"
+            mycursor.execute(back_to_table, (visit, phone_no))
             mydb.commit()
-        else:
-            update_customer = "UPDATE customer SET name = %s WHERE phone_no = %s"
-            mycursor.execute(update_customer, (customer_name, phone_no))
-            mydb.commit()
-
-        increasing_visits = "select visit_no from customer where phone_no = %s"
-        mycursor.execute(increasing_visits, (phone_no, ))
-        visitsss = mycursor.fetchone()
-        visit = visitsss[0] if visitsss else None
-        if visit is not None:
-            visit = visit + 1
-        else:
-            visit = 1  #means first visit
-        back_to_table = "UPDATE customer SET visit_no = %s WHERE phone_no = %s;"
-        mycursor.execute(back_to_table, (visit, phone_no))
-        mydb.commit()
 
 
         return redirect('order')
@@ -1107,11 +1141,17 @@ def customer(request):
     # Edit customer
     if request.GET.get('edit_customer_id'):
         edit_id = int(request.GET.get('edit_customer_id'))
+        name = request.GET.get('edit_customer_name')
+        phone_no = int(request.GET.get('edit_customer_phone'))
+        visit_no = int(request.GET.get('edit_customer_visits'))
+        preferred_dish_id = request.GET.get('edit_customer_dish') if request.GET.get('edit_customer_dish') else None
+        address = request.GET.get('edit_customer_address')
+        email = request.GET.get('edit_customer_email')
         status = request.GET.get('edit_cus_status')
         has_account = 1 if status == 'Active' else 0
 
-        update_sql = "UPDATE customer SET has_account = %s WHERE customer_id = %s"
-        mycursor.execute(update_sql, (has_account, edit_id))
+        update_sql = "UPDATE customer SET name = %s, phone_no = %s, visit_no = %s, preferred_dish_id = %s, address = %s, email = %s, has_account = %s WHERE customer_id = %s"
+        mycursor.execute(update_sql, (name, phone_no, visit_no, preferred_dish_id, address, email, has_account, edit_id))
         mydb.commit()
 
         return redirect('admin_customer')

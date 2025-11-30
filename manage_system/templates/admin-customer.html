@@ -77,7 +77,7 @@
                         <td>{{ customer.6 }}</td>
                         <td>{% if customer.7 %}Active{% else %}Inactive{% endif %}</td>
                         <td>
-                            <button class="edit-btn" data-customer-id="{{ customer.0 }}">
+                            <button class="edit-btn" data-customer='{"id": "{{ customer.0 }}", "name": "{{ customer.1 }}", "phone": "{{ customer.2 }}", "visits": "{{ customer.3 }}", "dish": "{{ customer.4 }}", "address": "{{ customer.5 }}", "email": "{{ customer.6 }}", "status": "{% if customer.7 %}Active{% else %}Inactive{% endif %}"}'>
                                 <i data-lucide="pencil"></i>
                             </button>
 
@@ -105,6 +105,24 @@
 
                     <label>Customer ID</label>
                     <input type="text" name="edit_customer_id" id="edit_customer_id" readonly>
+
+                    <label>Name</label>
+                    <input type="text" name="edit_customer_name" id="edit_customer_name" required>
+
+                    <label>Phone No</label>
+                    <input type="number" name="edit_customer_phone" id="edit_customer_phone" required>
+
+                    <label>Visit No</label>
+                    <input type="number" name="edit_customer_visits" id="edit_customer_visits" required>
+
+                    <label>Preferred Dish ID</label>
+                    <input type="number" name="edit_customer_dish" id="edit_customer_dish">
+
+                    <label>Address</label>
+                    <input type="text" name="edit_customer_address" id="edit_customer_address">
+
+                    <label>Email</label>
+                    <input type="email" name="edit_customer_email" id="edit_customer_email">
 
                     <label>Status</label>
                     <select name="edit_cus_status" id="edit_cus_status">

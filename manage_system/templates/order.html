@@ -102,6 +102,7 @@
                         <th>Order ID</th>
                         <th>Phone Number</th>
                         <th>Customer Name</th>
+                        <th>Customer ID</th>
                         <th>Order Time</th>
                         <th>Status</th>
                         <th>Employee ID</th>
@@ -116,6 +117,7 @@
                         <td>{{ a.order_id }}</td>
                         <td>{{ a.phone_no }}</td>
                         <td>{{ a.name }}</td>
+                        <td>{{ a.customer_id }}</td>
                         <td>{{ a.order_time }}</td>
                         <td>{{ a.status }}</td>
                         <td>{{ a.employee_id }}</td>
@@ -126,7 +128,7 @@
                         </td>
 
                         <td>
-                            <button class="edit-btn" data-order='{"order_id": "{{ a.order_id }}", "customer_id": "{{ a.phone_no }}", "order_time": "{{ a.order_time }}", "status": "{{ a.status }}", "employee_id": "{{ a.employee_id }}", "name": "{{ a.name }}"}'>
+                            <button class="edit-btn" data-order='{"order_id": "{{ a.order_id }}", "customer_id": "{{ a.customer_id }}", "phone_no": "{{ a.phone_no }}", "order_time": "{{ a.order_time }}", "status": "{{ a.status }}", "employee_id": "{{ a.employee_id }}", "name": "{{ a.name }}"}'>
                                 <i data-lucide="pencil"></i>
                             </button>
 
@@ -149,11 +151,12 @@
             <span id="closeAddModal" class="close">&times;</span>
             <h2>Add New Order</h2>
             <form action="{% url 'order' %}" method="get">
+                <input type="hidden" name="customer_id" id="customer_id">
                 <label>Phone Number</label>
-                <input type="text" name="phone" required>
+                <input type="text" name="phone" id="phone_input" required>
 
                 <label>Customer Name</label>
-                <input type="text" name="customer_name" required>
+                <input type="text" name="customer_name" id="customer_name_input">
 
                 <label>Order Time</label>
                 <input type="datetime-local" name="add_order_time" required>
@@ -271,6 +274,27 @@
     </div>
 
     <script src="{% static 'order.js' %}"></script>
+    <script>
+        const customerData = {};
+        {% for c in all_customer_info %}
+        customerData['{{ c.2 }}'] = {id: {{ c.0 }}, name: '{{ c.1 }}'};
+        {% endfor %}
+
+        // Auto-fill name and customer_id on phone input change
+        document.getElementById('phone_input').addEventListener('input', function() {
+            const phone = this.value.trim();
+            const nameInput = document.getElementById('customer_name_input');
+            const customerIdInput = document.getElementById('customer_id');
+
+            if (phone in customerData) {
+                nameInput.value = customerData[phone].name;
+                customerIdInput.value = customerData[phone].id;
+            } else {
+                nameInput.value = '';
+                customerIdInput.value = '';
+            }
+        });
+    </script>
     <script>lucide.createIcons();</script>
 
 </body>

@@ -95,11 +95,33 @@ function activateEditButtons() {
             editModal.style.display = "flex";
 
             document.getElementById("edit_customer_id").value = cells[0].innerText;
+            document.getElementById("edit_customer_name").value = cells[1].innerText;
+            document.getElementById("edit_customer_phone").value = cells[2].innerText;
+            document.getElementById("edit_customer_visits").value = cells[3].innerText;
+            document.getElementById("edit_customer_dish").value = cells[4].innerText;
+            document.getElementById("edit_customer_address").value = cells[5].innerText;
+            document.getElementById("edit_customer_email").value = cells[6].innerText;
             document.getElementById("edit_cus_status").value = cells[7].innerText;
         };
     });
 }
 
 activateEditButtons();
+
+function activateDeleteButtons() {
+    const deleteButtons = document.querySelectorAll(".delete-btn");
+
+    deleteButtons.forEach(btn => {
+        btn.onclick = () => {
+            const id = btn.getAttribute('data-customer-id');
+            if (confirm('Are you sure you want to delete this customer?')) {
+                // Send GET request
+                window.location.href = '?delete_customer_id=' + id;
+            }
+        };
+    });
+}
+
+activateDeleteButtons();
 
 // renderTable();
