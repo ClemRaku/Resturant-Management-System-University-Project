@@ -1,7 +1,8 @@
 if (!document.getElementById('customer-menu')) {
   document.querySelectorAll('.order-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      window.location.href = '../menu/menu.html';
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = '/menu_home';
     });
   });
 }

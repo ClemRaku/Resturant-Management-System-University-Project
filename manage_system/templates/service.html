@@ -46,7 +46,7 @@
   </header>
    
 
-<div class="service-head-bg" style="background-image: url('{% static 'servBg2.jpg' %}');">
+<div class="service-head-bg" style="background-image: url('{% static 'serviceBg.png' %}');">
     <div class="service-head">
         <h1>Services</h1>
         <p>We're committed to providing exceptional dining through our comprehensive range of services</p>
@@ -162,8 +162,8 @@
     <div class="footer-links">
       <h3>Quick Links</h3>
       <ul>
-        <li><a href="#menu-items">Menu</a></li>
-        <li><a href="#about">About Us</a></li>
+        <li><a href="{% url 'menu_home' %}">Menu</a></li>
+        <li><a href="{% url 'about' %}">About Us</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>

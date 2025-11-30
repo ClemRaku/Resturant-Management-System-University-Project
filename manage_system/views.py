@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseBadRequest
+from django.core.files.storage import FileSystemStorage
 import mysql.connector
 from datetime import datetime
 
@@ -29,7 +30,8 @@ def admin_menu(request):
         image = request.FILES.get('menu_item_img')
         image_url = ''
         if image:
-            image_url = image.name
+            fs = FileSystemStorage()
+            image_url = fs.save(image.name, image)
 
         sql = "INSERT INTO menu (name, description, price, category_id, ingredients, preparation_time, image_url) values (%s, %s, %s, %s, %s, %s, %s)"
         data = (menu_name, description, price, categoryID, ingredients, prep_time_int, image_url)
@@ -58,7 +60,8 @@ def admin_menu(request):
         # Handle image
         image = request.FILES.get('menu_item_img')
         if image:
-            image_url = image.name
+            fs = FileSystemStorage()
+            image_url = fs.save(image.name, image)
         else:
             # Keep existing image_url
             select_existing = "SELECT image_url FROM menu WHERE menu_id = %s"
@@ -851,7 +854,8 @@ def dashbaord(request):
             price = float(request.POST.get(f'h-f-price{dish_num}'))
             image_file = request.FILES.get(f'home_image{dish_num}')
             if image_file:
-                image_url = image_file.name
+                fs = FileSystemStorage()
+                image_url = fs.save(image_file.name, image_file)
             else:
                 mycursor.execute("SELECT image_url FROM menu WHERE menu_id = %s", (menu_id,))
                 existing = mycursor.fetchone()
