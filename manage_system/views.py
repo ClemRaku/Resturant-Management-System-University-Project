@@ -240,21 +240,17 @@ def customer_reserver(request):
             mycursor.execute("SELECT email FROM accounts WHERE email = %s", (email,))
             has_acc = mycursor.fetchone() is not None
             has_account_val = 1 if has_acc else 0
-            email_to_insert = email if has_acc else None
+            email_to_insert = email  # Always insert the provided email
             insert_customer = "INSERT INTO customer (name, phone_no, email, has_account, address) VALUES (%s, %s, %s, %s, %s)"
             mycursor.execute(insert_customer, (name, phone_no, email_to_insert, has_account_val, address))
             mydb.commit()
         else:
-            # Update existing
+            # Update existing - always update email along with other fields
             mycursor.execute("SELECT email FROM accounts WHERE email = %s", (email,))
             has_acc = mycursor.fetchone() is not None
             has_account_val = 1 if has_acc else 0
-            if has_acc:
-                update_customer = "UPDATE customer SET name = %s, email = %s, has_account = %s, address = %s WHERE phone_no = %s"
-                update_data = (name, email, has_account_val, address, phone_no)
-            else:
-                update_customer = "UPDATE customer SET name = %s, has_account = %s, address = %s WHERE phone_no = %s"
-                update_data = (name, has_account_val, address, phone_no)
+            update_customer = "UPDATE customer SET name = %s, email = %s, has_account = %s, address = %s WHERE phone_no = %s"
+            update_data = (name, email, has_account_val, address, phone_no)
             mycursor.execute(update_customer, update_data)
             mydb.commit()
 
@@ -623,34 +619,32 @@ def order(request):
 
         mydb.commit()
 
-        if customer_name:
-            finding_all_customer_phones = "select phone_no from customer"
-            mycursor.execute(finding_all_customer_phones)
-            all_customer_phones = mycursor.fetchall()
+        # Always handle customer data to ensure phone number is in customer table
+        finding_all_customer_phones = "select phone_no from customer"
+        mycursor.execute(finding_all_customer_phones)
+        all_customer_phones = mycursor.fetchall()
+        phone_list = [p[0] for p in all_customer_phones]
 
-            phone_list = [p[0] for p in all_customer_phones]
-
-            if phone_no not in phone_list:
-                ss = "insert into customer (phone_no, name) values(%s, %s)"
-                mycursor.execute(ss, (phone_no, customer_name))
-                mydb.commit()
-            else:
+        if phone_no not in phone_list:
+            # Insert new customer with name if provided
+            insert_customer = "INSERT INTO customer (phone_no, name) VALUES (%s, %s)"
+            mycursor.execute(insert_customer, (phone_no, customer_name if customer_name else None))
+            mydb.commit()
+        else:
+            if customer_name:
                 update_customer = "UPDATE customer SET name = %s WHERE phone_no = %s"
                 mycursor.execute(update_customer, (customer_name, phone_no))
                 mydb.commit()
 
-            increasing_visits = "select visit_no from customer where phone_no = %s"
-            mycursor.execute(increasing_visits, (phone_no, ))
-            visitsss = mycursor.fetchone()
-            visit = visitsss[0] if visitsss else None
-            if visit is not None:
-                visit = visit + 1
-            else:
-                visit = 1  #means first visit
-            back_to_table = "UPDATE customer SET visit_no = %s WHERE phone_no = %s;"
-            mycursor.execute(back_to_table, (visit, phone_no))
-            mydb.commit()
-
+        # Always update or set visit count
+        increasing_visits = "select visit_no from customer where phone_no = %s"
+        mycursor.execute(increasing_visits, (phone_no, ))
+        visitsss = mycursor.fetchone()
+        visit = visitsss[0] if visitsss and visitsss[0] is not None else 0
+        visit = visit + 1
+        back_to_table = "UPDATE customer SET visit_no = %s WHERE phone_no = %s;"
+        mycursor.execute(back_to_table, (visit, phone_no))
+        mydb.commit()
 
         return redirect('order')
 
@@ -669,15 +663,24 @@ def order(request):
         mycursor.execute(update_sql, data)
         mydb.commit()
 
-        existing_query = "SELECT phone_no FROM customer WHERE phone_no = %s"
-        mycursor.execute(existing_query, (phone_no,))
-        existing = mycursor.fetchone()
-        if existing:
-            mycursor.execute("UPDATE customer SET name = %s WHERE phone_no = %s", (customer_name, phone_no))
+        # Always ensure phone is in customer table
+        finding_all_customer_phones = "select phone_no from customer"
+        mycursor.execute(finding_all_customer_phones)
+        all_customer_phones = mycursor.fetchall()
+        phone_list = [p[0] for p in all_customer_phones]
+
+        if phone_no not in phone_list:
+            # Insert new customer with name (since required in edit)
+            insert_customer = "INSERT INTO customer (phone_no, name) VALUES (%s, %s)"
+            mycursor.execute(insert_customer, (phone_no, customer_name if customer_name else None))
             mydb.commit()
         else:
-            mycursor.execute("INSERT INTO customer (phone_no, name) VALUES (%s, %s)", (phone_no, customer_name))
-            mydb.commit()
+            if customer_name:
+                update_customer = "UPDATE customer SET name = %s WHERE phone_no = %s"
+                mycursor.execute(update_customer, (customer_name, phone_no))
+                mydb.commit()
+
+        # Note: Not updating visit_no on edit, as it might not change
 
         return redirect('order')
 
@@ -785,7 +788,7 @@ def sales(request):
         # Insert sale transaction
         insert_query = """
         INSERT INTO sale_transaction (customer_id, employee_id, Amount, order_id, status)
-        VALUES (%s, %s, %s, %s, 'Completed')
+        VALUES (%s, %s, %s, %s, 'Pending')
         """
         mycursor.execute(insert_query, (customer_id, employee_id, total_amount, order_id))
         mydb.commit()
@@ -965,7 +968,7 @@ def dashbaord(request):
         # Insert sale transaction
         insert_query = """
         INSERT INTO sale_transaction (customer_id, employee_id, Amount, order_id, status)
-        VALUES (%s, %s, %s, %s, 'Completed')
+        VALUES (%s, %s, %s, %s, 'Pending')
         """
         mycursor.execute(insert_query, (customer_id, employee_id, total_amount, order_id))
         mydb.commit()
@@ -1139,7 +1142,7 @@ def customer_checkout(request):
         if customer_id and total_amount > 0:
             insert_sale = """
                 INSERT INTO sale_transaction (Amount, Payment_Method, employee_id, table_no, customer_id, sale_time, order_id, status)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, 'Completed')
+                VALUES (%s, %s, %s, %s, %s, %s, %s, 'Pending')
                 """
             mycursor.execute(insert_sale, (total_amount, payment_method, employee_id, None, customer_id, order_time, order_id))
             mydb.commit()
