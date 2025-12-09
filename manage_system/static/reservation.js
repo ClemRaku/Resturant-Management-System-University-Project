@@ -1,6 +1,6 @@
 let reservations = JSON.parse(localStorage.getItem("reservations")) || [];
 
-// DOM elements
+
 
 
 const editModal = document.getElementById("editReservationModal");
@@ -31,7 +31,6 @@ window.addEventListener("click", e => {
     if (e.target === editModal) editModal.style.display = "none";
 });
 
-// Render reservations table
 function renderTable(data = reservations) {
     tbody.innerHTML = "";
     data.forEach(res => {
@@ -80,7 +79,6 @@ function openEditReservation(id) {
     editModal.style.display = "flex";
 }
 
-// Save edited reservation
 document.getElementById("saveEditedReservation").onclick = () => {
     const id = document.getElementById("edit_res_id").value;
     const res = reservations.find(r => r.reservationId == id);
@@ -100,7 +98,6 @@ document.getElementById("saveEditedReservation").onclick = () => {
     editModal.style.display = "none";
 };
 
-// Search functionality
 searchInput.addEventListener("input", function () {
     const query = this.value.toLowerCase();
     const filtered = reservations.filter(r =>
@@ -110,13 +107,10 @@ searchInput.addEventListener("input", function () {
     renderTable(filtered);
 });
 
-// Close modal
 closeModal.onclick = () => editModal.style.display = "none";
 window.addEventListener("click", e => {
     if (e.target === editModal) editModal.style.display = "none";
 });
 
 
-
-// Initial render
 renderTable();

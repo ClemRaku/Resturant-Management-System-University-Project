@@ -23,13 +23,13 @@ window.onclick = (event) => {
     if (event.target === modal) modal.style.display = "none";
 };
 
-// Search functionality
+
 document.getElementById('searchSales').addEventListener('input', function() {
     const searchValue = this.value.toLowerCase().trim();
     const rows = document.querySelectorAll('tbody tr');
 
     rows.forEach(row => {
-        const salesId = row.cells[0].textContent.toLowerCase(); // First column is Sales ID
+        const salesId = row.cells[0].textContent.toLowerCase(); 
         if (salesId.includes(searchValue)) {
             row.style.display = '';
         } else {

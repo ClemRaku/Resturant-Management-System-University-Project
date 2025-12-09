@@ -280,8 +280,7 @@
         customerData['{{ c.2 }}'] = {id: {{ c.0 }}, name: '{{ c.1 }}'};
         {% endfor %}
 
-        // Auto-fill name and customer_id on phone input change
-        document.getElementById('phone_input').addEventListener('input', function() {
+            document.getElementById('phone_input').addEventListener('input', function() {
             const phone = this.value.trim();
             const nameInput = document.getElementById('customer_name_input');
             const customerIdInput = document.getElementById('customer_id');

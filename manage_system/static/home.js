@@ -11,7 +11,7 @@ if (!document.getElementById('customer-menu')) {
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Handle new uploads
+    
     document.querySelectorAll(".imageInput").forEach(input => {
         input.addEventListener("change", function () {
             const id = this.dataset.id;
@@ -25,20 +25,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 preview.src = e.target.result;
                 preview.style.display = "block";
 
-                // Save image in localStorage
+                
                 localStorage.setItem("home_image_" + id, e.target.result);
             };
             reader.readAsDataURL(file);
         });
     });
 
-    // Load saved images from localStorage
+    
     document.querySelectorAll('.preview').forEach(img => {
         const id = img.dataset.id;
         const saved = localStorage.getItem("home_image_" + id);
 
         if (id === '1') {
-            // do not load saved for this id
+            
         } else {
             if (saved) {
                 img.src = saved;
@@ -50,10 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-
-
-// Navbar mobile menu button//
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const navbarLinks = document.getElementById('navbar-links');
 

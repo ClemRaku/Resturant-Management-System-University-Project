@@ -61,8 +61,7 @@ document.getElementById('reservation-form').addEventListener('submit', async (e)
   }
 });
 
-// Mobile navbar toggle
-// Navbar mobile menu button//
+
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const navbarLinks = document.getElementById('navbar-links');
 

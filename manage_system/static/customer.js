@@ -36,14 +36,14 @@ function renderTable(data = customers) {
         tbody.appendChild(tr);
     });
 
-    lucide.createIcons(); // Refresh icons
+    lucide.createIcons(); 
 }
 
 
 function deleteCustomer(id) {
     customers = customers.filter(c => c.customerId != id);
     localStorage.setItem("customers", JSON.stringify(customers));
-// renderTable(); // commented out to use server-rendered table
+
 }
 
 
@@ -124,4 +124,4 @@ function activateDeleteButtons() {
 
 activateDeleteButtons();
 
-// renderTable();
+

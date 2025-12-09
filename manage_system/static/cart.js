@@ -1,9 +1,8 @@
 const CART_KEY = "restaurant_cart";
 
 let cart = [];
-// -------------------------------
-// DOM ELEMENTS
-// -------------------------------
+// dom er element
+
 const cartSidebar = document.getElementById("cartSidebar");
 const cartItemsContainer = document.getElementById("cartItems");
 const cartCount = document.getElementById("cartCount");
@@ -16,9 +15,9 @@ const closeCartBtn = document.getElementById("closeCart");
 
 const DELIVERY_FEE = 100;
 
-// -------------------------------
-// TOAST NOTIFICATION
-// -------------------------------
+
+// toast er jonno notfication
+
 function createToast(message, type) {
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
@@ -27,17 +26,13 @@ function createToast(message, type) {
   setTimeout(() => toast.remove(), 3000);
 }
 
-// -------------------------------
-// FUNCTIONS
-// -------------------------------
-
-// Save cart to localStorage
+// local storage e cart save 
 function saveCart() {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   updateCartUI();
 }
 
-// Update cart sidebar UI
+// cart sidebar 
 function updateCartUI() {
   cartCount.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -67,7 +62,7 @@ function updateCartUI() {
   deliveryFeeEl.textContent = DELIVERY_FEE + " tk";
 }
 
-// Add item to cart
+// cart e item add kora
 function addToCart(item) {
   const existing = cart.find(i => i.id === item.id);
   if (existing) {
@@ -81,7 +76,7 @@ function addToCart(item) {
 
 window.addToCart = addToCart;
 
-// Change item quantity
+// item quantity change kora
 function changeQuantity(id, delta) {
   const item = cart.find(i => i.id === id);
   if (!item) return;
@@ -93,15 +88,13 @@ function changeQuantity(id, delta) {
   }
 }
 
-// Remove item from cart
+// cart theke item remove kora
 function removeItem(id) {
   cart = cart.filter(i => i.id !== id);
   saveCart();
 }
 
-// -------------------------------
-// EVENT LISTENERS
-// -------------------------------
+
 menuCartBtn.addEventListener("click", () => {
   cartSidebar.style.right = "0";
 });
@@ -118,7 +111,7 @@ checkoutBtn.addEventListener("click", () => {
   createCheckoutModal();
 });
 
-// Create and show checkout modal
+//checkout modal
 function createCheckoutModal() {
   const modal = document.createElement('div');
   modal.id = 'checkoutModal';
@@ -185,7 +178,7 @@ function createCheckoutModal() {
   };
 }
 
-// Initialize UI
+
 document.addEventListener("DOMContentLoaded", () => {
   cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
   updateCartUI();

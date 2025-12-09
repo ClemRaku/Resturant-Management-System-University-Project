@@ -1,4 +1,4 @@
-// ================== MODALS ==================
+
 
 const staffModal = document.getElementById("staffModal");
 const openStaffBtn = document.getElementById("openStaffModal");
@@ -21,12 +21,7 @@ window.addEventListener("click", (e) => {
 });
 
 
-// ================== TABLE ==================
-
 const staffTable = document.getElementById("staff");
-
-
-// ================== ADD STAFF ==================
 
 const addStaffBtn = document.getElementById("addStaffBtn");
 
@@ -82,19 +77,14 @@ addStaffBtn.addEventListener("click", () => {
     lucide.createIcons();
     activateButtons();
 
-    // Clear
     staffModal.style.display = "none";
     document.querySelectorAll("#staffModal input").forEach(i => i.value = "");
 });
-
-
-// ================== ACTIVATE EDIT + DELETE ==================
 
 function activateButtons() {
     const editBtns = document.querySelectorAll(".edit-btn");
     const deleteBtns = document.querySelectorAll(".delete-btn");
 
-    // EDIT BUTTON
     editBtns.forEach(btn => {
         btn.onclick = () => {
             editStaffModal.style.display = "flex";
@@ -108,7 +98,7 @@ function activateButtons() {
             document.getElementById("edit_staff_phone").value = btn.dataset.phone;
             document.getElementById("edit_staff_status").value = btn.dataset.status;
 
-            // store reference row
+            
             editStaffModal.dataset.rowId = btn.dataset.id;
         };
     });
@@ -117,9 +107,6 @@ function activateButtons() {
 }
 
 activateButtons();
-
-
-// ================== SAVE EDIT ==================
 
 const saveStaffEditBtn = document.getElementById("saveStaffEdit");
 
@@ -165,8 +152,6 @@ saveStaffEditBtn.addEventListener("click", () => {
     editStaffModal.style.display = "none";
 });
 
-
-// ================== SEARCH ==================
 
 const staffSearchInput = document.getElementById("staffSearch");
 

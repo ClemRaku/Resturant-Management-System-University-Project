@@ -126,9 +126,7 @@ body {
 }
 
 
-/* ===========================
-   ABOUT SECTION CSS
-=========================== */
+/*about section */
 
 .about-section {
   padding: 80px 20px;
@@ -142,8 +140,7 @@ body {
   margin: 0 auto;
 }
 
-/* Main About Title */
-/* Layout wrapper */
+/* layout wrapper */
 .about-wrapper {
   display: flex;
   justify-content: center;
@@ -155,7 +152,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* Story / Text */
+/* Story */
 .about-story {
   max-width: 500px;
 }
@@ -177,7 +174,7 @@ body {
 
 /* Card for image */
 .about-card {
-  width: 350px;             /* CARD SIZE (tumi choto–boro korte parba) */
+  width: 350px;             
   padding: 15px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -196,7 +193,7 @@ body {
 }
 
 
-/* Responsive for Tablets */
+/* responsive tab*/
 @media (max-width: 768px) {
   .about-story-content {
     flex-direction: column;
@@ -212,7 +209,7 @@ body {
   }
 }
 
-/* Responsive for Phones */
+/* responsive for phones */
 @media (max-width: 480px) {
   .about-title-main {
     font-size: 32px;
@@ -224,8 +221,8 @@ body {
 }
 
 
-/* Section Title */
-/* Section Title */
+
+/* section title */
 .about-title {
   text-align: center;
   font-size: 32px;
@@ -245,7 +242,7 @@ body {
   border-radius: 2px;
 }
 
-/* USP Wrapper */
+
 .about-usps {
   list-style: none;
   display: flex;
@@ -257,7 +254,7 @@ body {
   max-width: 900px;
 }
 
-/* USP Item */
+/* usp item */
 .about-usps li {
   background: #fff4e6;
   color: #e64f4f;
@@ -272,27 +269,27 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Icon Style (Color Changed) */
+
 .about-usps li i {
   font-size: 35px;
-  color: #ff8a00; /* bright orange for icons */
+  color: #ff8a00; 
 }
 
-/* Text Style */
+/* text style */
 .about-usps span {
   font-weight: 600;
   font-size: 16px;
   color: #a50303;
 }
 
-/* Hover Effect */
+
 .about-usps li:hover {
   transform: translateY(-6px);
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
   background: #ffe2c4;
 }
 
-/* Responsive */
+/* responsive */
 @media (max-width: 480px) {
   .about-title {
     font-size: 26px;
@@ -310,19 +307,17 @@ body {
 
 
 
-
-/* CHEFS SECTION */
-/* Chefs Section Heading */
+/* chefs section heading */
 .chefs-heading {
   text-align: center;
   font-size: 36px;
   font-weight: 700;
-  color: #e64f4f; /* professional restaurant red */
+  color: #e64f4f; 
   margin-bottom: 50px;
   position: relative;
 }
 
-/* Optional decorative underline for heading */
+
 .chefs-heading::after {
   content: "";
   display: block;
@@ -333,7 +328,7 @@ body {
   border-radius: 2px;
 }
 
-/* Chefs Grid */
+/* chefs card box */
 .about-chefs {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -342,7 +337,7 @@ body {
   margin-bottom: 60px;
 }
 
-/* Individual Chef Card */
+/* individual Chef Card */
 .chef-card {
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -369,13 +364,13 @@ body {
   color: #555;
 }
 
-/* Hover Effect */
+
 .chef-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 18px rgba(0,0,0,0.12);
 }
 
-/* Responsive */
+/* responsive */
 @media (max-width: 992px) {
   .chef-card img { width: 160px; height: 160px; }
 }
@@ -385,18 +380,16 @@ body {
   .chefs-heading { font-size: 28px; }
 }
 
-/* CUSTOMER REVIEWS */
-/* Reviews Section Heading */
+/* review */
 .reviews-heading {
   text-align: center;
   font-size: 36px;
   font-weight: 700;
-  color: #e64f4f; /* professional restaurant red */
+  color: #e64f4f; 
   margin-bottom: 50px;
-  position: relative;
-}
+  position: relative;}
 
-/* Optional decorative underline for heading */
+
 .reviews-heading::after {
   content: "";
   display: block;
@@ -407,7 +400,7 @@ body {
   border-radius: 2px;
 }
 
-/* Customer Reviews Grid */
+/* reviews grid */
 .customer-reviews {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -415,7 +408,7 @@ body {
   margin: 0 20px 60px;
 }
 
-/* Individual Review Card */
+/* individual review card */
 .review-card {
   background-color: #fff8f0;
   padding: 30px 25px;
@@ -427,21 +420,20 @@ body {
   justify-content: space-between;
 }
 
-/* Hover Effect */
 .review-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 25px rgba(0,0,0,0.15);
   background-color: #ffe5d2;
 }
 
-/* Quote Icon */
+/* icon */
 .review-card i {
   font-size: 30px;
   color: #ffb730;
   margin-bottom: 18px;
 }
 
-/* Review Text */
+/*text */
 .review-card p {
   font-size: 17px;
   color: #444;
@@ -449,7 +441,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* Customer Info */
+/* customer info */
 .review-card .customer-info {
   display: flex;
   align-items: center;
@@ -470,7 +462,7 @@ body {
   font-size: 16px;
 }
 
-/* Responsive adjustments */
+/* responsive*/
 @media (max-width: 768px) {
   .reviews-heading {
     font-size: 30px;
@@ -492,7 +484,7 @@ body {
 
 
 
-/* CTA */
+/* cta */
 .about-cta {
   text-align: center;
   font-size: 20px;
@@ -502,9 +494,7 @@ body {
 }
 
 
-/* ===========================
-   RESPONSIVE
-=========================== */
+/*responsivness */
 
 @media (max-width: 992px) {
   .story-text { font-size: 17px; }
@@ -642,7 +632,7 @@ body {
   color: #555;
 }
 
-/* Responsive */
+/* responsive */
 @media (max-width: 900px) {
   .footer-top {
     flex-direction: column;

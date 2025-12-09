@@ -3,11 +3,9 @@ let orders = JSON.parse(localStorage.getItem("orders_data")) || [];
 
 const orderTable = document.getElementById("orderTable");
 
-// Modals
 const addModal = document.getElementById("addOrderModal");
 const editModal = document.getElementById("editOrderModal");
 
-// Buttons
 const openAdd = document.getElementById("openModal");
 const closeAdd = document.getElementById("closeAddModal");
 const closeEdit = document.getElementById("closeEditOrderModal");
@@ -16,11 +14,9 @@ const saveEditedOrder = document.getElementById("saveEditedOrder");
 
 const searchInput = document.getElementById("orderSearch");
 
-// Dynamic menu items for add modal
 let addMoreBtn = null;
 let menuItemsContainer = null;
 
-// Dynamic menu items for edit modal
 let editMoreBtn = null;
 let editMenuItemsContainer = null;
 
@@ -90,8 +86,6 @@ function saveOrders() {
     localStorage.setItem("orders_data", JSON.stringify(orders));
 }
 
-
-//load data on table
 function loadOrderTable() {
     orderTable.innerHTML = "";
 
@@ -126,8 +120,6 @@ function loadOrderTable() {
     updateCounters();
 }
 
-
-//update counter 
 function updateCounters() {
     const counter = {
         pending: 0,
@@ -146,11 +138,6 @@ function updateCounters() {
     document.querySelector('input[name="cancelled"]').value = counter.cancelled;
 }
 
-//add order
-// saveNewOrder lets the form submit normally for Django view
-
-
-//order edit ar jonno
 function openEditModal(order) {
     document.getElementById("edit_order_id").value = order.order_id;
     document.getElementById("edit_order_customer_id").value = order.customer_id;
@@ -212,11 +199,6 @@ function openEditModal(order) {
     }
 }
 
-// saveEditedOrder lets the form submit normally for Django view
-
-
-//order delete ar jonno
-// delete handled by GET request in attachListeners
 
 function attachListeners() {
     document.querySelectorAll(".edit-btn").forEach(btn => {
@@ -233,7 +215,6 @@ function attachListeners() {
     });
 }
 
-//search function ar jonno
 searchInput.addEventListener("keyup", () => {
     const value = searchInput.value.toLowerCase();
 
@@ -243,6 +224,5 @@ searchInput.addEventListener("keyup", () => {
     });
 });
 
-// Attach listeners on page load, table is rendered by Django
 attachListeners();
 lucide.createIcons();

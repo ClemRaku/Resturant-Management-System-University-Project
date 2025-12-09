@@ -10,9 +10,6 @@ body {
   line-height: 1.6;
 }
 /* navbar*/
-/* ============================
-   NAVBAR — CLEAN & RESPONSIVE
-============================ */
 
 .navbar {
   background-color: #f8f7f3;
@@ -23,13 +20,13 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-  z-index: 999; /* VERY IMPORTANT (menu will stay above hero) */
+  z-index: 999; 
 }
 
-/* Navbar container (flexbox) */
+
 .navbar-container {
   width: 100%;
-  max-width: 1300px;   /* keeps navbar centered in big screens */
+  max-width: 1300px;   
   display: flex;
   justify-content: space-between; 
   align-items: center;
@@ -47,7 +44,7 @@ body {
 
 
 
-/* LOGO */
+
 .logo-wrapper {
   height: 130px;
   display: flex;
@@ -65,7 +62,6 @@ body {
   filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
 }
 
-/* NAVBAR LINKS */
 .navbar-links {
   display: flex;
   gap: 24px;
@@ -90,7 +86,7 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* SIGN IN BUTTON */
+
 .btn-primary {
   background-color: #e64f4f;
   color: #fff !important;
@@ -109,7 +105,7 @@ body {
   box-shadow: 0 6px 14px rgba(0,0,0,0.25);
 }
 
-/* Mobile menu button */
+
 .mobile-menu-btn {
   display: none;
   background: none;
@@ -118,9 +114,7 @@ body {
 }
 
 
-/* ============================
-   NAVBAR RESPONSIVE
-============================ */
+
 @media (max-width: 768px) {
 
   .navbar-links {
@@ -134,7 +128,7 @@ body {
     padding: 16px;
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-    z-index: 1000; /* stays above hero */
+    z-index: 1000; 
   }
 
   .navbar-links.active {
@@ -150,7 +144,7 @@ body {
   }
 }
 
-/*  HERO SECTION  */
+
 .hero {
   position: relative;
   width: 100%;
@@ -271,7 +265,7 @@ body {
   } 
 }
 
-/* HIGHLIGHT SECTION */
+
 .highlight-section {
   width: 100%;
   background: #f8f7f3;
@@ -279,7 +273,7 @@ body {
   box-sizing: border-box;
 }
 
-/* Top: image + description */
+
 .highlight-top {
   display: flex;
   flex-wrap: wrap;
@@ -340,7 +334,7 @@ body {
   background: #c40404;
 }
 
-/* Bottom: Popular dishes title + cards */
+
 .highlight-bottom {
   display: flex;
   align-items: center;
@@ -456,9 +450,9 @@ body {
 
 
 
-/* ================== DINE IN FIXED ================== */
+
 .dine-fixed-section {
-  background-color: #eef1e0; /* full-width background */
+  background-color: #eef1e0; 
   text-align: center;
   padding: 60px 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.486);
@@ -466,7 +460,7 @@ body {
 
 .dine-fixed-section .feature-icon {
   font-size: 48px;
-  color: #a00303; /* or var(--primary) */
+  color: #a00303; 
   margin-bottom: 20px;
 }
 
@@ -492,13 +486,13 @@ body {
   transition: all 0.3s ease;
 }
 
-/* ================== CTA FIXED ================== */
+
 .cta-fixed-section {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  background-color: #f8f7f3; /* full-width background */
+  background-color: #f8f7f3; 
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.486);
   padding: 60px 20px;
   gap: 40px;  
@@ -539,7 +533,7 @@ body {
   border-radius: 12px;
 }
 
-/* Responsive for mobile */
+
 @media (max-width: 900px) {
   .cta-fixed-section {
     flex-direction: column;
@@ -551,7 +545,7 @@ body {
 }
 
 
-/* navbar er fotter*/
+
 .footer {
   background: #eef1e0;
   color: #333;

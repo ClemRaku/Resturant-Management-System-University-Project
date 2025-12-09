@@ -1,4 +1,4 @@
-// Navbar mobile menu button//
+// navbar mobile menu button//
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const navbarLinks = document.getElementById('navbar-links');
 

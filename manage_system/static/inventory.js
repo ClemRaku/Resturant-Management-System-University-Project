@@ -58,8 +58,7 @@ editButtons.forEach(button => {
 deleteButtons.forEach(button => {
     button.addEventListener('click', function() {
         const id = this.getAttribute('data-inventory-id');
-        if (confirm("Are you sure you want to delete Inventory ID: " + id + "?")) {
-            // This URL redirect tells your Django view (views.py) to perform the SQL DELETE operation
+        if (confirm("Are you sure you want to delete Inventory ID: " + id + "?")) {            
             window.location.href = `?delete_inventory_id=${id}`;
         }
     });

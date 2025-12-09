@@ -1,9 +1,5 @@
 let selectedCategory = "all";
 let searchQuery = "";
-
-// -------------------------------
-// FILTER MENU CARDS
-// -------------------------------
 function filterMenu() {
   const cards = document.querySelectorAll("#customer-menu .card");
 
@@ -19,9 +15,7 @@ function filterMenu() {
   });
 }
 
-// -------------------------------
-// SEARCH INPUT
-// -------------------------------
+
 const searchInput = document.getElementById("search-input");
 if (searchInput) {
   searchInput.addEventListener("input", e => {
@@ -30,9 +24,6 @@ if (searchInput) {
   });
 }
 
-// -------------------------------
-// CATEGORY FILTERS
-// -------------------------------
 document.querySelectorAll(".filter-btn").forEach(btn => {
   btn.addEventListener("click", e => {
     document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
@@ -42,9 +33,7 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
   });
 });
 
-// -------------------------------
-// ORDER BUTTON CLICKS
-// -------------------------------
+
   document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', e => {
     if (e.target.classList.contains('order-btn')) {
