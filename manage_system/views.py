@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseBadRequest
 import mysql.connector
 from datetime import datetime
+import os
 
 def get_db_connection():
     return mysql.connector.connect(
-        host='localhost',
-        user='root',
-        passwd='raka',
-        database='resturant'
+        host='vcajxs.h.filess.io',
+        port=3306,
+        user='resturant_seemsmaybe',
+        passwd='6ae06a7844683d70406a2069fe7cb3f5c1f59edb',
+        database='resturant_seemsmaybe'
     )
 mydb = get_db_connection()
 
@@ -29,6 +31,9 @@ def admin_menu(request):
         image_url = ''
         if image:
             image_url = image.name
+            with open(f'manage_system/static/{image.name}', 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
 
         sql = "INSERT INTO menu (name, description, price, category_id, ingredients, preparation_time, image_url) values (%s, %s, %s, %s, %s, %s, %s)"
         data = (menu_name, description, price, categoryID, ingredients, prep_time_int, image_url)
@@ -58,6 +63,9 @@ def admin_menu(request):
         image = request.FILES.get('menu_item_img')
         if image:
             image_url = image.name
+            with open(f'manage_system/static/{image.name}', 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
         else:
             # Keep existing image_url
             select_existing = "SELECT image_url FROM menu WHERE menu_id = %s"
@@ -932,6 +940,9 @@ def dashbaord(request):
             image_file = request.FILES.get(f'home_image{dish_num}')
             if image_file:
                 image_url = image_file.name
+                with open(f'manage_system/static/{image_file.name}', 'wb+') as destination:
+                    for chunk in image_file.chunks():
+                        destination.write(chunk)
             else:
                 mycursor.execute("SELECT image_url FROM menu WHERE menu_id = %s", (menu_id,))
                 existing = mycursor.fetchone()
