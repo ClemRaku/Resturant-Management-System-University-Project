@@ -12,3 +12,6 @@ In order to run the website.
 >python manage.py runserver
 
 *Then open up the development server, which should be 'http://127.0.0.1:8000/'
+
+
+UPDATE: Database is hosted by https://filess.io/
