@@ -5,10 +5,11 @@ from datetime import datetime
 
 def get_db_connection():
     return mysql.connector.connect(
-        host='localhost',
-        user='root',
-        passwd='raka',
-        database='resturant'
+        host='vcajxs.h.filess.io',
+        port=3306,
+        user='resturant_seemsmaybe',
+        passwd='6ae06a7844683d70406a2069fe7cb3f5c1f59edb',
+        database='resturant_seemsmaybe'
     )
 mydb = get_db_connection()
 
